@@ -50,6 +50,7 @@ Route::get('/', function () {
    return "HELLO API GET";
 });
 
+// PROBANDO API.PHP
 
 Route::get('get_client_data', [ClientController::class, 'get_client_data'])->middleware('shopify.auth');
 Route::put('put_client_data', [ClientController::class, 'put_client_data'])->middleware('shopify.auth');
