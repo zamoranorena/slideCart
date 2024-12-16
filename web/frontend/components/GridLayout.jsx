@@ -4,7 +4,7 @@ import React from 'react';
 import {
     PaintBrushFlatIcon, ConfettiIcon, ClockIcon, CashDollarIcon, DeliveryIcon, NoteIcon, DiscountIcon,
     OrderRepeatIcon, LockIcon, CreditCardIcon, AppsIcon, ContractIcon, SettingsIcon, LanguageTranslateIcon,
-    MarketsIcon, ViewIcon, HideIcon, CodeIcon
+    MarketsIcon, ViewIcon, HideIcon, CodeIcon, CartAbandonedIcon
 } from '@shopify/polaris-icons';
 import { useBreakpoints } from '@shopify/polaris';
 import { Redirect } from '@shopify/app-bridge/actions';
@@ -245,6 +245,7 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
         const response = await makeGetRequest("/api/get_client_data", app);
         if (response.shop) {
             updateGridItems({
+                cart_empty: response.cart_editor.enabled_cart_empty ? true : false,
                 customize: response.cart_editor.customize_enabled_loading ? true : false,
                 countdown: response.cart_editor.enabled_countdown ? true : false,
                 announcement: response.cart_editor.enabled_announcement ? true : false,
@@ -299,7 +300,7 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
         };
         updateGridItems({ paths: paths })
         setTimeout(function () {
-            validatePath(paths);
+            //validatePath(paths);
         }, 200);
     }, [markup]);
 
@@ -329,6 +330,13 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             suffix: null,
             active: gridItems.paths == "/cart-editor/customize" ? true : false,
             onAction: () => redirectToPage("/cart-editor/customize")
+        },
+        {
+            content: 'Cart Empty',
+            prefix: <Icon source={CartAbandonedIcon} />,
+            suffix: gridItems.cart_empty ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
+            active: gridItems.paths == "/cart-editor/cart-empty" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/cart-empty")
         },
         {
             content: 'Countdown',

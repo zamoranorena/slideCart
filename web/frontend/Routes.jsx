@@ -20,6 +20,7 @@ import ScrollToTop from "./utils/scrollTop";
 export default function Routes({ pages }) {
   const [gridItems, setGridItems] = useState({
     customize: false,
+    cart_empty: false,
     countdown: false,
     announcement: false,
     rewards: false,

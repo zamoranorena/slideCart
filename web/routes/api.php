@@ -7,6 +7,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\PlansController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\CartEmptyController;
 use App\Http\Controllers\CustomizeController;
 use App\Http\Controllers\CountDownController;
 use App\Http\Controllers\AnnouncementController;
@@ -66,6 +67,10 @@ Route::post('setDashboard',[ DashboardController::class, 'set_dashboard' ])->mid
 
 
 //CART-EDITOR
+//CART EMPTY
+Route::get('get_cart_empty',[ CartEmptyController::class, 'get_cart_empty' ])->middleware('shopify.auth');
+Route::put('cart_empty',[ CartEmptyController::class, 'put_cart_empty' ])->middleware('shopify.auth');
+
 //SETTINGS
 Route::get('get_settings',[ SettingsController::class, 'get_settings' ])->middleware('shopify.auth');
 Route::put('settings',[ SettingsController::class, 'put_settings' ])->middleware('shopify.auth');

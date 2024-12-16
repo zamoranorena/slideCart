@@ -40,6 +40,7 @@ class ClientController extends Controller
             $shop = $session->getShop();
 
             $customer = Customer::with([
+                'CartEmpty',
                 'Customize', 
                 'Countdown', 
                 'Announcement', 
@@ -75,6 +76,7 @@ class ClientController extends Controller
             
             $dashboard = Dashboard::where('customer_id', $customer['id'])->first();
             
+            $cart_empty = $customer->CartEmpty;
             $customize = $customer->Customize;
             $countdown = $customer->Countdown;
             $announcement = $customer->Announcement;
@@ -104,6 +106,7 @@ class ClientController extends Controller
                     'new_user' => $customer['new_user'],
                     'status_user' => $customer['old_user'],
                     'cart_editor' => [
+                        "enabled_cart_empty" => $cart_empty->enabled_cart_empty,
                         "customize_enabled_loading" => $customize->customize_enabled_loading,
                         "enabled_countdown" => $countdown->enabled_countdown,
                         "enabled_announcement" => $announcement->enabled_announcement,

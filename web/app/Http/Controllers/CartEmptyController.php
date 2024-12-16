@@ -12,9 +12,9 @@ use App\Models\FreeItems;
 use App\Models\Settings;
 use App\Models\CartEmpty;
 
-class SettingsController extends Controller
+class CartEmptyController extends Controller
 {
-    public function get_settings(Request $request)
+    public function get_cart_empty(Request $request)
     {
         try {
             $var = [
@@ -26,11 +26,10 @@ class SettingsController extends Controller
             $shop = $session->getShop();
             $customer = Customer::where('shop_url', $shop)->first();
             if ($customer) {
-                $cart_settings =  Customer::with(
-                    'Settings:customer_id,enabled_desktop,enabled_mobile')->where('id', $customer['id'])->first();
+                $cart_settings =  Customer::with('CartEmpty')->where('id', $customer['id'])->first();
                 if ($cart_settings) {
                     $var = [
-                        'settings' => $cart_settings->Settings,
+                        'cart_empty' => $cart_settings->CartEmpty,
                     ];
                 };
             }
@@ -43,19 +42,21 @@ class SettingsController extends Controller
             ]);
         }
     }
-    public function put_settings(Request $request)
+    public function put_cart_empty(Request $request)
     {
         try {
             $session = $request->get('shopifySession');
             $shop = $session->getShop();
-            $customer =  Customer::with('Settings')->where('shop_url', $shop)->first();
-            if ($customer->Settings) {
-                $updateSettings = Settings::where('customer_id', $customer['id'])->update([
-                    'enabled_desktop' => $request->enabled_desktop,
-                    'enabled_mobile' => $request->enabled_mobile,
-                ]);
+            $customer =  Customer::with('CartEmpty')->where('shop_url', $shop)->first();
+            if ($customer->CartEmpty) {
+                if (is_null($request->cart_empty_upsell_list_products)) {
+                    $request->merge([
+                        'cart_empty_upsell_list_products' => '',
+                    ]);
+                };
+                $updateCartEmpty = CartEmpty::where('customer_id', $customer['id'])->update($request->all());
             };
-            if ($updateSettings) {
+            if ($updateCartEmpty) {
                 EnsureClientFile::chargeEnvironment($shop);
             };
             return response()->json([

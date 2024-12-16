@@ -4345,7 +4345,7 @@ div#content-icon-checkout svg {
 }
 
 @media (min-width:1025px) {
-    .hs_payment_badges.hs_payment_image .Polaris-DropZone-FileUpload.Polaris-DropZone-FileUpload--large {
+    /* .hs_payment_badges.hs_payment_image .Polaris-DropZone-FileUpload.Polaris-DropZone-FileUpload--large {
         z-index: 20;
         position: absolute;
         left: 50%;
@@ -4370,7 +4370,7 @@ div#content-icon-checkout svg {
     .hs_payment_badges.hs_payment_image .Polaris-DropZone--sizeLarge:hover img {
         -webkit-filter: blur(8px);
         filter: blur(8px);
-    }
+    } */
 }
 
 @media (min-width:1281px) {

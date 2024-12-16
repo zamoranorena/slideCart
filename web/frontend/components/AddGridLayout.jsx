@@ -65,7 +65,7 @@ export function AddGridLayout({ children, paths = 0, gridItemsAddOns, updateGrid
         if (response.shop) {
             setShop(response.shop);
             setNewUser(response.new_user);
-            updateGridItemsAddOns({ 
+            updateGridItemsAddOns({
                 cart_bar: response.additional_add_ons.enabled_cart_bar ? true : false,
                 sticky_cart: response.additional_add_ons.enabled_sticky_cart ? true : false,
                 quick_buy: response.additional_add_ons.enabled_quick_buy ? true : false,

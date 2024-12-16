@@ -5,7 +5,7 @@ window.HSSLIDECART.setSettings = {
     "settings": {
         "devices": {
             "enabled_desktop": 1,
-            "enabled_mobile": 1,
+            "enabled_mobile": 0,
             "money_format": "S\/. {{amount}}",
             "cart_type": 0,
             "personalize": "",
@@ -46,7 +46,7 @@ window.HSSLIDECART.setSettings = {
             "image_container": "90"
         },
         "cart_empty": {
-            "enabled_cart_empty": 1,
+            "enabled_cart_empty": 0,
             "cart_empty_title": "YOUR CART IS EMPTY!",
             "cart_empty_title_font_size": "18px",
             "cart_empty_title_text_transform": "none",
@@ -66,7 +66,7 @@ window.HSSLIDECART.setSettings = {
             "cart_empty_button_font_color_hex": "#ffffff",
             "cart_empty_button_border_radius": "0px",
             "cart_empty_enabled_upsell": 1,
-            "cart_empty_upsell_list_products": "cold-river,cool-waterfall,the-multi-location-snowboard",
+            "cart_empty_upsell_list_products": "cold-river,cool-waterfall",
             "cart_empty_upsell_font_size": "13px",
             "cart_empty_upsell_mode": 1,
             "cart_empty_upsell_qty": 1,
@@ -364,7 +364,7 @@ window.HSSLIDECART.setSettings = {
     },
     "customize": {
         "customize_slidecart_design": 0,
-        "customize_slidecart_size": 450,
+        "customize_slidecart_size": 365,
         "customize_slidecart_position": 1,
         "customize_slidecart_animation_mobile": 0,
         "customize_slidecart_rtl": 0,
