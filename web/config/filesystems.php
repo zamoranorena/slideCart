@@ -36,10 +36,15 @@ return [
             'root' => base_path('clients'),
         ],
 
+        'frontend' => [
+            'driver' => 'local',
+            'root' => base_path('frontend/clients'),  // Ruta completa a la carpeta frontend/clients
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 

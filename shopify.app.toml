@@ -2,7 +2,8 @@
 
 client_id = "8997d97e1618d86ad7e3068800131d53"
 name = "new-slide-cart"
-application_url = "https://overall-hitting-contemporary-considerations.trycloudflare.com"
+handle = "new-slide-cart"
+application_url = "https://89db-38-253-148-98.ngrok-free.app"
 embedded = true
 
 [build]
@@ -11,22 +12,25 @@ dev_store_url = "dev-slide-store.myshopify.com"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
-scopes = "read_products,write_products,read_themes,write_themes,read_orders,write_orders,write_order_edits,read_order_edits,write_draft_orders"
+scopes = "read_order_edits,read_orders,read_products,read_themes,write_draft_orders,write_order_edits,write_orders,write_products,write_themes"
 
 [auth]
 redirect_urls = [
-  "https://overall-hitting-contemporary-considerations.trycloudflare.com/auth/callback",
-  "https://overall-hitting-contemporary-considerations.trycloudflare.com/auth/shopify/callback",
-  "https://overall-hitting-contemporary-considerations.trycloudflare.com/api/auth/callback"
+  "https://89db-38-253-148-98.ngrok-free.app/auth/callback",
+  "https://89db-38-253-148-98.ngrok-free.app/auth/shopify/callback",
+  "https://89db-38-253-148-98.ngrok-free.app/api/auth/callback"
 ]
 
 [webhooks]
 api_version = "2024-10"
 
-  [webhooks.privacy_compliance]
-  customer_deletion_url = "https://06cf-38-253-148-98.ngrok-free.app/hooks/mandatory/customer"
-  customer_data_request_url = "https://06cf-38-253-148-98.ngrok-free.app/hooks/mandatory/customer"
-  shop_deletion_url = "https://06cf-38-253-148-98.ngrok-free.app/hooks/mandatory/shop"
+  [[webhooks.subscriptions]]
+  uri = "/hooks/mandatory/customer"
+  compliance_topics = [ "customers/data_request", "customers/redact" ]
+
+  [[webhooks.subscriptions]]
+  uri = "/hooks/mandatory/shop"
+  compliance_topics = [ "shop/redact" ]
 
 [pos]
 embedded = false

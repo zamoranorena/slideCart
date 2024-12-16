@@ -201,7 +201,12 @@ class EnsureClientFile
                         $content_file = $jsonData;
                     };
                     //Storage::disk('local')->put(md5($shop) . '.js', $content_file);
-                    File::put('clients/' . md5($shop) . '.js', $content_file);
+                    //File::put('clients/' . md5($shop) . '.js', $content_file);
+                    if (env('APP_ENV') === 'production') {
+                        File::put('clients/' . md5($shop) . '.js', $content_file);
+                    } else {
+                        Storage::disk('frontend')->put(md5($shop) . '.js', $content_file);
+                    }
                 };
             };
         } catch (\Exception $th) {

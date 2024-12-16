@@ -333,6 +333,7 @@ Route::post('/hooks/mandatory/shop', function (Request $request) {
 Route::get('/api/test', function (Request $request) {
     Log::debug('/api/test');
     /* CAMBIOS TEST GIT HUB */
+    /* CAMBIOS ROUTE API.PHP */
     $customerId = 1;
     /* EnsureEnvironment::create_environment($customerId, ''); */
 });

@@ -5,7 +5,7 @@ window.HSSLIDECART.setSettings = {
     "settings": {
         "devices": {
             "enabled_desktop": 1,
-            "enabled_mobile": 0,
+            "enabled_mobile": 1,
             "money_format": "S\/. {{amount}}",
             "cart_type": 0,
             "personalize": "",
