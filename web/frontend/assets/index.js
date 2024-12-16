@@ -1,0 +1,9 @@
+export { default as notFoundImage } from "./empty-state.svg";
+export { default as trophyImage } from "./home-trophy.png";
+export { default as slideCart1_popup } from "./slideCart1_popup.png";
+export { default as slideCart1 } from "./slideCart1.png";
+export { default as slideCart2_popup } from "./slideCart2_popup.png";
+export { default as slideCart2 } from "./slideCart2.png";
+export { default as additional_buttons } from "./additional_buttons.png";
+export { default as hideSlide } from "./videos/hideSlide.mp4";
+export { default as giftWrap } from "./videos/giftWrap.mp4";
