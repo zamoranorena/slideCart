@@ -20,5 +20,8 @@ shopify.app.toml
 
 **/node_modules
 
+shopify.app.toml
+/shopify.app.toml
+
 .idea
 .vscode

@@ -1,14 +1,20 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
+<<<<<<< HEAD
 client_id = "8997d97e1618d86ad7e3068800131d53"
 name = "new-slide-cart"
 handle = "new-slide-cart"
 application_url = "https://89db-38-253-148-98.ngrok-free.app"
+=======
+client_id = "b5915570f42228ec5acb0b2285eb9977"
+name = "new-slide-cart-dev"
+application_url = "https://overall-hitting-contemporary-considerations.trycloudflare.com"
+>>>>>>> 31a96fc3b32eace6b95f3a1fcac620ce2181e2b6
 embedded = true
 
 [build]
 automatically_update_urls_on_dev = true
-dev_store_url = "dev-slide-store.myshopify.com"
+dev_store_url = "zubieta84.myshopify.com"
 
 [access_scopes]
 # Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
