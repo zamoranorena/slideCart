@@ -18,5 +18,8 @@ yarn-error.log
 
 **/node_modules
 
+shopify.app.toml
+/shopify.app.toml
+
 .idea
 .vscode
