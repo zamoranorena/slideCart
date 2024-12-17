@@ -134,11 +134,7 @@ class ExpressPayments extends Component {
 
         const content_additional_checkout_button = (
             <Card>
-                <InlineStack align="center"><img src= {additional_buttons}/></InlineStack>
-                {/* <EmptyState
-                    image={additional_buttons}
-                >
-                </EmptyState> */}
+                <InlineStack align="center"><img src={additional_buttons} /></InlineStack>
             </Card>
         );
 

@@ -322,8 +322,16 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
     const suffix_cart_coupon = gridItems.cart_coupon ? <Badge tone="success">Active</Badge> : <Badge tone="info">Disabled</Badge>;
     const suffix_terms_conditions = gridItems.terms_conditions ? <Badge tone="success">Active</Badge> : <Badge tone="info">Disabled</Badge>;
 
-
-    var menuItems = [
+    var items = [
+        {
+            content: 'Settings',
+            prefix: <Icon source={SettingsIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/settings" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/settings")
+        }
+    ];
+    var items_general = [
         {
             content: 'Design',
             prefix: <Icon source={PaintBrushFlatIcon} />,
@@ -331,6 +339,45 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             active: gridItems.paths == "/cart-editor/customize" ? true : false,
             onAction: () => redirectToPage("/cart-editor/customize")
         },
+        
+        {
+            content: 'Integrations',
+            prefix: <Icon source={AppsIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/integrations" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/integrations")
+        },
+        {
+            content: 'Translator',
+            prefix: <Icon source={LanguageTranslateIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/translator" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/translator")
+        },
+        {
+            content: 'Custom Css',
+            prefix: <Icon source={CodeIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/custom-css" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/custom-css")
+        },
+        {
+            content: 'Custom Javascript',
+            prefix: <Icon source={CodeIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/custom-js" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/custom-js")
+        },
+        {
+            content: 'Additional Settings',
+            prefix: <Icon source={SettingsIcon} />,
+            suffix: null,
+            active: gridItems.paths == "/cart-editor/additional-settings" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/additional-settings")
+        },
+    ];
+
+    var items_body = [
         {
             content: 'Cart Empty',
             prefix: <Icon source={CartAbandonedIcon} />,
@@ -374,32 +421,11 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             onAction: () => redirectToPage("/cart-editor/free-items")
         },
         {
-            content: 'Gift Wrap',
-            prefix: <Icon source={MarketsIcon} />,
-            suffix: gridItems.gift_wrap ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
-            active: gridItems.paths == "/cart-editor/gift-wrap" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/gift-wrap")
-        },
-        {
-            content: 'Add-ons',
-            prefix: <Icon source={DeliveryIcon} />,
-            suffix: gridItems.shipping_protections ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
-            active: gridItems.paths == "/cart-editor/shipping-protections" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/shipping-protections")
-        },
-        {
             content: 'Additional Notes',
             prefix: <Icon source={NoteIcon} />,
             suffix: gridItems.cart_note ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
             active: gridItems.paths == "/cart-editor/cart-note" ? true : false,
             onAction: () => redirectToPage("/cart-editor/cart-note")
-        },
-        {
-            content: 'Discount Code',
-            prefix: <Icon source={DiscountIcon} />,
-            suffix: gridItems.cart_coupon ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
-            active: gridItems.paths == "/cart-editor/cart-coupon" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/cart-coupon")
         },
         {
             content: 'Subscription Upgrades',
@@ -408,6 +434,31 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             active: gridItems.paths == "/cart-editor/test" ? true : false,
             onAction: () => redirectToPage("/cart-editor/test")
         },
+    ];
+
+    var items_footer = [
+        {
+            content: 'Add-ons',
+            prefix: <Icon source={DeliveryIcon} />,
+            suffix: gridItems.shipping_protections ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
+            active: gridItems.paths == "/cart-editor/shipping-protections" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/shipping-protections")
+        },
+        {
+            content: 'Gift Wrap',
+            prefix: <Icon source={MarketsIcon} />,
+            suffix: gridItems.gift_wrap ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
+            active: gridItems.paths == "/cart-editor/gift-wrap" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/gift-wrap")
+        },
+        {
+            content: 'Discount Code',
+            prefix: <Icon source={DiscountIcon} />,
+            suffix: gridItems.cart_coupon ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
+            active: gridItems.paths == "/cart-editor/cart-coupon" ? true : false,
+            onAction: () => redirectToPage("/cart-editor/cart-coupon")
+        },
+        
         {
             content: 'Terms And Conditions',
             prefix: <Icon source={ContractIcon} />,
@@ -458,48 +509,6 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             active: gridItems.paths == "/cart-editor/express-payments" ? true : false,
             onAction: () => redirectToPage("/cart-editor/express-payments")
         },
-        {
-            content: 'Settings',
-            prefix: <Icon source={SettingsIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/settings" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/settings")
-        },
-        {
-            content: 'Integrations',
-            prefix: <Icon source={AppsIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/integrations" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/integrations")
-        },
-        {
-            content: 'Translator',
-            prefix: <Icon source={LanguageTranslateIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/translator" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/translator")
-        },
-        {
-            content: 'Custom Css',
-            prefix: <Icon source={CodeIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/custom-css" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/custom-css")
-        },
-        {
-            content: 'Custom Javascript',
-            prefix: <Icon source={CodeIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/custom-js" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/custom-js")
-        },
-        {
-            content: 'Additional Settings',
-            prefix: <Icon source={SettingsIcon} />,
-            suffix: null,
-            active: gridItems.paths == "/cart-editor/additional-settings" ? true : false,
-            onAction: () => redirectToPage("/cart-editor/additional-settings")
-        },
     ];
 
     const lineItems =
@@ -514,111 +523,68 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
         },);
     }
 
+    let enabled_module_skeleton =
+        <BlockStack gap={{ xs: '500', sm: '600' }}>
+            <SkeletonDisplayText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+            <SkeletonBodyText lines={1} />
+        </BlockStack>;
+
+    let content_skeleton =
+        <BlockStack gap={500}>
+            {gridItems.paths === "/cart-editor/settings" ? <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
+                <Card roundedAbove="xs">
+                    <Box width="100%">
+                        <BlockStack gap={{ xs: '500', sm: '600' }}>
+                            <SkeletonDisplayText lines={1} />
+                            <SkeletonBodyText lines={1} />
+                            <SkeletonBodyText lines={1} />
+                        </BlockStack>
+                    </Box>
+                </Card>
+                <Card roundedAbove="xs">
+                    <Box width="100%">
+                        <BlockStack gap={{ xs: '500', sm: '600' }}>
+                            <SkeletonDisplayText lines={1} />
+                            <SkeletonBodyText lines={1} />
+                            <SkeletonBodyText lines={1} />
+                        </BlockStack>
+                    </Box>
+                </Card>
+            </InlineGrid> : ''}
+            {gridItems.paths !== "/cart-editor/settings" ? <Card roundedAbove="xs">
+                <Box width="100%">
+                    <BlockStack gap={{ xs: '500', sm: '600' }}>
+                        <SkeletonDisplayText lines={1} />
+                        <SkeletonBodyText lines={1} />
+                        <SkeletonBodyText lines={1} />
+                    </BlockStack>
+                </Box>
+            </Card> : ''}
+            {gridItems.paths === "/cart-editor/settings" ? '' : <Card roundedAbove="xs">
+                <Box width="100%">
+                    {enabled_module_skeleton}
+                </Box>
+            </Card>}
+        </BlockStack>;
+
     const skeletonGridLayout =
         <Page
             title="Cart Editor"
             backAction={{ content: 'To Back' }}
             fullWidth>
-            <Frame>
-                {/* <Loading /> */}
-                <Layout>
-                    <Layout.Section>
-                        <div className='styles_navigation styles_navigation_cart'>
-                            <div className='styles_menu_items'>
-                                <Card padding={"100"}>
-                                    <BlockStack gap={300}>
-                                        <Box paddingInlineStart={"300"} paddingBlockStart="200">
-                                            <Text as="h2" variant="headingSm" fontWeight="medium">
-                                                Cart Editor Settings
-                                            </Text>
-                                        </Box>
-                                        <ActionList actionRole="menuitem" items={Object_rows}
-                                        />
-                                    </BlockStack>
-
-                                </Card>
-                            </div>
-                            <div className='styles_content'>
-                                <div>
-                                    <Frame>
-                                        <Layout>
-                                            <Layout.Section>
-                                                <BlockStack gap={500}>
-                                                    <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
-                                                        <Card roundedAbove="xs">
-                                                            <Box width="100%">
-                                                                <BlockStack gap={{ xs: '500', sm: '600' }}>
-                                                                    <SkeletonDisplayText lines={1} />
-                                                                    <SkeletonBodyText lines={1} />
-                                                                    <SkeletonBodyText lines={1} />
-                                                                </BlockStack>
-                                                            </Box>
-                                                        </Card>
-                                                        <Card roundedAbove="xs">
-                                                            <Box width="100%">
-                                                                <BlockStack gap={{ xs: '500', sm: '600' }}>
-                                                                    <SkeletonDisplayText lines={1} />
-                                                                    <SkeletonBodyText lines={1} />
-                                                                    <SkeletonBodyText lines={1} />
-                                                                </BlockStack>
-                                                            </Box>
-                                                        </Card>
-                                                    </InlineGrid>
-                                                    <Card roundedAbove="xs">
-                                                        <Box width="100%">
-                                                            <BlockStack gap={{ xs: '500', sm: '600' }}>
-                                                                <SkeletonDisplayText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                            </BlockStack>
-                                                        </Box>
-                                                    </Card>
-                                                    <Card roundedAbove="xs">
-                                                        <Box width="100%">
-                                                            <BlockStack gap={{ xs: '500', sm: '600' }}>
-                                                                <SkeletonDisplayText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                                <SkeletonBodyText lines={1} />
-                                                            </BlockStack>
-                                                        </Box>
-                                                    </Card>
-
-                                                    {/* <Card>
-                                                        <Box padding="200">
-                                                        <SkeletonDisplayText size="small" />
-                                                        <SkeletonBodyText  lines={1}/>
-                                                        </Box>
-                                                    </Card>
-                                                    <Card>
-                                                        <Box padding="200">
-                                                        <SkeletonDisplayText size="small" />
-                                                        <SkeletonBodyText lines={1} />
-                                                        </Box>
-                                                    </Card> */}
-                                                    {/* <Card>
-                                                        <Box padding="200">
-                                                            <SkeletonBodyText lines={1} />
-                                                        </Box>
-                                                    </Card>
-                                                    <Card>
-                                                        <SkeletonBodyText lines={10} />
-                                                    </Card> */}
-                                                </BlockStack>
-                                            </Layout.Section>
-                                        </Layout>
-                                    </Frame>
-                                </div>
-                            </div>
-                        </div>
-                        {/* <Grid columns={{ xs: 1, sm: 4, md: 6, lg: 12, xl: 12 }}>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 2, lg: 3, xl: 3 }}>
-                                <Card padding={"100"}>
+            <Layout>
+                <Layout.Section>
+                    <div className='styles_navigation styles_navigation_cart'>
+                        <div className='styles_menu_items'>
+                            <Card padding={"100"}>
+                                <BlockStack gap={100}>
                                     <Box paddingInlineStart={"300"} paddingBlockStart="200">
                                         <Text as="h2" variant="headingSm" fontWeight="medium">
                                             Cart Editor Settings
@@ -626,32 +592,22 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
                                     </Box>
                                     <ActionList actionRole="menuitem" items={Object_rows}
                                     />
-                                </Card>
-                            </Grid.Cell>
-                            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 9, xl: 9 }}>
-                                <div>
-                                    <Frame>
-                                        <Layout>
-                                            <Layout.Section>
-                                                <BlockStack gap={500}>
-                                                    <Card>
-                                                        <Box padding="200">
-                                                            <SkeletonBodyText lines={1} />
-                                                        </Box>
-                                                    </Card>
-                                                    <Card>
-                                                        <SkeletonBodyText lines={10} />
-                                                    </Card>7
-                                                </BlockStack>
-                                            </Layout.Section>
-                                        </Layout>
-                                    </Frame>
-                                </div>
-                            </Grid.Cell>
-                        </Grid> */}
-                    </Layout.Section>
-                </Layout>
-            </Frame>
+                                </BlockStack>
+
+                            </Card>
+                        </div>
+                        <div className='styles_content'>
+                            <div>
+                                <Layout>
+                                    <Layout.Section>
+                                        {content_skeleton}
+                                    </Layout.Section>
+                                </Layout>
+                            </div>
+                        </div>
+                    </div>
+                </Layout.Section>
+            </Layout>
         </Page>;
 
     const grid_columns = { xs: 1, sm: 4, md: 6, lg: 12, xl: 12 };
@@ -663,7 +619,7 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
     const grid_cell1_md = { xs: 1, sm: 1, md: 2, lg: 3, xl: 3 };
     const grid_cell2_md = { xs: 6, sm: 6, md: 6, lg: 9, xl: 9 };
     const ParentNav = ({ children = null }) => {
-        return mdDown ? <Box background="bg-surface" paddingInlineStart={"300"} paddingBlockStart="200">
+        return mdDown ? <Box background="bg-surface" paddingInlineStart={"100"} paddingBlockStart="200">
             {children}
         </Box> : <Card padding={"100"}>
             {children}
@@ -672,13 +628,29 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
 
     const menu_nav = <Grid.Cell columnSpan={grid_cell1_md}>
         <ParentNav>
-            <BlockStack gap={300}>
+            <BlockStack gap={100}>
                 <Box background="bg-surface" paddingInlineStart={"300"} paddingBlockStart="200">
                     <Text as="h2" variant="headingSm" fontWeight="medium">
                         Cart Editor Settings
                     </Text>
                 </Box>
-                <ActionList actionRole="menuitem" items={menuItems} />
+                <ActionList actionRole="menuitem" /* items={menuItems} */ sections={[
+                    {
+                        title: 'General',
+                        items: items_general,
+                    },
+                    {
+                        title: 'Body',
+                        items: items_body,
+                    },
+                    {
+                        title: 'Footer',
+                        items: items_footer,
+                    },
+                    {
+                        items: items,
+                    },
+                ]} />
             </BlockStack>
         </ParentNav>
     </Grid.Cell>;
@@ -740,57 +712,49 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
             </Modal.Section>
         </Modal>
     </div>;
+
     const this_page =
-            <Page
-                title="Cart Editor"
-                /* primaryAction={<HeaderPage generalApp={generalApp} />} */
-                backAction={{ content: 'To Back', onAction: () => redirectToPage("/") }}
-                fullWidth>
-                <div className={show_backdrop} onClick={() => mobileCloseNav()}></div>
-                {/* <Frame> */}
-                <Layout>
-                    <Layout.Section>
-                        <div className='styles_navigation styles_navigation_cart'>
-                            <div className='styles_menu_items'>
-                                <div className={'hs-nav-item ' + nav_mobile + show_nav_mobile}>
-                                    {menu_nav}
-                                    {menu_nav_close}
-                                </div>
-                            </div>
-                            <div className='styles_content'>
-                                {children}
+        <Page
+            title="Cart Editor"
+            /* primaryAction={<HeaderPage generalApp={generalApp} />} */
+            backAction={{ content: 'To Back', onAction: () => redirectToPage("/") }}
+            fullWidth>
+            <div className={show_backdrop} onClick={() => mobileCloseNav()}></div>
+            {/* <Frame> */}
+            <Layout>
+                <Layout.Section>
+                    <div className='styles_navigation styles_navigation_cart'>
+                        <div className='styles_menu_items'>
+                            <div className={'hs-nav-item ' + nav_mobile + show_nav_mobile}>
+                                {menu_nav}
+                                {menu_nav_close}
                             </div>
                         </div>
-                        {/* <Grid columns={mdDown ? grid_columns_md : grid_columns}>
-                                <div className={'hs-nav-item ' + nav_mobile + show_nav_mobile}>
-                                    {menu_nav}
-                                    {menu_nav_close}
-                                </div>
-                                <Grid.Cell columnSpan={mdDown ? grid_cell2_md : grid_cell2}>
-                                    {children}
-                                </Grid.Cell>
-                            </Grid> */}
-                    </Layout.Section>
-                </Layout>
-                {/* </Frame> */}
-            </Page>;
+                        <div className='styles_content'>
+                            {children}
+                        </div>
+                    </div>
+                </Layout.Section>
+            </Layout>
+            {/* </Frame> */}
+        </Page>;
 
-            const thisPage =   mdDown ? 
-                <Frame
-                  topBar={
-                    <TopBar
-                      background-color="bg-surface"
-                      showNavigationToggle
-                      onNavigationToggle={() => {
+    const thisPage = mdDown ?
+        <Frame
+            topBar={
+                <TopBar
+                    background-color="bg-surface"
+                    showNavigationToggle
+                    onNavigationToggle={() => {
                         mobileNavItem();
-                      }}
-                      secondaryMenu={secondaryMenuMarkup}
-                    />
-                  }
-                >
-                {this_page}
-                </Frame>
-               : this_page;
+                    }}
+                    secondaryMenu={secondaryMenuMarkup}
+                />
+            }
+        >
+            {this_page}
+        </Frame>
+        : this_page;
     return (
         myShop != false ?
             !userold ? <ModalUpdateUser /> : thisPage

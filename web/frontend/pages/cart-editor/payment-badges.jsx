@@ -235,21 +235,19 @@ class Payment_Badges extends Component {
             );
         };
         const loadingComponent = loading ? <Loading /> : null;
-        const skeleton = 
-        <div>
-            {loadingComponent}
-            <ToogleSkeleton />
-        </div>;
-        
+       
         return (
-            dataPaymentBadges === null ? skeleton :
+            <div>
+                {loadingComponent}
+                {dataPaymentBadges === null ? <ToogleSkeleton /> :
                 <BlockStack gap={500}>
                     <Toogle enabled={enabled_payment_badges} title='Payment Badges' description="Trust badges are an important element to add to your arsenal of trust building techniques- they are an element of the certification social proof, and can help you improve your store's conversion rate." stateText='The payment badges are' activeToogle={() => this.changeStateBoolean('enabled_payment_badges')}></Toogle>
                     {banner_payments}
                     {payment_badges}
                     <ThisToast />
                     <SaveBar equals={equals} loading={loading} action={() => this.updatePayment(this.state)} discard={() => { this.discard() }} />
-                </BlockStack>
+                </BlockStack>}
+            </div>
         );
     }
     changeStateBoolean = (thisSate) => {

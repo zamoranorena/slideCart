@@ -28,7 +28,7 @@ import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 
 //import CustomizeUpsells from '@components/CustomizeUpsells'
-import { Toogle, SaveBar, Titles, ToogleSkeleton } from "@components/";
+import { Toogle, SaveBar, Titles, SkeletonSimple } from "@components/";
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 
 
@@ -43,7 +43,7 @@ class Settings extends Component {
       enabled_mobile: null,
       loading: true,
       toast: false,
-      messageError: '',     
+      messageError: '',
       /* contentStatus_cartEmpty: null,
       textStatus_cartEmpty: null,
       isDirty_cart_empty: null, */
@@ -155,7 +155,7 @@ class Settings extends Component {
     return thisEquals;
   };
   render() {
-    const { dataSettings, enabled_desktop, enabled_mobile, loading,toast, messageError } = this.state;
+    const { dataSettings, enabled_desktop, enabled_mobile, loading, toast, messageError } = this.state;
     var equals = this.validateData(this.state);
 
     //console.log(cartEmpty_tabs)
@@ -175,34 +175,28 @@ class Settings extends Component {
         <Loading active={loading} />
         <BlockStack gap={500}>
           <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
-            <ToogleSkeleton />
-            <ToogleSkeleton />
+            <SkeletonSimple />
+            <SkeletonSimple />
           </InlineGrid>
-          <ToogleSkeleton>
-            {/*  <Card>
-              <SkeletonTabs count={4} />
-              <Box padding={500}>
-                <SkeletonBodyText lines={30} />
-              </Box>
-            </Card> */}
-          </ToogleSkeleton>
         </BlockStack>
       </Frame>
     </div>;
+
     const loadingComponent = loading ? <Loading /> : null;
     return (
-      dataSettings !== null ?
-        <div>
+      <div>
+      {loadingComponent}
+      {dataSettings !== null ?
           <BlockStack gap={500}>
-            {loadingComponent}
             <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
               <Toogle enabled={enabled_desktop} title='Desktop' description='Enable or disable the app for desktop users.' stateText='The Slide Cart in desktop is' activeToogle={() => this.changeStateBoolean('enabled_desktop')} />
               <Toogle enabled={enabled_mobile} title='Mobile' description='Enable or disable the app for mobile users.' stateText='The Slide Cart in mobile is' activeToogle={() => this.changeStateBoolean('enabled_mobile')} />
             </InlineGrid>
           </BlockStack>
-          <ThisToast />
-          <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
-        </div> : skeletonCustom
+         : skeletonCustom}
+        <ThisToast />
+        <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
+         </div>
     );
 
   }
@@ -230,6 +224,6 @@ class Settings extends Component {
     this.setState(stateData);
   };
 
-  
+
 }
 export default (Settings);

@@ -22,9 +22,9 @@ import {
     arr_options_font_size,
     arr_options_radius
 } from '@utils/global'
-import { Titles, FieldColor, ToolInfo, Loading } from "@components/";
+import { Titles, FieldColor, ToolInfo } from "@components/";
 
-import { Context } from '@shopify/app-bridge-react';
+import { Context, Loading } from '@shopify/app-bridge-react';
 
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 export class CustomizeUpsells extends Component {
@@ -1090,7 +1090,7 @@ export class CustomizeUpsells extends Component {
                     onClose={!loading ? closeModal : null}
                     title="Customize Upsell and Tiered Free Items"
                 >
-                    <Loading active={loading} />
+                    {loading ? <Loading/> : ''}
                     <Modal.Section>
                         {customize}
                     </Modal.Section>

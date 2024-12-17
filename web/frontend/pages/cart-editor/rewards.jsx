@@ -711,32 +711,32 @@ class Rewards extends Component {
     }
 
     const rewards = <BlockStack gap={500}>
-    <Card>
-      <InlineGrid alignItems="center" gap="400" columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-        <Checkbox
-          label="Enabled Rewards In Cart Empty"
-          checked={rewards_enabled_in_cartEmpty}
-          onChange={() => this.changeStateBoolean("rewards_enabled_in_cartEmpty")}
-        />
-        <Checkbox
+      <Card>
+        <InlineGrid alignItems="center" gap="400" columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+          <Checkbox
+            label="Enabled Rewards In Cart Empty"
+            checked={rewards_enabled_in_cartEmpty}
+            onChange={() => this.changeStateBoolean("rewards_enabled_in_cartEmpty")}
+          />
+          <Checkbox
 
-          label="Calculate based on the total price without discount"
-          checked={rewards_bar_no_dscto}
-          onChange={() => this.changeStateBoolean("rewards_bar_no_dscto")}
-        />
-        <Checkbox
-          label="Amount converted according to active currency in Shopify "
-          checked={rewards_converted_amount}
-          onChange={() => this.changeStateBoolean("rewards_converted_amount")}
-        />
-        <Checkbox
-          label="Show all goals from rewards."
-          checked={rewards_show_goals}
-          onChange={() => this.changeStateBoolean("rewards_show_goals")}
-        />
-      </InlineGrid>
-    </Card>
-    <Card>
+            label="Calculate based on the total price without discount"
+            checked={rewards_bar_no_dscto}
+            onChange={() => this.changeStateBoolean("rewards_bar_no_dscto")}
+          />
+          <Checkbox
+            label="Amount converted according to active currency in Shopify "
+            checked={rewards_converted_amount}
+            onChange={() => this.changeStateBoolean("rewards_converted_amount")}
+          />
+          <Checkbox
+            label="Show all goals from rewards."
+            checked={rewards_show_goals}
+            onChange={() => this.changeStateBoolean("rewards_show_goals")}
+          />
+        </InlineGrid>
+      </Card>
+      <Card>
         <Tabs
           tabs={rewards_tabs}
           selected={rewards_tab_selected}
@@ -744,8 +744,8 @@ class Rewards extends Component {
           fitted
         />
         {rewards_content}
-    </Card>
-  </BlockStack>
+      </Card>
+    </BlockStack>
 
     const ThisToast = () => {
       return (

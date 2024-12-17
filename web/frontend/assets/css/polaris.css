@@ -4282,22 +4282,10 @@ div#content-icon-checkout svg {
 
 .hs-nav-item.hs-show-item {
     display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    z-index: 516;
-    -webkit-flex: 0 0 auto;
-    -moz-box-flex: 0;
-    flex: 0 0 auto;
-    -webkit-align-items: stretch;
-    -moz-box-align: stretch;
-    align-items: stretch;
-    height: 100%;
-    outline: none;
-    -webkit-transform: translateX(0);
-    transform: translateX(0);
-    background: var(--p-color-bg-surface);
+    -webkit-transition: -webkit-transform .3s cubic-bezier(0,0,.42,1);
+    transition: -webkit-transform .3s cubic-bezier(0,0,.42,1);
+    transition: transform .3s cubic-bezier(0,0,.42,1);
+    transition: transform .3s cubic-bezier(0,0,.42,1), -webkit-transform .3s cubic-bezier(0,0,.42,1);
 }
 
 .hs-nav-item.hs-show-item .Polaris-Grid-Cell:first-child {
@@ -4311,7 +4299,22 @@ div#content-icon-checkout svg {
 }
 
 .hs-nav-mobile {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 516;
     display: none;
+    -webkit-flex: 0 0 auto;
+    -moz-box-flex: 0;
+    flex: 0 0 auto;
+    -webkit-align-items: stretch;
+    -moz-box-align: stretch;
+    align-items: stretch;
+    height: 100%;
+    outline: none;
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+    background: var(--p-color-bg-surface);
 }
 
 /* .hs-nav-mobile .Polaris-BlockStack{

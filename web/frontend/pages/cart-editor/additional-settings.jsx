@@ -507,7 +507,7 @@ class AdditionalSettings extends Component {
                     <Select
                         label={<Text variant="bodySm" fontWeight='bold'>PRODUCT IMAGE QUALITY</Text>}
                         options={[
-                            { label: 'Small (fastest load times) ', value: 'x120' },
+                            { label: 'Small (fastest load times)', value: 'x120' },
                             { label: 'Compact', value: 'x160' },
                             { label: 'Medium ', value: 'x240' },
                             { label: 'Large', value: 'x480' },

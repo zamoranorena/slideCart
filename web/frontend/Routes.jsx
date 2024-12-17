@@ -1,4 +1,5 @@
 import { Routes as ReactRouterRoutes, Route } from "react-router-dom";
+import { Layout } from '@shopify/polaris';
 import {AddGridLayout} from "./components/AddGridLayout";
 import {GridLayout} from "./components/GridLayout";
 import {  useState } from "react";
@@ -65,6 +66,25 @@ export default function Routes({ pages }) {
   };
 
   const routeComponents = routes.map(function (page) {
+    const style = {
+      position: 'absolute',
+      left: '0px',
+      width: '100%',
+      /* width: 'calc(100% - 365px)', */
+    };
+
+    const style_preview = {
+      /* minWidth: '365px',
+      maxWidth: '500px', */
+      minWidth: '0px',
+      maxWidth: '0px',
+      position: 'fixed',
+      height: '100%',
+      right: '0',
+      boxShadow: '-4px 0 8px -3px rgba(0, 0, 0, .1)',
+      zIndex: '100',
+    };
+
     var path = page.path, Component =  page.component;
     var element = <Component />
     if(path.indexOf('additional-function')>-1){
@@ -78,7 +98,16 @@ export default function Routes({ pages }) {
     };
 
     if(path.indexOf('cart-editor')>-1){
-      element =  <GridLayout paths={path} gridItems={gridItems} updateGridItems={updateGridItems}><ScrollToTop /><Component updateGridItems={updateGridItems} /></GridLayout>
+      element = 
+        <Layout>
+          <Layout.Section>
+            <div style={style} >
+              <GridLayout paths={path} gridItems={gridItems} updateGridItems={updateGridItems}><ScrollToTop /><Component updateGridItems={updateGridItems} /></GridLayout>
+            </div>
+            <div style={style_preview}>
+            </div>
+          </Layout.Section>
+        </Layout>
     };
     
    return <Route key={path} path={path} element={element} />

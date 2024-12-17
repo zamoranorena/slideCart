@@ -3,7 +3,7 @@ import {
     Toast,
     BlockStack,
 } from '@shopify/polaris';
-import { Toogle, SaveBar, ToogleSkeleton } from "@components/";
+import { Toogle, SaveBar, SkeletonSimple } from "@components/";
 
 import { Icon } from '@shopify/polaris';
 import { Redirect } from '@shopify/app-bridge/actions';
@@ -152,7 +152,7 @@ class Integratios extends Component {
 
         var Object_rows = [];
         for (var i = 0; i < 7; i++) {
-            Object_rows.push(<ToogleSkeleton key={i} />);
+            Object_rows.push(<SkeletonSimple key={i} />);
         }
 
         const SkeletonBody = <BlockStack gap={500}>{Object_rows}</BlockStack>

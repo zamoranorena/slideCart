@@ -17,7 +17,7 @@ import {
     hsbToHex,
     rgbToHsb
 } from '@shopify/polaris';
-import { DeleteIcon} from '@shopify/polaris-icons';
+import { DeleteIcon } from '@shopify/polaris-icons';
 
 import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
@@ -339,63 +339,63 @@ class Announcement extends Component {
         const announcement_settings =
             <FormLayout>
                 <BlockStack gap={400}>
-                <FieldColor
-                    labelColor={<Titles text='Announcement Font Color' />}
-                    textValue={announcement_font_color_hex || '000000'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_font_color_hex", "announcement_font_color") }}
-                    activePop={popoverAnnouncementFont}
-                    activadorPop={activator_announcement_font}
-                    closePop={() => { this.handlePopover("popoverAnnouncementFont", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "announcement_font_color", "announcement_font_color_hex") }}
-                    colorPicker={announcement_font_color}
-                />
-                <FieldColor
-                    labelColor={<Titles text='Announcement Background Color' />}
-                    textValue={announcement_background_color_hex || '000000'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_background_color_hex", "announcement_background_color") }}
-                    activePop={popoverAnnouncementBackground}
-                    activadorPop={activator_announcement_background}
-                    closePop={() => { this.handlePopover("popoverAnnouncementBackground", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "announcement_background_color", "announcement_background_color_hex") }}
-                    colorPicker={announcement_background_color}
-                />
-                <FieldColor
-                    labelColor={<Titles text='Announcement Border Color' />}
-                    textValue={announcement_border_color_hex || '000000'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_border_color_hex", "announcement_border_color") }}
-                    activePop={popoverAnnouncementBorder}
-                    activadorPop={activator_announcement_border}
-                    closePop={() => { this.handlePopover("popoverAnnouncementBorder", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "announcement_border_color", "announcement_border_color_hex") }}
-                    colorPicker={announcement_border_color}
-                />
+                    <FieldColor
+                        labelColor={<Titles text='Announcement Font Color' />}
+                        textValue={announcement_font_color_hex || '000000'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_font_color_hex", "announcement_font_color") }}
+                        activePop={popoverAnnouncementFont}
+                        activadorPop={activator_announcement_font}
+                        closePop={() => { this.handlePopover("popoverAnnouncementFont", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "announcement_font_color", "announcement_font_color_hex") }}
+                        colorPicker={announcement_font_color}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Announcement Background Color' />}
+                        textValue={announcement_background_color_hex || '000000'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_background_color_hex", "announcement_background_color") }}
+                        activePop={popoverAnnouncementBackground}
+                        activadorPop={activator_announcement_background}
+                        closePop={() => { this.handlePopover("popoverAnnouncementBackground", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "announcement_background_color", "announcement_background_color_hex") }}
+                        colorPicker={announcement_background_color}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Announcement Border Color' />}
+                        textValue={announcement_border_color_hex || '000000'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_border_color_hex", "announcement_border_color") }}
+                        activePop={popoverAnnouncementBorder}
+                        activadorPop={activator_announcement_border}
+                        closePop={() => { this.handlePopover("popoverAnnouncementBorder", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "announcement_border_color", "announcement_border_color_hex") }}
+                        colorPicker={announcement_border_color}
+                    />
 
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                    <Select
-                        label='Font Size'
-                        options={options_font_size}
-                        value={announcement_font_size}
-                        onChange={(value) => { this.handleChange(value, "announcement_font_size") }}
-                    />
-                    <Select
-                        label='Text transform'
-                        options={options_transform}
-                        value={announcement_text_transform}
-                        onChange={(value) => { this.handleChange(value, "announcement_text_transform") }}
-                    />
-                    <Select
-                        label='Font weight'
-                        options={options_weight}
-                        value={announcement_font_weight}
-                        onChange={(value) => { this.handleChange(value, "announcement_font_weight") }}
-                    />
-                    <Select
-                        label='Text Alignment'
-                        options={options_alignment}
-                        value={announcement_text_alignment}
-                        onChange={(value) => { this.handleChange(value, "announcement_text_alignment") }}
-                    />
-                </InlineGrid>
+                    <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+                        <Select
+                            label='Font Size'
+                            options={options_font_size}
+                            value={announcement_font_size}
+                            onChange={(value) => { this.handleChange(value, "announcement_font_size") }}
+                        />
+                        <Select
+                            label='Text transform'
+                            options={options_transform}
+                            value={announcement_text_transform}
+                            onChange={(value) => { this.handleChange(value, "announcement_text_transform") }}
+                        />
+                        <Select
+                            label='Font weight'
+                            options={options_weight}
+                            value={announcement_font_weight}
+                            onChange={(value) => { this.handleChange(value, "announcement_font_weight") }}
+                        />
+                        <Select
+                            label='Text Alignment'
+                            options={options_alignment}
+                            value={announcement_text_alignment}
+                            onChange={(value) => { this.handleChange(value, "announcement_text_alignment") }}
+                        />
+                    </InlineGrid>
                 </BlockStack>
             </FormLayout>;
 
@@ -439,12 +439,12 @@ class Announcement extends Component {
         const announcement_content = !announcement_tabs_selected ? announcement_tiers_full : announcement_settings;
 
         const announcement = <Card>
-                <FormLayout>
-                    <Tabs tabs={announcement_tabs} selected={announcement_tabs_selected} onSelect={this.handleTabChange} fitted >
-                        {announcement_content}
-                    </Tabs>
-                </FormLayout>
-            </Card>;
+            <FormLayout>
+                <Tabs tabs={announcement_tabs} selected={announcement_tabs_selected} onSelect={this.handleTabChange} fitted >
+                    {announcement_content}
+                </Tabs>
+            </FormLayout>
+        </Card>;
 
         const ThisToast = () => {
             return (
@@ -460,14 +460,12 @@ class Announcement extends Component {
             <div>
                 {loadingComponent}
                 {dataAnnouncement !== null ?
-
-                        
-                        <BlockStack gap={500}>
-                            <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle>
-                            {announcement}
-                            <SaveBar equals={equals} loading={loading} action={() => this.updateAnnouncement(this.state)} discard={() => { this.discard(dataAnnouncement) }} />
-                            <ThisToast />
-                        </BlockStack>
+                    <BlockStack gap={500}>
+                        <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle>
+                        {announcement}
+                        <SaveBar equals={equals} loading={loading} action={() => this.updateAnnouncement(this.state)} discard={() => { this.discard(dataAnnouncement) }} />
+                        <ThisToast />
+                    </BlockStack>
                     : <ToogleSkeleton />}
             </div>
         )
@@ -484,7 +482,7 @@ class Announcement extends Component {
         this.setState(stateData);
     };
     handleChanges(value, indice, state) {
-        if(value.length > 250){
+        if (value.length > 250) {
             return false;
         };
         let values_announcement_tier = [...this.state.values_announcement_tier];

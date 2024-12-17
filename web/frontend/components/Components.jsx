@@ -9,6 +9,7 @@ import {
   TextField,
   Popover,
   ColorPicker,
+  Frame,
   Collapsible,
   Tooltip,
   Icon,
@@ -18,7 +19,7 @@ import {
 } from "@shopify/polaris";
 import { InfoIcon } from '@shopify/polaris-icons';
 import Editor from '@monaco-editor/react';
-import { ContextualSaveBar } from '@shopify/app-bridge-react';
+import { ContextualSaveBar, Loading as LoadParent } from '@shopify/app-bridge-react';
 export const ButtonColor = ({ height = '100%', width = '100%', background = '#000000', border = "1px solid #898f94", borderRadius = "0.3rem", id='', click=null}) => {
   return (
     <Button onClick={click} id={id}>
@@ -232,7 +233,30 @@ export function FieldColor({
 
 };
 
-export function ToogleSkeleton({ children }) {
+export function ToogleSkeleton() {
+  return (
+    <div>
+        <BlockStack gap={500}>
+          <SkeletonSimple />
+        </BlockStack>
+        <Card roundedAbove="xs">
+          <Box width="100%">
+            <BlockStack gap={{ xs: '500', sm: '600' }}>
+              <SkeletonDisplayText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+              <SkeletonBodyText lines={1} />
+            </BlockStack>
+          </Box>
+        </Card></div>)
+};
+
+export function SkeletonSimple({ children }) {
   return (
     <Box paddingBlockEnd="400">
       <BlockStack gap="500">

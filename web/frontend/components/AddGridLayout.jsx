@@ -152,7 +152,7 @@ export function AddGridLayout({ children, paths = 0, gridItemsAddOns, updateGrid
         prefix: <Icon source={MarketsIcon} />,
         //suffix: suffix(activeCartBar),
         suffix: gridItemsAddOns.cart_bar ? <div className="active-dot"></div> : <div className="deactive-dot"></div>,
-        active: activeCartBar,
+        active: gridItemsAddOns.paths == "/additional-functions/cart-bar" ? true : false,
         onAction: () => redirectToPage("/additional-functions/cart-bar")
     };
     if (!newUser) {

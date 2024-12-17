@@ -16,7 +16,7 @@ import {
   TextField,
   Toast,
   SkeletonBodyText,
-  SkeletonTabs,
+  SkeletonDisplayText,
   BlockStack,
   InlineGrid,
   InlineStack,
@@ -38,8 +38,6 @@ import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
-
-//import CustomizeUpsells from '@components/CustomizeUpsells'
 import { CustomizeUpsells, Toogle, SaveBar, Titles, FieldColor, ToolInfo, ToogleSkeleton } from "@components/";
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 
@@ -49,7 +47,7 @@ class CartEmpty extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dataSettings: null,
+      dataCartEmpty: null,
       dataCustomize: null,
 
       popoverCEUpselHeadingBK: 0,
@@ -125,9 +123,6 @@ class CartEmpty extends Component {
       cart_empty_upsell_heading_bold_font: null,
       cart_empty_upsell_product_url: null,
       cart_empty_upsell_max_item: '',
-      /* contentStatus_cartEmpty: null,
-      textStatus_cartEmpty: null,
-      isDirty_cart_empty: null, */
     }
   };
 
@@ -136,7 +131,7 @@ class CartEmpty extends Component {
   };
 
   discard = () => {
-    var c = this.state.dataSettings;
+    var c = this.state.dataCartEmpty;
     this.originalData(1, c);
   };
 
@@ -144,12 +139,11 @@ class CartEmpty extends Component {
     var myData = {};
     if (!identify) {
       myData = {
-        dataSettings: data
+        dataCartEmpty: data
       };
     };
-    const settings = data.settings;
-    const cartEmpty = data.cart_empty;
 
+    const cartEmpty = data.cart_empty;
     var stateData = {
       messageError: '',
       loading: false,
@@ -219,7 +213,7 @@ class CartEmpty extends Component {
     this.setState(stateData)
   };
 
-  getSettings = async () => {
+  getCartEmpty = async () => {
     const app = this.context;
     const data = await makeGetRequest('/api/get_cart_empty', app);
     if (data && data.cart_empty !== undefined && data.cart_empty !== null) {
@@ -300,12 +294,12 @@ class CartEmpty extends Component {
       if (updateSettings.error && updateSettings.message) {
         messageError = updateSettings.message;
       };
-      await this.getSettings();
+      await this.getCartEmpty();
       this.setState({ toast: true, messageError: messageError })
     }
   };
   componentDidMount() {
-    this.getSettings();
+    this.getCartEmpty();
   };
 
   onChanges = (state, newValue) => {
@@ -361,11 +355,10 @@ class CartEmpty extends Component {
       cart_empty_upsell_max_item: props.cart_empty_upsell_max_item.toString(),
     };
 
-    const myDataSettings = this.state.dataSettings;
-    if (myDataSettings !== null) {
-      const settings = myDataSettings.settings;
-      const cart_empty = myDataSettings.cart_empty;
-      const dataSettings = {
+    const myDataCartEmpty = this.state.dataCartEmpty;
+    if (myDataCartEmpty !== null) {
+      const cart_empty = myDataCartEmpty.cart_empty;
+      const dataCartEmpty = {
         enabled_cart_empty: !!+cart_empty.enabled_cart_empty,
         cart_empty_title: cart_empty.cart_empty_title,
         cart_empty_title_font_size: cart_empty.cart_empty_title_font_size,//NEW
@@ -412,7 +405,7 @@ class CartEmpty extends Component {
         cart_empty_upsell_max_item: cart_empty.cart_empty_upsell_max_item.toString(),
       }
       const equals = (a, b) => JSON.stringify(a) === JSON.stringify(b);
-      const a = dataSettings;
+      const a = dataCartEmpty;
       const b = stateData;
       if (!equals(a, b)) {
         thisEquals = false;
@@ -422,7 +415,7 @@ class CartEmpty extends Component {
   };
   render() {
     const buttonCustomize = <Button /* fullWidth */ variant="primary" tone="success" onClick={() => { this.functionModal() }}>Customize</Button>
-    const { dataSettings, loading,
+    const { dataCartEmpty, loading,
       toast, messageError, enabled_cart_empty,
       cart_empty_tabs_selected, cart_empty_title,
       cart_empty_title_font_size, cart_empty_title_text_transform,
@@ -495,10 +488,8 @@ class CartEmpty extends Component {
         panelID: "cartEmptyUpsell-page-fitted"
       }
       cartEmpty_tabs.push(upsell_empty);
-      //cartEmpty_tabs.splice(0, 0, upsell_empty);
     };
 
-    //console.log(cartEmpty_tabs)
     const ThisToast = () => {
       return (
         toast ?
@@ -527,7 +518,6 @@ class CartEmpty extends Component {
       </Button>
     );
 
-    //const hexcolor_cartEmpty_upsell_headingFont = hsbToHex(cart_empty_upsell_text_color);
     const activator_cartEmpty_upsell_headingFont = (
       <Button onClick={() => { this.handlePopover("popoverCEUpselHeadingFont") }} id='cartEmpty6'>
         <ButtonColor background={"#" + cart_empty_upsell_text_color_hex} />
@@ -757,6 +747,7 @@ class CartEmpty extends Component {
         <ButtonColor background={"#" + cart_empty_button_font_color_hex} />
       </Button>
     );
+
     const activator_cartEmpty_buttonBK = (
       <Button onClick={() => { this.handlePopover("popoverCEButtonBKColor") }} id='cartEmpty4'>
         <ButtonColor background={"#" + cart_empty_button_background_color_hex} />
@@ -827,6 +818,7 @@ class CartEmpty extends Component {
         </BlockStack>
       </FormLayout>
     );
+
     var cartEmpty_conten = '';
     switch (cart_empty_tabs_selected) {
       case 0:
@@ -877,33 +869,22 @@ class CartEmpty extends Component {
       onCancel={() => this.setState({ resourcePickerUpsellEmpty: false })}
     /> : null;
 
-    const skeletonCustom = <div>
-      <Frame>
-        <Loading active={loading} />
-        <BlockStack gap={500}>
-          <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
-            <ToogleSkeleton />
-            <ToogleSkeleton />
-          </InlineGrid>
-          <ToogleSkeleton>
-          </ToogleSkeleton>
-        </BlockStack>
-      </Frame>
-    </div>;
     const loadingComponent = loading ? <Loading /> : null;
+    
     return (
-      dataSettings !== null ?
-        <div>
+      <div>
+        {loadingComponent}
+        {dataCartEmpty !== null ?
           <BlockStack gap={500}>
-            {loadingComponent}
             <Toogle enabled={enabled_cart_empty} title='Cart Empty' description='Configuration when cart is empty.' stateText='The Cart Empty is' activeToogle={() => this.changeStateBoolean('enabled_cart_empty')}>{section_cart_empty}
             </Toogle>
           </BlockStack>
-          <ThisToast />
-          <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
-          {resourcePickerUpsell}
-          {activeModalCustomize ? <CustomizeUpsells active={activeModalCustomize} closeModal={() => { this.setState({ activeModalCustomize: 0 }) }} /> : null}
-        </div> : skeletonCustom
+          : <ToogleSkeleton />}
+        <ThisToast />
+        <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
+        {resourcePickerUpsell}
+        {activeModalCustomize ? <CustomizeUpsells active={activeModalCustomize} closeModal={() => { this.setState({ activeModalCustomize: 0 }) }} /> : null}
+      </div>
     );
 
   }

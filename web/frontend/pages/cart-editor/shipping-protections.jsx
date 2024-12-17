@@ -290,6 +290,10 @@ class ShippingProtections extends Component {
 
     updateShippingProtection = async (props) => {
         if (props) {
+            if (props.enabled_shipping_protection == 1 && props.sp_featured_product_shopify_id === "") {
+                this.setState({ toast: true, messageError: 'Select product' })
+                return false;
+            }
             this.setState({
                 loading: true
             });
@@ -640,29 +644,28 @@ class ShippingProtections extends Component {
             </Card>;
             
         const content_shipping_protection =
-            <Collapsible
+            /* <Collapsible
                 open={enabled_shipping_protection}
                 id="basic-collapsible0"
                 transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
                 expandOnPrint
-            >
+            > */
                 <BlockStack gap={300}>
                     <Card>
                         <BlockStack gap={500}>
-                            {/* <Text as="h1" variant="headingMd">Shipping Protection Properties</Text> */}
                             <Text as="h1" variant="headingMd">Product</Text>
                             {content_featured_product}
                         </BlockStack>
                     </Card>
                 </BlockStack>
-            </Collapsible>;
+            /* </Collapsible> */;
 
-        const content_shipping_protection1 = <Collapsible
+        const content_shipping_protection1 = /* <Collapsible
             open={sp_featured_product_shopify_id && enabled_shipping_protection}
             id="basic-collapsible2"
             transition={{ duration: '500ms', timingFunction: 'ease-in-out' }}
             expandOnPrint
-        >
+        > */
             <BlockStack gap={300}>
                 {title_properties}
                 {description_properties}
@@ -671,7 +674,7 @@ class ShippingProtections extends Component {
                 {toggle_properties}
                 {resourcePickerShipping}
             </BlockStack>
-        </Collapsible>
+        /* </Collapsible> */
 
         const ThisToast = () => {
             return (
