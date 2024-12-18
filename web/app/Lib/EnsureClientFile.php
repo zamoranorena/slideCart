@@ -112,7 +112,7 @@ class EnsureClientFile
                             $cart_animator,
                             $coupon_bar,
                         )->where("shop_url", $shop)->first();
-
+                        Log::debug("CLIENT_FILE: " . json_encode($arr_data, JSON_PRETTY_PRINT));
                         $dashboard = $arr_data->Dashboard;
                         $settings = $arr_data->Settings;
                         $additional_settings =  $arr_data->AdditionalSettings;
@@ -206,7 +206,7 @@ class EnsureClientFile
                         File::put('clients/' . md5($shop) . '.js', $content_file);
                     } else {
                         Storage::disk('frontend')->put(md5($shop) . '.js', $content_file);
-                    }
+                    };
                 };
             };
         } catch (\Exception $th) {

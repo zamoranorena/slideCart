@@ -1,6 +1,8 @@
 import { Component } from "react";
 import {
     Card,
+    ButtonGroup,
+    Collapsible,
     FormLayout,
     Box,
     Tabs,
@@ -18,10 +20,13 @@ import {
     rgbToHsb
 } from '@shopify/polaris';
 import { DeleteIcon } from '@shopify/polaris-icons';
+import {
+    ChevronDownIcon, ChevronUpIcon
+} from '@shopify/polaris-icons';
 
 import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -30,7 +35,8 @@ import {
     arr_options_font_size,
     arr_options_weight,
     arr_options_transform,
-    arr_options_alignment
+    arr_options_alignment,
+    arr_options_upsell_autoplay_time,
 } from '@utils/global'
 
 class Announcement extends Component {
@@ -41,7 +47,8 @@ class Announcement extends Component {
             dataAnnouncement: null,
             loading: true,
             announcement_tabs_selected: 0,
-
+            announcement_collapsible_tiers: 1,
+            announcement_collapsible_settings: 1,
             enabled_announcement: null,
             announcement_background_color: {
                 hue: null,
@@ -60,6 +67,7 @@ class Announcement extends Component {
                 saturation: null,
                 brightness: null,
             },
+            announcement_autoplay_time: null,
             announcement_font_color_hex: null,
             announcement_font_size: null,
             announcement_text_transform: null,
@@ -69,6 +77,7 @@ class Announcement extends Component {
             options_weight: arr_options_weight,
             options_transform: arr_options_transform,
             options_alignment: arr_options_alignment,
+            options_upsell_autoplay_time: arr_options_upsell_autoplay_time,
             values_announcement_tier: [],
         };
     };
@@ -124,6 +133,7 @@ class Announcement extends Component {
             toast: false,
 
             enabled_announcement: announcement.enabled_announcement,
+            announcement_autoplay_time: announcement.announcement_autoplay_time,
             announcement_background_color: {
                 hue: announcement.announcement_background_color_h,
                 saturation: announcement.announcement_background_color_s,
@@ -181,6 +191,7 @@ class Announcement extends Component {
             const requestBody = {
                 update_announcement_tier: !this.equalsTiers(),
                 enabled_announcement: props.enabled_announcement,
+                announcement_autoplay_time: props.announcement_autoplay_time,
                 announcement_background_color_h: props.announcement_background_color.hue,
                 announcement_background_color_s: props.announcement_background_color.saturation,
                 announcement_background_color_b: props.announcement_background_color.brightness,
@@ -220,6 +231,7 @@ class Announcement extends Component {
             if (props) {
                 const stateData = {
                     enabled_announcement: +props.enabled_announcement,
+                    announcement_autoplay_time: props.announcement_autoplay_time,
                     announcement_background_color_h: props.announcement_background_color.hue,
                     announcement_background_color_s: props.announcement_background_color.saturation,
                     announcement_background_color_b: props.announcement_background_color.brightness,
@@ -240,6 +252,7 @@ class Announcement extends Component {
                     const c = dataAnnouncement.announcement;
                     const data_announcement = {
                         enabled_announcement: +c.enabled_announcement,
+                        announcement_autoplay_time: c.announcement_autoplay_time,
                         announcement_background_color_h: c.announcement_background_color_h,
                         announcement_background_color_s: c.announcement_background_color_s,
                         announcement_background_color_b: c.announcement_background_color_b,
@@ -292,7 +305,10 @@ class Announcement extends Component {
             popoverAnnouncementFont,
             announcement_tabs_selected,
             dataAnnouncement,
+            announcement_collapsible_tiers,
+            announcement_collapsible_settings,
             enabled_announcement,
+            announcement_autoplay_time,
             announcement_background_color,
             announcement_background_color_hex,
             announcement_border_color_hex,
@@ -307,12 +323,13 @@ class Announcement extends Component {
             options_weight,
             options_transform,
             options_alignment,
+            options_upsell_autoplay_time,
             values_announcement_tier
         } = this.state;
 
         var equals = this.validateData(this.state);
 
-        const announcement_tabs = [
+        /* const announcement_tabs = [
             {
                 id: "Announcement Tiers",
                 content: "Announcement Tiers",
@@ -325,7 +342,7 @@ class Announcement extends Component {
                 accessibilityLabel: "Announcement Settings",
                 panelID: "settings-page-fitted"
             }
-        ];
+        ]; */
 
         const activator_announcement_background =
             <ButtonColor click={() => { this.handlePopover("popoverAnnouncementBackground") }} id='announcement_button_color' background={hsbToHex(announcement_background_color)} />;
@@ -338,39 +355,46 @@ class Announcement extends Component {
 
         const announcement_settings =
             <FormLayout>
-                <BlockStack gap={400}>
-                    <FieldColor
-                        labelColor={<Titles text='Announcement Font Color' />}
-                        textValue={announcement_font_color_hex || '000000'}
-                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_font_color_hex", "announcement_font_color") }}
-                        activePop={popoverAnnouncementFont}
-                        activadorPop={activator_announcement_font}
-                        closePop={() => { this.handlePopover("popoverAnnouncementFont", 0) }}
-                        changeColorPicker={(value) => { this.handleColors(value, "announcement_font_color", "announcement_font_color_hex") }}
-                        colorPicker={announcement_font_color}
-                    />
-                    <FieldColor
-                        labelColor={<Titles text='Announcement Background Color' />}
-                        textValue={announcement_background_color_hex || '000000'}
-                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_background_color_hex", "announcement_background_color") }}
-                        activePop={popoverAnnouncementBackground}
-                        activadorPop={activator_announcement_background}
-                        closePop={() => { this.handlePopover("popoverAnnouncementBackground", 0) }}
-                        changeColorPicker={(value) => { this.handleColors(value, "announcement_background_color", "announcement_background_color_hex") }}
-                        colorPicker={announcement_background_color}
-                    />
-                    <FieldColor
-                        labelColor={<Titles text='Announcement Border Color' />}
-                        textValue={announcement_border_color_hex || '000000'}
-                        changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_border_color_hex", "announcement_border_color") }}
-                        activePop={popoverAnnouncementBorder}
-                        activadorPop={activator_announcement_border}
-                        closePop={() => { this.handlePopover("popoverAnnouncementBorder", 0) }}
-                        changeColorPicker={(value) => { this.handleColors(value, "announcement_border_color", "announcement_border_color_hex") }}
-                        colorPicker={announcement_border_color}
-                    />
+                <Box paddingBlockStart='300' paddingBlockEnd='200' width="100%">
+                    <BlockStack gap={300}>
+                        <Select
+                            label="Announcement AutoPlay Time"
+                            helpText="If 0 is selected, autoplay does not start."
+                            options={options_upsell_autoplay_time}
+                            value={parseInt(announcement_autoplay_time)}
+                            onChange={(value) => { this.handleChange(value, "announcement_autoplay_time") }}
+                        />
+                        <FieldColor
+                            labelColor={<Titles text='Announcement Font Color' />}
+                            textValue={announcement_font_color_hex || '000000'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_font_color_hex", "announcement_font_color") }}
+                            activePop={popoverAnnouncementFont}
+                            activadorPop={activator_announcement_font}
+                            closePop={() => { this.handlePopover("popoverAnnouncementFont", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "announcement_font_color", "announcement_font_color_hex") }}
+                            colorPicker={announcement_font_color}
+                        />
+                        <FieldColor
+                            labelColor={<Titles text='Announcement Background Color' />}
+                            textValue={announcement_background_color_hex || '000000'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_background_color_hex", "announcement_background_color") }}
+                            activePop={popoverAnnouncementBackground}
+                            activadorPop={activator_announcement_background}
+                            closePop={() => { this.handlePopover("popoverAnnouncementBackground", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "announcement_background_color", "announcement_background_color_hex") }}
+                            colorPicker={announcement_background_color}
+                        />
+                        <FieldColor
+                            labelColor={<Titles text='Announcement Border Color' />}
+                            textValue={announcement_border_color_hex || '000000'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "announcement_border_color_hex", "announcement_border_color") }}
+                            activePop={popoverAnnouncementBorder}
+                            activadorPop={activator_announcement_border}
+                            closePop={() => { this.handlePopover("popoverAnnouncementBorder", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "announcement_border_color", "announcement_border_color_hex") }}
+                            colorPicker={announcement_border_color}
+                        />
 
-                    <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
                         <Select
                             label='Font Size'
                             options={options_font_size}
@@ -395,15 +419,15 @@ class Announcement extends Component {
                             value={announcement_text_alignment}
                             onChange={(value) => { this.handleChange(value, "announcement_text_alignment") }}
                         />
-                    </InlineGrid>
-                </BlockStack>
+                    </BlockStack>
+                </Box>
             </FormLayout>;
 
         const announcement_tiers = (
             typeof dataAnnouncement !== null && values_announcement_tier.length > 0 ?
                 values_announcement_tier.map((el, i) => (
                     <FormLayout key={i}>
-                        <Box paddingBlockStart='300' paddingBlockEnd='200' width="100%">
+                        <Box paddingBlockStart='300' paddingBlockEnd='100' width="100%">
                             <InlineStack
                                 gap="1200"
                                 align="space-between"
@@ -423,7 +447,7 @@ class Announcement extends Component {
                                 onChange={(value) => this.handleChanges(value, i, "announcement_text")}
                             />
                         </Box>
-                        <Divider borderColor='border-hover' />
+                        {values_announcement_tier.length > 1 && i != (values_announcement_tier.length - 1) ? <Divider borderColor='border-hover' /> : ''}
                     </FormLayout>
 
                 )) : null
@@ -436,15 +460,65 @@ class Announcement extends Component {
             </InlineStack>
         </FormLayout>;
 
-        const announcement_content = !announcement_tabs_selected ? announcement_tiers_full : announcement_settings;
+        /*const announcement_content = !announcement_tabs_selected ? announcement_tiers_full : announcement_settings;
 
-        const announcement = <Card>
-            <FormLayout>
+         const announcement = <Card>
+            
                 <Tabs tabs={announcement_tabs} selected={announcement_tabs_selected} onSelect={this.handleTabChange} fitted >
                     {announcement_content}
                 </Tabs>
             </FormLayout>
-        </Card>;
+        </Card>; */
+
+        const announcement =
+            <FormLayout>
+                {/* <Card roundedAbove="sm">
+                    <Box minWidth="fit-content">
+                        <InlineGrid columns="1fr auto">
+                            <Text as="h2" variant="headingSm">
+                                Announcement Tiers
+                            </Text>
+                            <Button onClick={() => { this.setState({ announcement_collapsible_tiers: !announcement_collapsible_tiers }) }} icon={<Icon
+                                source={announcement_collapsible_tiers ? ChevronUpIcon : ChevronDownIcon}
+                                color="base" />} variant="plain" ></Button>
+                        </InlineGrid>
+                    </Box>
+                    <Collapsible
+                        open={announcement_collapsible_tiers}
+                        id="basic-collapsible"
+                        transition={{ duration: '300ms', timingFunction: 'ease-in-out' }}
+                        expandOnPrint
+                    >
+                        
+                    </Collapsible>
+                </Card> 
+                <Card roundedAbove="sm">
+                    <Box minWidth="fit-content">
+                        <InlineGrid columns="1fr auto">
+                            <Text as="h2" variant="headingSm">
+                                Announcement Settings
+                            </Text>
+                            <Button onClick={() => { this.setState({ announcement_collapsible_settings: !announcement_collapsible_settings }) }} icon={<Icon
+                                source={announcement_collapsible_settings ? ChevronUpIcon : ChevronDownIcon}
+                                color="base" />} variant="plain" ></Button>
+                        </InlineGrid>
+                    </Box>
+                    <Collapsible
+                        open={announcement_collapsible_settings}
+                        id="basic-collapsible"
+                        transition={{ duration: '300ms', timingFunction: 'ease-in-out' }}
+                        expandOnPrint
+                    >
+                        {announcement_settings}
+                    </Collapsible>
+                </Card>*/}
+                <Section title={'Announcement Tiers'} this_section={() => { this.setState({ announcement_collapsible_tiers: !announcement_collapsible_tiers }) }} status_source={announcement_collapsible_tiers}>
+                    {announcement_tiers_full}
+                </Section>
+                <Section title={'Announcement Settings'} this_section={() => { this.setState({ announcement_collapsible_settings: !announcement_collapsible_settings }) }} status_source={announcement_collapsible_settings}>
+                    {announcement_settings}
+                </Section>
+            </FormLayout>;
 
         const ThisToast = () => {
             return (
@@ -489,9 +563,9 @@ class Announcement extends Component {
         values_announcement_tier[indice][state] = value;
         this.setState({ values_announcement_tier });
     };
-    handleTabChange = selectedTabIndex => {
+   /*  handleTabChange = selectedTabIndex => {
         this.setState({ announcement_tabs_selected: selectedTabIndex });
-    };
+    }; */
     handlePopover = (popover, val = 1) => {
         this.setState({ [popover]: val })
     };

@@ -235,6 +235,7 @@ class Customer extends Model
             'announcement_text_transform',
             'announcement_font_weight',
             'announcement_text_alignment',
+            'announcement_autoplay_time',
         ]);
     }
 

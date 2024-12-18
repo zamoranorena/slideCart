@@ -1,6 +1,7 @@
 import { Component } from "react";
 import {
     Card,
+    Box,
     InlineGrid,
     Checkbox,
     Text,
@@ -13,7 +14,7 @@ import {
     InlineStack
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -37,6 +38,8 @@ class CartNote extends Component {
             loading: true,
             toast: false,
             dataCartNote: null,
+            section_settings_cart_note: 1,
+            section_additional_cart_note: 1,
             enabled_cart_note: null,
             cart_note_show_icon: null,
             cart_note_show_ini: null,
@@ -259,6 +262,8 @@ class CartNote extends Component {
             loading,
             toast,
             dataCartNote,
+            section_settings_cart_note,
+            section_additional_cart_note,
             enabled_cart_note,
             cart_note_show_ini,
             cart_note_heading,
@@ -291,9 +296,8 @@ class CartNote extends Component {
 
         const content_cart_note = (
             <BlockStack gap={500}>
-                <Card>
-                    <BlockStack gap={200}>
-                        <Text as="h1" variant="headingMd">Cart Note Properties</Text>
+                <Section title={'Cart Note Properties'} this_section={() => { this.setState({ section_settings_cart_note: !section_settings_cart_note }) }} status_source={section_settings_cart_note}>
+                    <Box paddingBlockStart='300' paddingBlockEnd='100' width="100%">
                         <BlockStack gap={400}>
                             <Checkbox
                                 label={<Titles text="Select if you want the note to appear open when you start the cart." />}
@@ -347,11 +351,10 @@ class CartNote extends Component {
                                 />
                             </InlineGrid>
                         </BlockStack>
-                    </BlockStack>
-                </Card>
-                <Card>
-                    <BlockStack gap={200}>
-                        <Text as="h1" variant="headingMd">Additional Cart Note Static</Text>
+                    </Box>
+                </Section>
+                <Section title={'Additional Cart Note Static'} this_section={() => { this.setState({ section_additional_cart_note: !section_additional_cart_note }) }} status_source={section_additional_cart_note}>
+                    <Box paddingBlockStart='300' paddingBlockEnd='100' width="100%">
                         <BlockStack gap={400}>
                             <InlineStack align="center">
                                 <Checkbox
@@ -390,8 +393,8 @@ class CartNote extends Component {
                                 />
                             </InlineGrid>
                         </BlockStack>
-                    </BlockStack>
-                </Card>
+                    </Box>
+                </Section>
             </BlockStack>
         );
         const ThisToast = () => {

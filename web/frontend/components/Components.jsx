@@ -3,6 +3,7 @@ import {
   Button,
   Text,
   BlockStack,
+  InlineGrid,
   Box,
   Badge,
   InlineStack,
@@ -17,7 +18,7 @@ import {
   SkeletonBodyText,
   Loading as Load
 } from "@shopify/polaris";
-import { InfoIcon } from '@shopify/polaris-icons';
+import { InfoIcon, ChevronUpIcon ,ChevronDownIcon } from '@shopify/polaris-icons';
 import Editor from '@monaco-editor/react';
 import { ContextualSaveBar, Loading as LoadParent } from '@shopify/app-bridge-react';
 export const ButtonColor = ({ height = '100%', width = '100%', background = '#000000', border = "1px solid #898f94", borderRadius = "0.3rem", id='', click=null}) => {
@@ -231,6 +232,30 @@ export function FieldColor({
     />
   );
 
+};
+
+export function Section({children = '', title= '', this_section = null, status_source = true}) {
+  return (
+    <Card roundedAbove="sm">
+      <Box minWidth="fit-content">
+        <InlineGrid columns="1fr auto">
+          <Text as="h2" variant="headingSm">
+            {title}
+          </Text>
+          <Button onClick={this_section} icon={<Icon
+            source={status_source ? ChevronUpIcon : ChevronDownIcon}
+            color="base" />} variant="plain" ></Button>
+        </InlineGrid>
+      </Box>
+      <Collapsible
+        open={status_source}
+        id="basic-collapsible"
+        transition={{ duration: '300ms', timingFunction: 'ease-in-out' }}
+        expandOnPrint
+      >
+        {children}
+      </Collapsible>
+    </Card>)
 };
 
 export function ToogleSkeleton() {

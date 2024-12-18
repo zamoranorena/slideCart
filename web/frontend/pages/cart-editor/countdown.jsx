@@ -451,9 +451,12 @@ class Countdown extends Component {
         );
     }
     changeStateBoolean = (thisSate) => {
+
         var stateNow = this.state[thisSate];
         this.setState({ [thisSate]: !stateNow });
-        this.props.updateGridItems({ countdown: !stateNow });
+        if(thisSate === 'enabled_countdown'){
+            this.props.updateGridItems({ countdown: !stateNow });
+        };
     };
     handlePopover = (popover, val = 1) => {
         this.setState({ [popover]: val })

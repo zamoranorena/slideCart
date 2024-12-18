@@ -75,6 +75,7 @@ class AnnouncementController extends Controller
                         'announcement_text_transform' => $request->announcement_text_transform,
                         'announcement_font_weight' => $request->announcement_font_weight,
                         'announcement_text_alignment' => $request->announcement_text_alignment,
+                        'announcement_autoplay_time' => $request->announcement_autoplay_time,
                     ]);
                 };
 

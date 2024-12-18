@@ -1,4 +1,4 @@
-import { ActionList, Frame, Grid, Icon, Card, Page, Badge, InlineGrid, Text, Layout, BlockStack, SkeletonBodyText, TextContainer, LegacyCard, SkeletonDisplayText, Box, TopBar, Modal } from '@shopify/polaris';
+import { ActionList, InlineStack , Frame, Grid, Icon, Card, Page, Badge, InlineGrid, Text, Layout, BlockStack, SkeletonBodyText, TextContainer, LegacyCard, SkeletonDisplayText, Box, TopBar, Modal } from '@shopify/polaris';
 import React from 'react';
 
 import {
@@ -713,6 +713,46 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
         </Modal>
     </div>;
 
+const Placeholder = ({
+    label = '',
+    height = 'auto',
+    width = 'auto',
+    showBorder = false,
+  }) => {
+    return (
+      <div
+        style={{
+          display: 'inherit',
+          background: 'var(--p-color-text-info)',
+          height: height ?? undefined,
+          width: width ?? undefined,
+          borderInlineStart: showBorder
+            ? '1px dashed var(--p-color-bg-surface-success)'
+            : 'none',
+        }}
+      >
+        <InlineStack gap="400" align="center" blockAlign="center">
+          <div
+            style={{
+              color: 'var(--p-color-text-info-on-bg-fill)',
+              width: width ?? undefined,
+            }}
+          >
+            <Text
+              as="h2"
+              variant="bodyMd"
+              fontWeight="medium"
+              alignment="center"
+              tone="text-inverse"
+            >
+              {label}
+            </Text>
+          </div>
+        </InlineStack>
+      </div>
+    );
+  };
+
     const this_page =
         <Page
             title="Cart Editor"
@@ -730,9 +770,12 @@ export function GridLayout({ children, paths = 0, gridItems, updateGridItems }) 
                                 {menu_nav_close}
                             </div>
                         </div>
-                        <div className='styles_content'>
-                            {children}
-                        </div>
+                        {/* <InlineGrid gap={300} columns="1fr auto"> */}
+                            <div className='styles_content'>
+                                {children}
+                            </div>
+                            {/* <Placeholder width="500px" label="twoThirds" showBorder />
+                        </InlineGrid> */}
                     </div>
                 </Layout.Section>
             </Layout>

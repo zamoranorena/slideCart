@@ -506,99 +506,97 @@ class Rewards extends Component {
       <ButtonColor click={() => { this.handlePopover("popoverRewardsFont") }} id='rewards_button_color3' background={hsbToHex(rewards_font_color)} />;
 
     const rewards_settings_content = (
-      <BlockStack gap="500">
-        <InlineStack align="center" gap={200}>
-          <Checkbox
-            label={<Titles text="Show prices or percentages" />}
-            checked={rewards_show_prices_percentages}
-            onChange={() => this.changeStateBoolean("rewards_show_prices_percentages")}
-          />
-        </InlineStack>
-        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2 }}>
-          <Select
-            label={<Titles text="Mode" />}
-            disabled={!rewards_show_prices_percentages}
-            options={options_mode}
-            value={rewards_mode}
-            onChange={(value) => this.handleChange(value, "rewards_mode")}
-          />
-          <Select
-            label={<Titles text="Ranges" />}
-            disabled={!rewards_show_prices_percentages || rewards_mode == 1 ? true : false}
-            options={options_range}
-            value={rewards_range}
-            onChange={(value) => this.handleChange(value, "rewards_range")}
-          />
-        </InlineGrid>
-        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-          <Select
-            label={<Titles text="Font Size" />}
-            options={options_font_size}
-            value={rewards_font_size}
-            onChange={(value) => this.handleChange(value, "rewards_font_size")}
-          />
-          <Select
-            label={<Titles text="Text Transform" />}
-            options={options_transform}
-            value={rewards_text_transform}
-            onChange={(value) => this.handleChange(value, "rewards_text_transform")}
-          />
-          <Select
-            label={<Titles text="Font weight" />}
-            options={options_weight}
-            value={rewards_font_weight}
-            onChange={(value) => this.handleChange(value, "rewards_font_weight")}
-          />
-          <Select
-            label={<Titles text="Border Radius" />}
-            options={options_radius}
-            value={rewards_border_radius}
-            onChange={(value) => this.handleOnChange(value, "rewards_border_radius")}
-          />
-        </InlineGrid>
-        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-          <FieldColor
-            labelColor={<Titles text='Rewards Background Content' />}
-            textValue={rewards_background_content_color_hex || 'ffffff'}
-            changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_content_color_hex", "rewards_background_content_color") }}
-            activePop={popoverRewardsBackgroundContent}
-            activadorPop={activator_rewards_background_content}
-            closePop={() => { this.handlePopover("popoverRewardsBackgroundContent", 0) }}
-            changeColorPicker={(value) => { this.handleColors(value, "rewards_background_content_color", "rewards_background_content_color_hex") }}
-            colorPicker={rewards_background_content_color}
-          />
-          <FieldColor
-            labelColor={<Titles text='Rewards Background Color Primary' />}
-            textValue={rewards_background_primary_color_hex || '000000'}
-            changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_primary_color_hex", "rewards_background_primary_color") }}
-            activePop={popoverRewardsBackgroundPrimary}
-            activadorPop={activator_rewards_background_primary}
-            closePop={() => { this.handlePopover("popoverRewardsBackgroundPrimary", 0) }}
-            changeColorPicker={(value) => { this.handleColors(value, "rewards_background_primary_color", "rewards_background_primary_color_hex") }}
-            colorPicker={rewards_background_primary_color}
-          />
-          <FieldColor
-            labelColor={<Titles text='Rewards Background Color Secondary' />}
-            textValue={rewards_background_secondary_color_hex || 'cccccc'}
-            changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_secondary_color_hex", "rewards_background_secondary_color") }}
-            activePop={popoverRewardsBackgroundSecondary}
-            activadorPop={activator_rewards_background_secondary}
-            closePop={() => { this.handlePopover("popoverRewardsBackgroundSecondary", 0) }}
-            changeColorPicker={(value) => { this.handleColors(value, "rewards_background_secondary_color", "rewards_background_secondary_color_hex") }}
-            colorPicker={rewards_background_secondary_color}
-          />
-          <FieldColor
-            labelColor={<Titles text='Rewards Font Color' />}
-            textValue={rewards_font_color_hex || '000000'}
-            changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_font_color_hex", "rewards_font_color") }}
-            activePop={popoverRewardsFont}
-            activadorPop={activator_rewards_font}
-            closePop={() => { this.handlePopover("popoverRewardsFont", 0) }}
-            changeColorPicker={(value) => { this.handleColors(value, "rewards_font_color", "rewards_font_color_hex") }}
-            colorPicker={rewards_font_color}
-          />
-        </InlineGrid>
-      </BlockStack>
+      <Box paddingBlockStart="300">
+        <BlockStack gap="200">
+          <InlineStack align="center" gap={200}>
+            <Checkbox
+              label={<Titles text="Show prices or percentages" />}
+              checked={rewards_show_prices_percentages}
+              onChange={() => this.changeStateBoolean("rewards_show_prices_percentages")}
+            />
+          </InlineStack>
+          <InlineGrid gap={300}>
+            <Select
+              label={<Titles text="Mode" />}
+              disabled={!rewards_show_prices_percentages}
+              options={options_mode}
+              value={rewards_mode}
+              onChange={(value) => this.handleChange(value, "rewards_mode")}
+            />
+            <Select
+              label={<Titles text="Ranges" />}
+              disabled={!rewards_show_prices_percentages || rewards_mode == 1 ? true : false}
+              options={options_range}
+              value={rewards_range}
+              onChange={(value) => this.handleChange(value, "rewards_range")}
+            />
+            <Select
+              label={<Titles text="Font Size" />}
+              options={options_font_size}
+              value={rewards_font_size}
+              onChange={(value) => this.handleChange(value, "rewards_font_size")}
+            />
+            <Select
+              label={<Titles text="Text Transform" />}
+              options={options_transform}
+              value={rewards_text_transform}
+              onChange={(value) => this.handleChange(value, "rewards_text_transform")}
+            />
+            <Select
+              label={<Titles text="Font weight" />}
+              options={options_weight}
+              value={rewards_font_weight}
+              onChange={(value) => this.handleChange(value, "rewards_font_weight")}
+            />
+            <Select
+              label={<Titles text="Border Radius" />}
+              options={options_radius}
+              value={rewards_border_radius}
+              onChange={(value) => this.handleChange(value, "rewards_border_radius")}
+            />
+            <FieldColor
+              labelColor={<Titles text='Rewards Background Content' />}
+              textValue={rewards_background_content_color_hex || 'ffffff'}
+              changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_content_color_hex", "rewards_background_content_color") }}
+              activePop={popoverRewardsBackgroundContent}
+              activadorPop={activator_rewards_background_content}
+              closePop={() => { this.handlePopover("popoverRewardsBackgroundContent", 0) }}
+              changeColorPicker={(value) => { this.handleColors(value, "rewards_background_content_color", "rewards_background_content_color_hex") }}
+              colorPicker={rewards_background_content_color}
+            />
+            <FieldColor
+              labelColor={<Titles text='Rewards Background Color Primary' />}
+              textValue={rewards_background_primary_color_hex || '000000'}
+              changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_primary_color_hex", "rewards_background_primary_color") }}
+              activePop={popoverRewardsBackgroundPrimary}
+              activadorPop={activator_rewards_background_primary}
+              closePop={() => { this.handlePopover("popoverRewardsBackgroundPrimary", 0) }}
+              changeColorPicker={(value) => { this.handleColors(value, "rewards_background_primary_color", "rewards_background_primary_color_hex") }}
+              colorPicker={rewards_background_primary_color}
+            />
+            <FieldColor
+              labelColor={<Titles text='Rewards Background Color Secondary' />}
+              textValue={rewards_background_secondary_color_hex || 'cccccc'}
+              changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_background_secondary_color_hex", "rewards_background_secondary_color") }}
+              activePop={popoverRewardsBackgroundSecondary}
+              activadorPop={activator_rewards_background_secondary}
+              closePop={() => { this.handlePopover("popoverRewardsBackgroundSecondary", 0) }}
+              changeColorPicker={(value) => { this.handleColors(value, "rewards_background_secondary_color", "rewards_background_secondary_color_hex") }}
+              colorPicker={rewards_background_secondary_color}
+            />
+            <FieldColor
+              labelColor={<Titles text='Rewards Font Color' />}
+              textValue={rewards_font_color_hex || '000000'}
+              changeColorText={(value) => { this.handleOnChangeColor(value, "rewards_font_color_hex", "rewards_font_color") }}
+              activePop={popoverRewardsFont}
+              activadorPop={activator_rewards_font}
+              closePop={() => { this.handlePopover("popoverRewardsFont", 0) }}
+              changeColorPicker={(value) => { this.handleColors(value, "rewards_font_color", "rewards_font_color_hex") }}
+              colorPicker={rewards_font_color}
+            />
+          </InlineGrid>
+        </BlockStack>
+      </Box>
     );
     var rewards_tiers = '', titleRewards = '', rewards_countries_tiers = '', inAction = '', viewCountry = 0;
     switch (rewards_tab_selected) {
@@ -774,7 +772,9 @@ class Rewards extends Component {
   changeStateBoolean = (thisSate) => {
     var stateNow = this.state[thisSate];
     this.setState({ [thisSate]: !stateNow });
-    this.props.updateGridItems({ rewards: !stateNow });
+    if(thisSate === 'enabled_rewards'){
+      this.props.updateGridItems({ rewards: !stateNow });
+    };
   };
   handleChange = (value, thisSate) => {
     //var newState = stateNow;

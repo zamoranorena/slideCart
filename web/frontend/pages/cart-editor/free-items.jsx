@@ -23,7 +23,7 @@ import {
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import { ProductIcon, DeleteIcon } from '@shopify/polaris-icons';
 import colorconvert from 'color-convert';
-import { CustomizeUpsells, ButtonColor, Toogle, SaveBar, Titles, ToolInfo, FieldColor, ToogleSkeleton } from "@components/";
+import { CustomizeUpsells, ButtonColor, Toogle, SaveBar, Titles, ToolInfo, FieldColor, ToogleSkeleton, Section } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -57,6 +57,8 @@ class FreeItems extends Component {
             loading: true,
             toast: false,
             dataFreeItems: null,
+            section_settings_free_items: 1,
+            section_tiers_free_items: 1,
             enabled_tiered_free_items: null,
             tfi_mode_view: '',
             tfi_slides_per_view: null,
@@ -498,6 +500,8 @@ class FreeItems extends Component {
             loading,
             toast,
             dataFreeItems,
+            section_settings_free_items,
+            section_tiers_free_items,
             enabled_tiered_free_items,
             tfi_mode_view,
             tfi_slides_per_view,
@@ -566,223 +570,225 @@ class FreeItems extends Component {
             <ButtonColor click={() => { this.handlePopover("popoverTiered5") }} id='tiered5' background={hsbToHex(tfi_unlock_bar_color_secondary)} />;
 
 
-        const content_tiered_free_items = <Card>
-            <BlockStack gap={400}>
-                <Text as="h1" variant="headingMd">Tiered Properties</Text>
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                    <TextField
-                        autoComplete='off'
-                        maxLength={250}
-                        label={<Titles text='Section Heading' />}
-                        value={tfi_section_heading}
-                        onChange={(value) => { this.handleChange(value, "tfi_section_heading") }}
-                    />
-                    <Select
-                        label={<Titles text='Title Text Font Size:' />}//NEW 
-                        options={options_font_size}//NEW
-                        value={tfi_heading_font_size}//NEW
-                        onChange={(value) => { this.handleChange(value, "tfi_heading_font_size") }}//NEW
-                    />
-                </InlineGrid>
+        const content_tiered_free_items =
+            <Section title={'Tiered Properties'} this_section={() => { this.setState({ section_settings_free_items: !section_settings_free_items }) }} status_source={section_settings_free_items}>
+                <Box paddingBlockStart='300' paddingBlockEnd='200' width="100%">
+                    <BlockStack gap={400}>
+                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+                            <TextField
+                                autoComplete='off'
+                                maxLength={250}
+                                label={<Titles text='Section Heading' />}
+                                value={tfi_section_heading}
+                                onChange={(value) => { this.handleChange(value, "tfi_section_heading") }}
+                            />
+                            <Select
+                                label={<Titles text='Title Text Font Size:' />}//NEW 
+                                options={options_font_size}//NEW
+                                value={tfi_heading_font_size}//NEW
+                                onChange={(value) => { this.handleChange(value, "tfi_heading_font_size") }}//NEW
+                            />
+                        </InlineGrid>
 
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                    <Select
-                        label={<Titles text='Add To Cart Mode' />}
-                        options={options_mode_add_to_cart_upsell}
-                        value={tfi_mode_add_to_cart}
-                        onChange={(value) => { this.handleChange(value, "tfi_mode_add_to_cart") }}
-                    />
-                    <Select
-                        label={<Titles text='View Mode Tiered' />}
-                        options={options_mode_upsell}
-                        value={tfi_mode_view}
-                        onChange={(value) => { this.handleChange(value, "tfi_mode_view") }}
-                    />
-                    {!parseInt(this.state.tfi_mode_view) ?
-                        <Select
-                            label={<Titles text='Quantity of upsell products for each frame' />}
-                            options={options_upsell_qty}
-                            value={parseInt(tfi_slides_per_view)}
-                            onChange={(value) => { this.handleChange(value, "tfi_slides_per_view") }}
+                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+                            <Select
+                                label={<Titles text='Add To Cart Mode' />}
+                                options={options_mode_add_to_cart_upsell}
+                                value={tfi_mode_add_to_cart}
+                                onChange={(value) => { this.handleChange(value, "tfi_mode_add_to_cart") }}
+                            />
+                            <Select
+                                label={<Titles text='View Mode Tiered' />}
+                                options={options_mode_upsell}
+                                value={tfi_mode_view}
+                                onChange={(value) => { this.handleChange(value, "tfi_mode_view") }}
+                            />
+                            {!parseInt(this.state.tfi_mode_view) ?
+                                <Select
+                                    label={<Titles text='Quantity of upsell products for each frame' />}
+                                    options={options_upsell_qty}
+                                    value={parseInt(tfi_slides_per_view)}
+                                    onChange={(value) => { this.handleChange(value, "tfi_slides_per_view") }}
+                                />
+                                : ''}
+                            {!parseInt(tfi_mode_view) ?
+                                <Select
+                                    label={<ToolInfo title={<Titles text='Upsell AutoPlay Time' />} description="If 0 is selected, autoplay does not start." />}
+                                    options={options_upsell_autoplay_time}
+                                    value={parseInt(tfi_slides_autoplay_time)}
+                                    onChange={(value) => { this.handleChange(value, "tfi_slides_autoplay_time") }}
+                                /> : ''}
+                            <FieldColor
+                                labelColor={<Titles text='Heading background color' />}
+                                textValue={tfi_heading_background_color_hex || '000000'}
+                                changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_heading_background_color_hex", "tfi_heading_background_color") }}
+                                activePop={popoverTiered}
+                                activadorPop={activator_tfi_heading_background}
+                                closePop={() => { this.handlePopover("popoverTiered", 0) }}
+                                changeColorPicker={(value) => { this.handleColors(value, "tfi_heading_background_color", "tfi_heading_background_color_hex") }}
+                                colorPicker={tfi_heading_background_color}
+                            />
+                            <FieldColor
+                                labelColor={<Titles text='Heading text color' />}
+                                textValue={tfi_heading_text_color_hex || 'ffffff'}
+                                changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_heading_text_color_hex", "tfi_heading_text_color") }}
+                                activePop={popoverTiered2}
+                                activadorPop={activator_tfi_heading_text}
+                                closePop={() => { this.handlePopover("popoverTiered2", 0) }}
+                                changeColorPicker={(value) => { this.handleColors(value, "tfi_heading_text_color", "tfi_heading_text_color_hex") }}
+                                colorPicker={tfi_heading_text_color}
+                            />
+                            <Checkbox
+                                label={<Titles text='Add bold font for heading' />}
+                                checked={tfi_heading_bold_font}
+                                onChange={() => this.changeStateBoolean("tfi_heading_bold_font")}
+                            />
+                            <Checkbox
+                                label={<Titles text='Add url to product title' />}
+                                checked={tfi_product_url_automatic}
+                                onChange={() => this.changeStateBoolean("tfi_product_url_automatic")}
+                            />
+                        </InlineGrid>
+
+                        <Divider borderColor='border-hover' />
+                        <Text as="h1" variant="headingMd">Unlock Bar</Text>
+                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+                            <Select
+                                label={<Titles text='Lock Design:' />}
+                                options={[
+                                    { label: 'Progress Bar', value: '0' },
+                                    { label: 'Circle Progress', value: '1' }
+                                ]}
+                                value={tfi_lock_method}
+                                onChange={(value) => { this.handleChange(value, "tfi_lock_method") }}
+                            />
+                            <Select
+                                label={<Titles text='Show price:' />}
+                                options={[
+                                    { label: 'See text total unlock', value: '0' },
+                                    { label: 'See text remaining unlock', value: '1' }
+                                ]}
+                                value={tfi_unlock_text_show}
+                                onChange={(value) => { this.handleChange(value, "tfi_unlock_text_show") }}
+                            />
+                        </InlineGrid>
+                        <TextField
+                            autoComplete='off'
+                            maxLength={250}
+                            label={<Titles text='Text that accompanies the bar (do not place quantity/price)' />}
+                            helpText={text_tiered}
+                            value={tfi_unlock_text}
+                            onChange={(value) => { this.handleChange(value, "tfi_unlock_text") }}
                         />
-                        : ''}
-                    {!parseInt(tfi_mode_view) ?
+                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
+                            <Select
+                                label={<Titles text='Text Transform:' />}//NEW
+                                options={options_transform}//NEW
+                                value={tfi_unlock_text_transform}//NEW
+                                onChange={(value) => { this.handleChange(value, "tfi_unlock_text_transform") }}//NEW
+                            />
+                            <Select
+                                label={<Titles text='Font Size:' />}//NEW
+                                options={options_font_size}//NEW
+                                value={tfi_unlock_text_font_size}//NEW
+                                onChange={(value) => { this.handleChange(value, "tfi_unlock_text_font_size") }}//NEW
+                            />
+                            <Select
+                                label={<Titles text='Font Weight:' />}//NEW
+                                options={options_weight}//NEW
+                                value={tfi_unlock_text_font_weight}//NEW
+                                onChange={(value) => { this.handleChange(value, "tfi_unlock_text_font_weight") }}//NEW
+                            />
+                        </InlineGrid>
+                        <FieldColor
+                            labelColor={<Titles text='Bar Text Color:' />}
+                            textValue={tfi_unlock_text_color_hex || '000000'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_text_color_hex", "tfi_unlock_text_color") }}
+                            activePop={popoverTiered3}
+                            activadorPop={activator_tfi_unlock_text_color}
+                            closePop={() => { this.handlePopover("popoverTiered3", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_text_color", "tfi_unlock_text_color_hex") }}
+                            colorPicker={tfi_unlock_text_color}
+                        />
+                        <FieldColor
+                            labelColor={<Titles text='Main Bar Color:' />}
+                            textValue={tfi_unlock_bar_color_primary_hex || '000000'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_bar_color_primary_hex", "tfi_unlock_bar_color_primary") }}
+                            activePop={popoverTiered4}
+                            activadorPop={activator_tfi_unlock_bar_color_primary}
+                            closePop={() => { this.handlePopover("popoverTiered4", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_bar_color_primary", "tfi_unlock_bar_color_primary_hex") }}
+                            colorPicker={tfi_unlock_bar_color_primary}
+                        />
+                        <FieldColor
+                            labelColor={<Titles text='Bar Background Color:' />}
+                            textValue={tfi_unlock_bar_color_secondary_hex || 'cccccc'}
+                            changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_bar_color_secondary_hex", "tfi_unlock_bar_color_secondary") }}
+                            activePop={popoverTiered5}
+                            activadorPop={activator_tfi_unlock_bar_color_secondary}
+                            closePop={() => { this.handlePopover("popoverTiered5", 0) }}
+                            changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_bar_color_secondary", "tfi_unlock_bar_color_secondary_hex") }}
+                            colorPicker={tfi_unlock_bar_color_secondary}
+                        />
                         <Select
-                            label={<ToolInfo title={<Titles text='Upsell AutoPlay Time' />} description="If 0 is selected, autoplay does not start." />}
-                            options={options_upsell_autoplay_time}
-                            value={parseInt(tfi_slides_autoplay_time)}
-                            onChange={(value) => { this.handleChange(value, "tfi_slides_autoplay_time") }}
-                        /> : ''}
-                    <FieldColor
-                        labelColor={<Titles text='Heading background color' />}
-                        textValue={tfi_heading_background_color_hex || '000000'}
-                        changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_heading_background_color_hex", "tfi_heading_background_color") }}
-                        activePop={popoverTiered}
-                        activadorPop={activator_tfi_heading_background}
-                        closePop={() => { this.handlePopover("popoverTiered", 0) }}
-                        changeColorPicker={(value) => { this.handleColors(value, "tfi_heading_background_color", "tfi_heading_background_color_hex") }}
-                        colorPicker={tfi_heading_background_color}
-                    />
-                    <FieldColor
-                        labelColor={<Titles text='Heading text color' />}
-                        textValue={tfi_heading_text_color_hex || 'ffffff'}
-                        changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_heading_text_color_hex", "tfi_heading_text_color") }}
-                        activePop={popoverTiered2}
-                        activadorPop={activator_tfi_heading_text}
-                        closePop={() => { this.handlePopover("popoverTiered2", 0) }}
-                        changeColorPicker={(value) => { this.handleColors(value, "tfi_heading_text_color", "tfi_heading_text_color_hex") }}
-                        colorPicker={tfi_heading_text_color}
-                    />
-                    <Checkbox
-                        label={<Titles text='Add bold font for heading' />}
-                        checked={tfi_heading_bold_font}
-                        onChange={() => this.changeStateBoolean("tfi_heading_bold_font")}
-                    />
-                    <Checkbox
-                        label={<Titles text='Add url to product title' />}
-                        checked={tfi_product_url_automatic}
-                        onChange={() => this.changeStateBoolean("tfi_product_url_automatic")}
-                    />
-                </InlineGrid>
-
-                <Divider borderColor='border-hover' />
-                <Text as="h1" variant="headingMd">Unlock Bar</Text>
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                    <Select
-                        label={<Titles text='Lock Design:' />}
-                        options={[
-                            { label: 'Progress Bar', value: '0' },
-                            { label: 'Circle Progress', value: '1' }
-                        ]}
-                        value={tfi_lock_method}
-                        onChange={(value) => { this.handleChange(value, "tfi_lock_method") }}
-                    />
-                    <Select
-                        label={<Titles text='Show price:' />}
-                        options={[
-                            { label: 'See text total unlock', value: '0' },
-                            { label: 'See text remaining unlock', value: '1' }
-                        ]}
-                        value={tfi_unlock_text_show}
-                        onChange={(value) => { this.handleChange(value, "tfi_unlock_text_show") }}
-                    />
-                </InlineGrid>
-                <TextField
-                    autoComplete='off'
-                    maxLength={250}
-                    label={<Titles text='Text that accompanies the bar (do not place quantity/price)' />}
-                    helpText={text_tiered}
-                    value={tfi_unlock_text}
-                    onChange={(value) => { this.handleChange(value, "tfi_unlock_text") }}
-                />
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 3, xl: 3 }}>
-                    <Select
-                        label={<Titles text='Text Transform:' />}//NEW
-                        options={options_transform}//NEW
-                        value={tfi_unlock_text_transform}//NEW
-                        onChange={(value) => { this.handleChange(value, "tfi_unlock_text_transform") }}//NEW
-                    />
-                    <Select
-                        label={<Titles text='Font Size:' />}//NEW
-                        options={options_font_size}//NEW
-                        value={tfi_unlock_text_font_size}//NEW
-                        onChange={(value) => { this.handleChange(value, "tfi_unlock_text_font_size") }}//NEW
-                    />
-                    <Select
-                        label={<Titles text='Font Weight:' />}//NEW
-                        options={options_weight}//NEW
-                        value={tfi_unlock_text_font_weight}//NEW
-                        onChange={(value) => { this.handleChange(value, "tfi_unlock_text_font_weight") }}//NEW
-                    />
-                </InlineGrid>
-                <FieldColor
-                    labelColor={<Titles text='Bar Text Color:' />}
-                    textValue={tfi_unlock_text_color_hex || '000000'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_text_color_hex", "tfi_unlock_text_color") }}
-                    activePop={popoverTiered3}
-                    activadorPop={activator_tfi_unlock_text_color}
-                    closePop={() => { this.handlePopover("popoverTiered3", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_text_color", "tfi_unlock_text_color_hex") }}
-                    colorPicker={tfi_unlock_text_color}
-                />
-                <FieldColor
-                    labelColor={<Titles text='Main Bar Color:' />}
-                    textValue={tfi_unlock_bar_color_primary_hex || '000000'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_bar_color_primary_hex", "tfi_unlock_bar_color_primary") }}
-                    activePop={popoverTiered4}
-                    activadorPop={activator_tfi_unlock_bar_color_primary}
-                    closePop={() => { this.handlePopover("popoverTiered4", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_bar_color_primary", "tfi_unlock_bar_color_primary_hex") }}
-                    colorPicker={tfi_unlock_bar_color_primary}
-                />
-                <FieldColor
-                    labelColor={<Titles text='Bar Background Color:' />}
-                    textValue={tfi_unlock_bar_color_secondary_hex || 'cccccc'}
-                    changeColorText={(value) => { this.handleOnChangeColor(value, "tfi_unlock_bar_color_secondary_hex", "tfi_unlock_bar_color_secondary") }}
-                    activePop={popoverTiered5}
-                    activadorPop={activator_tfi_unlock_bar_color_secondary}
-                    closePop={() => { this.handlePopover("popoverTiered5", 0) }}
-                    changeColorPicker={(value) => { this.handleColors(value, "tfi_unlock_bar_color_secondary", "tfi_unlock_bar_color_secondary_hex") }}
-                    colorPicker={tfi_unlock_bar_color_secondary}
-                />
-                <Select
-                    label={<Titles text='Bar Border Radius' />}
-                    options={options_border_radius}
-                    value={tfi_unlock_bar_border_radius}
-                    onChange={(value) => this.handleChange(value, "tfi_unlock_bar_border_radius")}
-                />
-                <Divider borderColor='border-hover' />
-                <Select
-                    label={<Titles text='Calculate free products based on' />}
-                    options={[
-                        { label: 'SubTotal Cart', value: 'cart_total_price' },
-                        { label: 'Total QTY of all items in cart', value: 'cart_item_count' },
-                        { label: 'Total QTY of items in cart over $0 only', value: 'cart_paid_items_count' },
-                    ]}
-                    value={tfi_calculate_based_on}
-                    onChange={(value) => { this.handleChange(value, "tfi_calculate_based_on") }}
-                />
-                <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                    <TextField
-                        type="number"
-                        inputMode="numeric"
-                        min='1'
-                        autoComplete='off'
-                        pattern="^[0-9]+"
-                        label={<Titles text='Limit no. of unqualified products to display' />}
-                        value={tfi_locked_limit.toString() || 1}
-                        onChange={(value) => { this.handleChange(value, "tfi_locked_limit") }}
-                    />
-                    <TextField
-                        autoComplete='off'
-                        type='number'
-                        inputMode="numeric"
-                        pattern="^[0-9]+"
-                        min='1'
-                        label={<Titles text='Limit no. of qualified products to display' />}
-                        value={tfi_unlocked_limit.toString() || 1}
-                        onChange={(value) => { this.handleChange(value, "tfi_unlocked_limit") }}
-                    />
-                    <Checkbox
-                        label={<Titles text='Show Quantity Box In Tiered' />}
-                        checked={tfi_show_quantity_box}
-                        onChange={() => { this.changeStateBoolean("tfi_show_quantity_box") }}
-                    />
-                    <Checkbox
-                        label={<Titles text="Automatically add the qualified product(s) to customer's cart?" />}
-                        checked={tif_auto_add}
-                        onChange={() => { this.changeStateBoolean("tif_auto_add") }}
-                    />
-                    <Checkbox
-                        label={<Titles text="You can only add a single product from the entire tier" />}
-                        helpText='You should not have the automatic add option activated.'
-                        checked={tfi_only_product_tier}
-                        onChange={() => { this.changeStateBoolean("tfi_only_product_tier") }}
-                    />
-                </InlineGrid>
-                {buttonCustomize}
-            </BlockStack>
-        </Card>;
+                            label={<Titles text='Bar Border Radius' />}
+                            options={options_border_radius}
+                            value={tfi_unlock_bar_border_radius}
+                            onChange={(value) => this.handleChange(value, "tfi_unlock_bar_border_radius")}
+                        />
+                        <Divider borderColor='border-hover' />
+                        <Select
+                            label={<Titles text='Calculate free products based on' />}
+                            options={[
+                                { label: 'SubTotal Cart', value: 'cart_total_price' },
+                                { label: 'Total QTY of all items in cart', value: 'cart_item_count' },
+                                { label: 'Total QTY of items in cart over $0 only', value: 'cart_paid_items_count' },
+                            ]}
+                            value={tfi_calculate_based_on}
+                            onChange={(value) => { this.handleChange(value, "tfi_calculate_based_on") }}
+                        />
+                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
+                            <TextField
+                                type="number"
+                                inputMode="numeric"
+                                min='1'
+                                autoComplete='off'
+                                pattern="^[0-9]+"
+                                label={<Titles text='Limit no. of unqualified products to display' />}
+                                value={tfi_locked_limit.toString() || 1}
+                                onChange={(value) => { this.handleChange(value, "tfi_locked_limit") }}
+                            />
+                            <TextField
+                                autoComplete='off'
+                                type='number'
+                                inputMode="numeric"
+                                pattern="^[0-9]+"
+                                min='1'
+                                label={<Titles text='Limit no. of qualified products to display' />}
+                                value={tfi_unlocked_limit.toString() || 1}
+                                onChange={(value) => { this.handleChange(value, "tfi_unlocked_limit") }}
+                            />
+                            <Checkbox
+                                label={<Titles text='Show Quantity Box In Tiered' />}
+                                checked={tfi_show_quantity_box}
+                                onChange={() => { this.changeStateBoolean("tfi_show_quantity_box") }}
+                            />
+                            <Checkbox
+                                label={<Titles text="Automatically add the qualified product(s) to customer's cart?" />}
+                                checked={tif_auto_add}
+                                onChange={() => { this.changeStateBoolean("tif_auto_add") }}
+                            />
+                            <Checkbox
+                                label={<Titles text="You can only add a single product from the entire tier" />}
+                                helpText='You should not have the automatic add option activated.'
+                                checked={tfi_only_product_tier}
+                                onChange={() => { this.changeStateBoolean("tfi_only_product_tier") }}
+                            />
+                        </InlineGrid>
+                        {buttonCustomize}
+                    </BlockStack>
+                </Box>
+            </Section>;
 
         const resourcePicker = resourcePickerTiered ? <ResourcePicker
             resourceType="Product"
@@ -796,101 +802,104 @@ class FreeItems extends Component {
         const button_add_tier = <Button onClick={() => this.addClick()} tone='success' variant="primary">
             {values_tiered_free_items_tiers.length > 0 ? 'Add new Tier' : 'Create a Tier'}
         </Button>;
-        const content_tiered_free_items_tiers = enabled_tiered_free_items ?
-            <Card>
-                <BlockStack gap={200}>
-                    <Box width="100%">
-                        <InlineStack
-                            gap="1200"
-                            align="space-between"
-                            blockAlign="center"
-                            wrap={false}
-                        >
-                            <Text as="h1" variant="headingMd">Free items Tiers</Text>
-                            {values_tiered_free_items_tiers.length < 1 ?
-                                <Box minWidth="fit-content">
-                                    <InlineStack align="end">
-                                        {button_add_tier}
-                                    </InlineStack>
-                                </Box> : ''}
 
-                        </InlineStack>
-                    </Box>
-                    {this.state.values_tiered_free_items_tiers.length > 0 ? this.state.values_tiered_free_items_tiers.map((el, i) => (
-                        <Box key={i}>
-                            <Box paddingBlockStart='100' /* paddingBlockEnd='300' */ width="100%">
-                                <InlineStack
-                                    gap="600"
-                                    align="space-between"
-                                    blockAlign="start"
-                                    wrap={false}
-                                >
-                                    <Text as="h1" variant="headingMd">{`Tier  ` + parseInt(i + 1, 10)}</Text>
+        const content_tiered_free_items_tiers =
+            <Section title={'Free items Tiers'} this_section={() => { this.setState({ section_tiers_free_items: !section_tiers_free_items }) }} status_source={section_tiers_free_items}>
+                <Box paddingBlockStart='300' paddingBlockEnd='200' width="100%">
+                    <BlockStack gap={200}>
+                        <Box width="100%">
+                            <InlineStack
+                                gap="1200"
+                                align="space-between"
+                                blockAlign="center"
+                                wrap={false}
+                            >
+                                {values_tiered_free_items_tiers.length < 1 ?
                                     <Box minWidth="fit-content">
                                         <InlineStack align="end">
-                                            <ButtonGroup><div onClick={() => this.setState({ resourcePickerTiered: true, indiceTired: i })} ><Button icon={<Icon source={ProductIcon} tone="success" />} variant="plain" tone="success"></Button></div></ButtonGroup>
-                                            <ButtonGroup><div onClick={() => this.removeClick(i)}><Button icon={<Icon source={DeleteIcon} tone="critical" />} variant="plain" tone="critical"></Button></div>
-                                            </ButtonGroup>
+                                            {button_add_tier}
                                         </InlineStack>
-                                    </Box>
-                                </InlineStack>
-                            </Box>
+                                    </Box> : ''}
 
-                            <BlockStack key={i} gap={400}>
-                                <TextField
-                                    autoComplete='off'
-                                    type='number'
-                                    maxLength={250}
-                                    min={1}
-                                    label={<Titles text={labelTier} />}
-                                    value={el.tfi_tier_amount_from || 1}
-                                    onChange={(value) => { this.handleChanges(value, i, "tfi_tier_amount_from") }}
-                                />
-                                <TextField
-                                    autoComplete='off'
-                                    label={<Titles text='Tier Name' />}
-                                    maxLength={250}
-                                    min={1}
-                                    value={el.tfi_tier_name || "0"}
-                                    onChange={(value) => { this.handleChanges(value, i, "tfi_tier_name") }}
-                                />
-                                {el.tfi_tier_products.length > 0 ?
-                                    <InlineStack wrap>
-                                        {el.tfi_tier_products.map((tag, x) => <Box key={tag} padding={200}><Tag onRemove={() => this.removeTagCart(x, i)} key={tag}>{tag}</Tag></Box>)}
-                                    </InlineStack>
-                                    : ''
-                                }
-                                <Checkbox
-                                    label={<Titles text='Customer can only pick 1 item from this tier.' />}
-                                    helpText='If ticked, none of the item from this tier will show up when any of the above item is present in cart.'
-                                    checked={el.tfi_tier_max_item}
-                                    onChange={(value) => { this.handleChanges(value, i, "tfi_tier_max_item") }}
-                                />
-                                <Checkbox
-                                    label={<Titles text="Don't show an item if it is already in cart." />}
-                                    helpText='Note: The item is always hidden if the price of item in cart is zero.'
-                                    checked={el.tfi_tier_hide_when_in_cart}
-                                    onChange={(value) => { this.handleChanges(value, i, "tfi_tier_hide_when_in_cart") }}
-                                />
-                                {el.tfi_tier_products.length < 1 ?
-                                    <Banner
-                                        tone="warning"
-                                    >
-                                        <p>
-                                            You haven't selected any product for this tier. <Button variant="plain" onClick={() => this.setState({ resourcePickerTiered: true, indiceTired: i })} plain>Click here</Button> to select now.
-                                        </p>
-                                    </Banner>
-                                    : ''}
-                                <Divider borderColor='border-hover' />
-                            </BlockStack>
+                            </InlineStack>
                         </Box>
-                    )) : ''}
-                    {values_tiered_free_items_tiers.length >= 1 ?
-                        < InlineStack align="end" >
-                            {button_add_tier}
-                        </InlineStack > : ''}
-                </BlockStack>
-            </Card> : null
+                        {this.state.values_tiered_free_items_tiers.length > 0 ? this.state.values_tiered_free_items_tiers.map((el, i) => (
+                            <Box key={i}>
+                                <Box paddingBlockStart='100' /* paddingBlockEnd='300' */ width="100%">
+                                    <InlineStack
+                                        gap="600"
+                                        align="space-between"
+                                        blockAlign="start"
+                                        wrap={false}
+                                    >
+                                        <Text as="h1" variant="headingMd">{`Tier  ` + parseInt(i + 1, 10)}</Text>
+                                        <Box minWidth="fit-content">
+                                            <InlineStack align="end">
+                                                <ButtonGroup><div onClick={() => this.setState({ resourcePickerTiered: true, indiceTired: i })} ><Button icon={<Icon source={ProductIcon} tone="success" />} variant="plain" tone="success"></Button></div></ButtonGroup>
+                                                <ButtonGroup><div onClick={() => this.removeClick(i)}><Button icon={<Icon source={DeleteIcon} tone="critical" />} variant="plain" tone="critical"></Button></div>
+                                                </ButtonGroup>
+                                            </InlineStack>
+                                        </Box>
+                                    </InlineStack>
+                                </Box>
+
+                                <BlockStack key={i} gap={400}>
+                                    <TextField
+                                        autoComplete='off'
+                                        type='number'
+                                        maxLength={250}
+                                        min={1}
+                                        label={<Titles text={labelTier} />}
+                                        value={el.tfi_tier_amount_from || 1}
+                                        onChange={(value) => { this.handleChanges(value, i, "tfi_tier_amount_from") }}
+                                    />
+                                    <TextField
+                                        autoComplete='off'
+                                        label={<Titles text='Tier Name' />}
+                                        maxLength={250}
+                                        min={1}
+                                        value={el.tfi_tier_name || "0"}
+                                        onChange={(value) => { this.handleChanges(value, i, "tfi_tier_name") }}
+                                    />
+                                    {el.tfi_tier_products.length > 0 ?
+                                        <InlineStack wrap>
+                                            {el.tfi_tier_products.map((tag, x) => <Box key={tag} padding={200}><Tag onRemove={() => this.removeTagCart(x, i)} key={tag}>{tag}</Tag></Box>)}
+                                        </InlineStack>
+                                        : ''
+                                    }
+                                    <Checkbox
+                                        label={<Titles text='Customer can only pick 1 item from this tier.' />}
+                                        helpText='If ticked, none of the item from this tier will show up when any of the above item is present in cart.'
+                                        checked={el.tfi_tier_max_item}
+                                        onChange={(value) => { this.handleChanges(value, i, "tfi_tier_max_item") }}
+                                    />
+                                    <Checkbox
+                                        label={<Titles text="Don't show an item if it is already in cart." />}
+                                        helpText='Note: The item is always hidden if the price of item in cart is zero.'
+                                        checked={el.tfi_tier_hide_when_in_cart}
+                                        onChange={(value) => { this.handleChanges(value, i, "tfi_tier_hide_when_in_cart") }}
+                                    />
+                                    {el.tfi_tier_products.length < 1 ?
+                                        <Banner
+                                            tone="warning"
+                                        >
+                                            <p>
+                                                You haven't selected any product for this tier. <Button variant="plain" onClick={() => this.setState({ resourcePickerTiered: true, indiceTired: i })} plain>Click here</Button> to select now.
+                                            </p>
+                                        </Banner>
+                                        : ''}
+                                    {this.state.values_tiered_free_items_tiers.length > 1 && i != (this.state.values_tiered_free_items_tiers.length - 1) ? <Divider borderColor='border-hover' /> : ''}
+                                </BlockStack>
+                            </Box>
+                        )) : ''}
+                        {values_tiered_free_items_tiers.length >= 1 ?
+                            < InlineStack align="end" >
+                                {button_add_tier}
+                            </InlineStack > : ''}
+                    </BlockStack>
+                </Box>
+            </Section>
+
 
         const ThisToast = () => {
             return (
@@ -909,8 +918,8 @@ class FreeItems extends Component {
                     <BlockStack gap={500}>
                         <Toogle enabled={enabled_tiered_free_items} title='Tiered Free Items ( BETA )' description="Offer free items. This function will only show the items for which they are selectable in the cart drawer. Important: For the item to show for free, you need to set the offer to Shopify Automatic Discounts." stateText='The Tiered Free Items are' activeToogle={() => this.changeStateBoolean('enabled_tiered_free_items')}>
                         </Toogle>
-                        {content_tiered_free_items}
                         {content_tiered_free_items_tiers}
+                        {content_tiered_free_items}
                         <ThisToast />
                         <SaveBar
                             equals={equals}
