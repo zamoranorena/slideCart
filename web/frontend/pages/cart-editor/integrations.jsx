@@ -2,6 +2,7 @@ import { Component } from "react";
 import {
     Toast,
     BlockStack,
+    Box
 } from '@shopify/polaris';
 import { Toogle, SaveBar, SkeletonSimple } from "@components/";
 
@@ -161,31 +162,34 @@ class Integratios extends Component {
             <div>
                 {loadingComponent}
                 {data.length <= 0 ? SkeletonBody :
-                    <BlockStack gap={500}>
-                        {integrations.map((el, i) => (
-                            el.automatic == 1 ?
-                                <div key={i} className='integrationsAutomatic'>
+                    <Box paddingBlockEnd="400">
+                        <BlockStack gap={500}>
+                            {integrations.map((el, i) => (
+                                el.automatic == 1 ?
+                                    <div key={i} className='integrationsAutomatic'>
+                                        <Toogle
+                                            key={i}
+                                            enabled={true}
+                                            title={el.integrations_app_title}
+                                            description={el.integrations_app_description}
+                                            stateText={'The' + el.integrations_app_title + ' integration is'}
+                                            activeToogle={() => this.toggleIsDirty(i, 'enabled_app')}
+                                            action={el.automatic == 1 ? <div className='iconCheckIntegrations'><Icon source={CheckCircleIcon} tone="success" /></div> : false}
+                                        />
+                                    </div> :
                                     <Toogle
                                         key={i}
-                                        enabled={true}
+                                        enabled={el.enabled_app}
                                         title={el.integrations_app_title}
                                         description={el.integrations_app_description}
                                         stateText={'The' + el.integrations_app_title + ' integration is'}
                                         activeToogle={() => this.toggleIsDirty(i, 'enabled_app')}
-                                        action={el.automatic == 1 ? <div className='iconCheckIntegrations'><Icon source={CheckCircleIcon} tone="success" /></div> : false}
-                                    />
-                                </div> :
-                                <Toogle
-                                    key={i}
-                                    enabled={el.enabled_app}
-                                    title={el.integrations_app_title}
-                                    description={el.integrations_app_description}
-                                    stateText={'The' + el.integrations_app_title + ' integration is'}
-                                    activeToogle={() => this.toggleIsDirty(i, 'enabled_app')}
-                                />))}
+                                    />))}
+                        </BlockStack>
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateIntegrations(this.state)} discard={() => { this.discard() }} />
-                    </BlockStack>}
+                    </Box>
+                }
             </div>
         );
     }

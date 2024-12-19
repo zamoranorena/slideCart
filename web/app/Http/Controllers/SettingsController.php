@@ -48,7 +48,7 @@ class SettingsController extends Controller
         try {
             $session = $request->get('shopifySession');
             $shop = $session->getShop();
-            $customer =  Customer::with('Settings')->where('shop_url', $shop)->first();
+            /* $customer =  Customer::with('Settings')->where('shop_url', $shop)->first();
             if ($customer->Settings) {
                 $updateSettings = Settings::where('customer_id', $customer['id'])->update([
                     'enabled_desktop' => $request->enabled_desktop,
@@ -56,6 +56,15 @@ class SettingsController extends Controller
                 ]);
             };
             if ($updateSettings) {
+                EnsureClientFile::chargeEnvironment($shop);
+            }; */
+            $customer =  Customer::where('shop_url', $shop)->first();
+            if ($customer) {
+                Settings::where('customer_id', $customer['id'])
+                    ->update([
+                        'enabled_desktop' => $request->enabled_desktop,
+                        'enabled_mobile' => $request->enabled_mobile,
+                    ]);
                 EnsureClientFile::chargeEnvironment($shop);
             };
             return response()->json([

@@ -4,6 +4,7 @@ import {
     Text,
     Checkbox,
     Modal,
+    Box,
     Select,
     Toast,
     BlockStack,
@@ -562,12 +563,14 @@ class AdditionalSettings extends Component {
             <div>
                 {loadingComponent}
                 {dataAdditionalSettings !== null ?
-                    <BlockStack gap={500}>
-                        {content_additional_settings}
-                        {modal_video_hide_slide}
-                        <ThisToast />
-                        <SaveBar equals={equals} loading={loading} action={() => this.updateAdditionalSettings(this.state)} discard={() => { this.discard(dataAdditionalSettings) }} />
-                    </BlockStack> : SkeletonBody}
+                    <Box paddingBlockEnd="400">
+                        <BlockStack gap={500}>
+                            {content_additional_settings}
+                            {modal_video_hide_slide}
+                            <ThisToast />
+                        </BlockStack>
+                    </Box> : SkeletonBody}
+                <SaveBar equals={equals} loading={loading} action={() => this.updateAdditionalSettings(this.state)} discard={() => { this.discard(dataAdditionalSettings) }} />
             </div>
         );
     }

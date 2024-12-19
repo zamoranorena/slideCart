@@ -759,12 +759,14 @@ class Rewards extends Component {
       <div>
         {loadingComponent}
         {dataRewards !== null ?
-          <BlockStack gap={500}>
-            <Toogle enabled={enabled_rewards} title='Rewards' description="Reward your customers with discounts once they spend a minimum amount." stateText='The Rewards is' activeToogle={() => this.changeStateBoolean('enabled_rewards')}></Toogle>
-            {rewards}
-            <SaveBar equals={equals} loading={loading} action={() => this.updateRewards(this.state)} discard={() => { this.discard(dataRewards) }} />
+          <Box paddingBlockEnd="400">
+            <BlockStack gap={500}>
+              <Toogle enabled={enabled_rewards} title='Rewards' description="Reward your customers with discounts once they spend a minimum amount." stateText='The Rewards is' activeToogle={() => this.changeStateBoolean('enabled_rewards')}></Toogle>
+              {rewards}
+            </BlockStack>
             <ThisToast />
-          </BlockStack>
+            <SaveBar equals={equals} loading={loading} action={() => this.updateRewards(this.state)} discard={() => { this.discard(dataRewards) }} />
+          </Box>
           : <ToogleSkeleton />}
       </div>
     );

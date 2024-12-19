@@ -298,7 +298,7 @@ class CartNote extends Component {
             <BlockStack gap={500}>
                 <Section title={'Cart Note Properties'} this_section={() => { this.setState({ section_settings_cart_note: !section_settings_cart_note }) }} status_source={section_settings_cart_note}>
                     <Box paddingBlockStart='300' paddingBlockEnd='100' width="100%">
-                        <BlockStack gap={400}>
+                        <BlockStack gap={300}>
                             <Checkbox
                                 label={<Titles text="Select if you want the note to appear open when you start the cart." />}
                                 checked={cart_note_show_ini}
@@ -320,50 +320,46 @@ class CartNote extends Component {
                                 value={cart_note_placeholder}
                                 onChange={(value) => { this.handleChange(value, "cart_note_placeholder") }}
                             />
-                            <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                                <FieldColor
-                                    labelColor={<Titles text='Heading Font Color' />}
-                                    textValue={cart_note_heading_color_hex || '000000'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "cart_note_heading_color_hex", "cart_note_heading_color") }}
-                                    activePop={popoverCNFont}
-                                    activadorPop={activator_cart_note_font}
-                                    closePop={() => { this.handlePopover("popoverCNFont", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "cart_note_heading_color", "cart_note_heading_color_hex") }}
-                                    colorPicker={cart_note_heading_color}
-                                />
-                                <Select
-                                    label={<Titles text='Font Size' />}
-                                    options={options_font_size}
-                                    value={cart_note_font_size}
-                                    onChange={(value) => { this.handleChange(value, "cart_note_font_size") }}
-                                />
-                                <Select
-                                    label={<Titles text='Text transform' />}
-                                    options={options_transform}
-                                    value={cart_note_text_transform}
-                                    onChange={(value) => { this.handleChange(value, "cart_note_text_transform") }}
-                                />
-                                <Select
-                                    label={<Titles text='Font weight' />}
-                                    options={options_weight}
-                                    value={cart_note_font_weight}
-                                    onChange={(value) => { this.handleChange(value, "cart_note_font_weight") }}
-                                />
-                            </InlineGrid>
+                            <FieldColor
+                                labelColor={<Titles text='Heading Font Color' />}
+                                textValue={cart_note_heading_color_hex || '000000'}
+                                changeColorText={(value) => { this.handleOnChangeColor(value, "cart_note_heading_color_hex", "cart_note_heading_color") }}
+                                activePop={popoverCNFont}
+                                activadorPop={activator_cart_note_font}
+                                closePop={() => { this.handlePopover("popoverCNFont", 0) }}
+                                changeColorPicker={(value) => { this.handleColors(value, "cart_note_heading_color", "cart_note_heading_color_hex") }}
+                                colorPicker={cart_note_heading_color}
+                            />
+                            <Select
+                                label={<Titles text='Font Size' />}
+                                options={options_font_size}
+                                value={cart_note_font_size}
+                                onChange={(value) => { this.handleChange(value, "cart_note_font_size") }}
+                            />
+                            <Select
+                                label={<Titles text='Text transform' />}
+                                options={options_transform}
+                                value={cart_note_text_transform}
+                                onChange={(value) => { this.handleChange(value, "cart_note_text_transform") }}
+                            />
+                            <Select
+                                label={<Titles text='Font weight' />}
+                                options={options_weight}
+                                value={cart_note_font_weight}
+                                onChange={(value) => { this.handleChange(value, "cart_note_font_weight") }}
+                            />
                         </BlockStack>
                     </Box>
                 </Section>
                 <Section title={'Additional Cart Note Static'} this_section={() => { this.setState({ section_additional_cart_note: !section_additional_cart_note }) }} status_source={section_additional_cart_note}>
                     <Box paddingBlockStart='300' paddingBlockEnd='100' width="100%">
-                        <BlockStack gap={400}>
-                            <InlineStack align="center">
-                                <Checkbox
-                                    label={<Titles text='Enabled static cart note.' />}
-                                    checked={cart_note_additional}
-                                    onChange={() => this.changeStateBoolean("cart_note_additional")}
-                                    helpText='The indicated text is added to the shopping cart note.'
-                                />
-                            </InlineStack>
+                        <BlockStack gap={300}>
+                            <Checkbox
+                                label={<Titles text='Enabled static cart note.' />}
+                                checked={cart_note_additional}
+                                onChange={() => this.changeStateBoolean("cart_note_additional")}
+                                helpText='The indicated text is added to the shopping cart note.'
+                            />
                             <TextField
                                 label={<Titles text='Check Text' />}
                                 value={cart_note_additional_text}
@@ -374,24 +370,22 @@ class CartNote extends Component {
                                 value={cart_note_additional_message}
                                 onChange={(value) => { this.handleChange(value, "cart_note_additional_message") }}
                             />
-                            <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                                <Select
-                                    label={<Titles text='Font Size' />}
-                                    options={options_font_size}
-                                    value={cart_note_additional_font_size}
-                                    onChange={(value) => { this.handleChange(value, "cart_note_additional_font_size") }}
-                                />
-                                <FieldColor
-                                    labelColor={<Titles text='Check Text Font Color' />}
-                                    textValue={cart_note_additional_color_hex || '000000'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "cart_note_additional_color_hex", "cart_note_additional_color") }}
-                                    activePop={popoverCANFont}
-                                    activadorPop={activator_cart_additional_note_font}
-                                    closePop={() => { this.handlePopover("popoverCANFont", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "cart_note_additional_color", "cart_note_additional_color_hex") }}
-                                    colorPicker={cart_note_additional_color}
-                                />
-                            </InlineGrid>
+                            <Select
+                                label={<Titles text='Font Size' />}
+                                options={options_font_size}
+                                value={cart_note_additional_font_size}
+                                onChange={(value) => { this.handleChange(value, "cart_note_additional_font_size") }}
+                            />
+                            <FieldColor
+                                labelColor={<Titles text='Check Text Font Color' />}
+                                textValue={cart_note_additional_color_hex || '000000'}
+                                changeColorText={(value) => { this.handleOnChangeColor(value, "cart_note_additional_color_hex", "cart_note_additional_color") }}
+                                activePop={popoverCANFont}
+                                activadorPop={activator_cart_additional_note_font}
+                                closePop={() => { this.handlePopover("popoverCANFont", 0) }}
+                                changeColorPicker={(value) => { this.handleColors(value, "cart_note_additional_color", "cart_note_additional_color_hex") }}
+                                colorPicker={cart_note_additional_color}
+                            />
                         </BlockStack>
                     </Box>
                 </Section>
@@ -411,13 +405,17 @@ class CartNote extends Component {
             <div>
                 {loadingComponent}
                 {dataCartNote !== null ?
-                    <BlockStack gap={500}>
-                        <Toogle enabled={enabled_cart_note} title='Cart Note' description="Add the option to have a note field to your slide cart. The use of this function is very flexible." stateText='The cart note is' activeToogle={() => this.changeStateBoolean('enabled_cart_note')}></Toogle>
-                        {content_cart_note}
+                    <Box paddingBlockEnd="400">
+                        <BlockStack gap={500}>
+                            <Toogle enabled={enabled_cart_note} title='Cart Note' description="Add the option to have a note field to your slide cart. The use of this function is very flexible." stateText='The cart note is' activeToogle={() => this.changeStateBoolean('enabled_cart_note')}></Toogle>
+                            {content_cart_note}
+                        </BlockStack>
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCartNote(this.state)} discard={() => { this.discard(dataCartNote) }} />
-                    </BlockStack> : <ToogleSkeleton />}
+                    </Box>
+                    : <ToogleSkeleton />}
             </div>
+
         );
     }
     changeStateBoolean = (thisSate) => {

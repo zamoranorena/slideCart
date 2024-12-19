@@ -470,55 +470,14 @@ class Announcement extends Component {
             </FormLayout>
         </Card>; */
 
-        const announcement =
-            <FormLayout>
-                {/* <Card roundedAbove="sm">
-                    <Box minWidth="fit-content">
-                        <InlineGrid columns="1fr auto">
-                            <Text as="h2" variant="headingSm">
-                                Announcement Tiers
-                            </Text>
-                            <Button onClick={() => { this.setState({ announcement_collapsible_tiers: !announcement_collapsible_tiers }) }} icon={<Icon
-                                source={announcement_collapsible_tiers ? ChevronUpIcon : ChevronDownIcon}
-                                color="base" />} variant="plain" ></Button>
-                        </InlineGrid>
-                    </Box>
-                    <Collapsible
-                        open={announcement_collapsible_tiers}
-                        id="basic-collapsible"
-                        transition={{ duration: '300ms', timingFunction: 'ease-in-out' }}
-                        expandOnPrint
-                    >
-                        
-                    </Collapsible>
-                </Card> 
-                <Card roundedAbove="sm">
-                    <Box minWidth="fit-content">
-                        <InlineGrid columns="1fr auto">
-                            <Text as="h2" variant="headingSm">
-                                Announcement Settings
-                            </Text>
-                            <Button onClick={() => { this.setState({ announcement_collapsible_settings: !announcement_collapsible_settings }) }} icon={<Icon
-                                source={announcement_collapsible_settings ? ChevronUpIcon : ChevronDownIcon}
-                                color="base" />} variant="plain" ></Button>
-                        </InlineGrid>
-                    </Box>
-                    <Collapsible
-                        open={announcement_collapsible_settings}
-                        id="basic-collapsible"
-                        transition={{ duration: '300ms', timingFunction: 'ease-in-out' }}
-                        expandOnPrint
-                    >
-                        {announcement_settings}
-                    </Collapsible>
-                </Card>*/}
-                <Section title={'Announcement Tiers'} this_section={() => { this.setState({ announcement_collapsible_tiers: !announcement_collapsible_tiers }) }} status_source={announcement_collapsible_tiers}>
-                    {announcement_tiers_full}
-                </Section>
-                <Section title={'Announcement Settings'} this_section={() => { this.setState({ announcement_collapsible_settings: !announcement_collapsible_settings }) }} status_source={announcement_collapsible_settings}>
-                    {announcement_settings}
-                </Section>
-            </FormLayout>;
+        const announcement_tiers_content = <Section title={'Announcement Tiers'} this_section={() => { this.setState({ announcement_collapsible_tiers: !announcement_collapsible_tiers }) }} status_source={announcement_collapsible_tiers}>
+            {announcement_tiers_full}
+        </Section>;
+        
+        const announcement_settings_content = <Section title={'Announcement Settings'} this_section={() => { this.setState({ announcement_collapsible_settings: !announcement_collapsible_settings }) }} status_source={announcement_collapsible_settings}>
+            {announcement_settings}
+        </Section>;
+  
 
         const ThisToast = () => {
             return (
@@ -534,12 +493,15 @@ class Announcement extends Component {
             <div>
                 {loadingComponent}
                 {dataAnnouncement !== null ?
-                    <BlockStack gap={500}>
-                        <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle>
-                        {announcement}
-                        <SaveBar equals={equals} loading={loading} action={() => this.updateAnnouncement(this.state)} discard={() => { this.discard(dataAnnouncement) }} />
+                    <Box paddingBlockEnd="400">
+                        <BlockStack gap={500}>
+                            <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle>
+                            {announcement_tiers_content}
+                            {announcement_settings_content}
+                        </BlockStack>
                         <ThisToast />
-                    </BlockStack>
+                        <SaveBar equals={equals} loading={loading} action={() => this.updateAnnouncement(this.state)} discard={() => { this.discard(dataAnnouncement) }} />
+                    </Box>
                     : <ToogleSkeleton />}
             </div>
         )

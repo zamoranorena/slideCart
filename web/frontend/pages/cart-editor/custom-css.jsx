@@ -158,27 +158,29 @@ class CustomCss extends Component {
 
     const loadingComponent = loading ? <Loading /> : null;
     return (
-      (typeof dataCustomCss.dataCustomCss === 'undefined') ? skeletonCustom :
-        <div>
-          {loadingComponent}
-          <BlockStack gap="500">
-            <Card>
-              <BlockStack gap={200}>
-                <Text variant="headingLg" as="h5">
-                  Custom CSS (styles)
-                </Text>
-                <Text>
-                  The CSS code will be applied to the different components that you indicate, it is recommended to be specific and if necessary assign the "!important" property. Without the need to place the <style></style> tags
-                </Text>
-              </BlockStack>
-            </Card>
-            <Card padding={0}>
-              <EditorCode value={customCss} language='css' changeState={(value) => this.setState({ customCss: value })} />
-            </Card>
-            <SaveBar equals={equals} loading={loading} action={() => this.updateCustom(this.state)} discard={this.discard} />
-          </BlockStack>
-          <ThisToast />
-        </div>
+      <div>
+        {loadingComponent}
+        {typeof dataCustomCss.dataCustomCss !== 'undefined' ?
+          <Box paddingBlockEnd="400">
+            <BlockStack gap="500">
+              <Card>
+                <BlockStack gap={200}>
+                  <Text variant="headingLg" as="h5">
+                    Custom CSS (styles)
+                  </Text>
+                  <Text>
+                    The CSS code will be applied to the different components that you indicate, it is recommended to be specific and if necessary assign the "!important" property. Without the need to place the <style></style> tags
+                  </Text>
+                </BlockStack>
+              </Card>
+              <Card padding={0}>
+                <EditorCode value={customCss} language='css' changeState={(value) => this.setState({ customCss: value })} />
+              </Card>
+            </BlockStack>
+          </Box> : skeletonCustom}
+        <SaveBar equals={equals} loading={loading} action={() => this.updateCustom(this.state)} discard={this.discard} />
+        <ThisToast />
+      </div>
     );
 
   }

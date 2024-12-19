@@ -185,18 +185,20 @@ class Settings extends Component {
     const loadingComponent = loading ? <Loading /> : null;
     return (
       <div>
-      {loadingComponent}
-      {dataSettings !== null ?
-          <BlockStack gap={500}>
-            <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
-              <Toogle enabled={enabled_desktop} title='Desktop' description='Enable or disable the app for desktop users.' stateText='The Slide Cart in desktop is' activeToogle={() => this.changeStateBoolean('enabled_desktop')} />
-              <Toogle enabled={enabled_mobile} title='Mobile' description='Enable or disable the app for mobile users.' stateText='The Slide Cart in mobile is' activeToogle={() => this.changeStateBoolean('enabled_mobile')} />
-            </InlineGrid>
-          </BlockStack>
-         : skeletonCustom}
+        {loadingComponent}
+        {dataSettings !== null ?
+          <Box paddingBlockEnd="400">
+            <BlockStack gap={500}>
+              <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2 }}>
+                <Toogle enabled={enabled_desktop} title='Desktop' description='Enable or disable the app for desktop users.' stateText='The Slide Cart in desktop is' activeToogle={() => this.changeStateBoolean('enabled_desktop')} />
+                <Toogle enabled={enabled_mobile} title='Mobile' description='Enable or disable the app for mobile users.' stateText='The Slide Cart in mobile is' activeToogle={() => this.changeStateBoolean('enabled_mobile')} />
+              </InlineGrid>
+            </BlockStack>
+          </Box>
+          : skeletonCustom}
         <ThisToast />
         <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
-         </div>
+      </div>
     );
 
   }

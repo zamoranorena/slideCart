@@ -158,21 +158,23 @@ class CustomJs extends Component {
             (typeof dataCustomJs.dataCustomJs === 'undefined') ? skeletonCustom :
                 <div>
                     {loadingComponent}
-                    <BlockStack gap="500">
-                        <Card>
-                            <BlockStack gap={200}>
-                                <Text variant="headingLg" as="h5">
-                                    Custom JavaScript
-                                </Text>
-                                <Text>
-                                    The JS code will be applied. Without the need to place <script></script> tags
-                                </Text>
-                            </BlockStack>
-                        </Card>
-                        <Card padding={0}>
-                            <EditorCode value={customJs} language='javascript' changeState={(value) => this.setState({ customJs: value })} />
-                        </Card>
-                    </BlockStack>
+                    <Box paddingBlockEnd="400">
+                        <BlockStack gap="500">
+                            <Card>
+                                <BlockStack gap={200}>
+                                    <Text variant="headingLg" as="h5">
+                                        Custom JavaScript
+                                    </Text>
+                                    <Text>
+                                        The JS code will be applied. Without the need to place <script></script> tags
+                                    </Text>
+                                </BlockStack>
+                            </Card>
+                            <Card padding={0}>
+                                <EditorCode value={customJs} language='javascript' changeState={(value) => this.setState({ customJs: value })} />
+                            </Card>
+                        </BlockStack>
+                    </Box>
                     <SaveBar equals={equals} loading={loading} action={() => this.updateCustom(this.state)} discard={this.discard} />
                     <ThisToast />
                 </div>

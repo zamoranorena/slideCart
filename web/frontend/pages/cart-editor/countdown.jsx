@@ -443,10 +443,10 @@ class Countdown extends Component {
                         <BlockStack gap={500}>
                             <Toogle enabled={enabled_countdown} title='Countdown' description="Reduce cart abandonments by adding urgency to your store and watch your sales increase." stateText='The Countdown is' activeToogle={() => this.changeStateBoolean('enabled_countdown')}></Toogle>
                             {countdown}
-                            <ThisToast />
                         </BlockStack>
+                        <ThisToast />
+                        <SaveBar equals={equals} loading={loading} action={() => this.updateCountdown(this.state)} discard={() => { this.discard(dataCountdown) }} />
                     </Box> : <ToogleSkeleton />}
-                    <SaveBar equals={equals} loading={loading} action={() =>  this.updateCountdown(this.state)} discard={() => { this.discard(dataCountdown) }} />
             </div>
         );
     }

@@ -875,15 +875,17 @@ class CartEmpty extends Component {
       <div>
         {loadingComponent}
         {dataCartEmpty !== null ?
-          <BlockStack gap={500}>
-            <Toogle enabled={enabled_cart_empty} title='Cart Empty' description='Configuration when cart is empty.' stateText='The Cart Empty is' activeToogle={() => this.changeStateBoolean('enabled_cart_empty')}>{section_cart_empty}
-            </Toogle>
-          </BlockStack>
+          <Box paddingBlockEnd="400">
+            <BlockStack gap={500}>
+              <Toogle enabled={enabled_cart_empty} title='Cart Empty' description='Configuration when cart is empty.' stateText='The Cart Empty is' activeToogle={() => this.changeStateBoolean('enabled_cart_empty')}>{section_cart_empty}
+              </Toogle>
+            </BlockStack>
+            <ThisToast />
+            <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
+            {resourcePickerUpsell}
+            {activeModalCustomize ? <CustomizeUpsells active={activeModalCustomize} closeModal={() => { this.setState({ activeModalCustomize: 0 }) }} /> : null}
+          </Box>
           : <ToogleSkeleton />}
-        <ThisToast />
-        <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
-        {resourcePickerUpsell}
-        {activeModalCustomize ? <CustomizeUpsells active={activeModalCustomize} closeModal={() => { this.setState({ activeModalCustomize: 0 }) }} /> : null}
       </div>
     );
 
