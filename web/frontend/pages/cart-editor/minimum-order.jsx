@@ -5,6 +5,8 @@ import {
     Select,
     InlineGrid,
     InlineStack,
+    ButtonGroup,
+    Button,
     RadioButton,
     InlineCode,
     Toast,
@@ -222,7 +224,15 @@ class Minimum_Order extends Component {
                     <BlockStack gap={200}>
                         <Text as="h1" variant="headingMd">Settings</Text>
                         <BlockStack gap={400}>
-                            <InlineStack align="center" gap={200}>
+                            <ButtonGroup variant="segmented">
+                                <Button pressed={parseInt(minimum_order_option) == 0} onClick={() => this.handleChange(0, "minimum_order_option")}>
+                                    Money
+                                </Button>
+                                <Button pressed={parseInt(minimum_order_option) == 1} onClick={() => this.handleChange(1, "minimum_order_option")}>
+                                    Quantity
+                                </Button>
+                            </ButtonGroup>
+                            {/* <InlineStack align="center" gap={200}>
                                 <RadioButton
                                     label="Money"
                                     checked={parseInt(minimum_order_option) == 0}
@@ -235,7 +245,7 @@ class Minimum_Order extends Component {
                                     name="accounts"
                                     onChange={() => { this.handleChange(1, "minimum_order_option") }}
                                 />
-                            </InlineStack>
+                            </InlineStack> */}
                             <TextField
                                 label={<Titles text='Enter minimum order' />}
                                 type="number"

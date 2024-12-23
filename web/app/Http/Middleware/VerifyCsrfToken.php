@@ -15,6 +15,5 @@ class VerifyCsrfToken extends Middleware
         'api/graphql',
         'api/webhooks',
         'webhooks/*', 
-        'payment_badges/*',
     ];
 }

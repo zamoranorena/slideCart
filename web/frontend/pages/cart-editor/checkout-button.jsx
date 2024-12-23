@@ -1,13 +1,16 @@
 import React from "react";
 import {
+    ActionList,
     Card,
     Box,
     Checkbox,
+    Icon,
     Select,
     Button,
     Divider,
     Modal,
     InlineStack,
+    Popover,
     Banner,
     InlineGrid,
     RadioButton,
@@ -19,9 +22,9 @@ import {
     hsbToHex,
     rgbToHsb
 } from '@shopify/polaris';
-
+import { MarketsIcon } from '@shopify/polaris-icons';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, ToolInfo, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, ToolInfo, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -45,10 +48,14 @@ class Checkout_Button extends React.Component {
             /* money_format: null, */
             toas: null,
             messageError: '',
+            popoverEnabled: 0,
             popoverCheckout: null,
             popoverCheckout2: null,
             popoverCheckout3: null,
             popoverCheckout4: null,
+            checkout_button_settings:1,
+            checkout_button_properties:1,
+            checkout_button_properties_text:1,
             modal: false,
             loading: true,
             enabled_checkout_button: null,
@@ -345,10 +352,14 @@ class Checkout_Button extends React.Component {
             dataCheckoutButton,
             toast,
             messageError,
+            popoverEnabled,
             popoverCheckout,
             popoverCheckout2,
             popoverCheckout3,
             popoverCheckout4,
+            checkout_button_settings,
+            checkout_button_properties,
+            checkout_button_properties_text,
             modal,
             loading,
             enabled_checkout_button,
@@ -392,138 +403,120 @@ class Checkout_Button extends React.Component {
         const activator = <div ref={this.yourRef} ><Button variant='primary' tone="success" onClick={() => this.changeStateBoolean("modal")}>Select Icon</Button></div>;
 
         const content_checkout_button =
-                <BlockStack gap={500}>
-                    <Card>
-                        <InlineStack gap={500} align="center">
-                            <Checkbox
-                                label={<ToolInfo title ={<Titles text="Show lock icon" />} description='The icon will take the same color as the configured text.' />}
-                                checked={checkout_button_icon_enabled}
-                                onChange={() => this.changeStateBoolean("checkout_button_icon_enabled")}
-                            />
-                            <div className='icon'>
+            <BlockStack gap={500}>
+                <Section title={'General Settings'} this_section={() => { this.setState({ checkout_button_settings: !checkout_button_settings }) }} status_source={checkout_button_settings}>
+                    <InlineStack gap={500} align="center">
+                        <Checkbox
+                            label={<ToolInfo title={<Titles text="Show lock icon" />} description='The icon will take the same color as the configured text.' />}
+                            checked={checkout_button_icon_enabled}
+                            onChange={() => this.changeStateBoolean("checkout_button_icon_enabled")}
+                        />
+                        <div className='icon'>
+                            <InlineStack gap="400" wrap={false} blockAlign="center" align="center">
                                 <InlineStack gap="400" wrap={false} blockAlign="center" align="center">
-                                    <InlineStack gap="400" wrap={false} blockAlign="center" align="center">
-                                        <div id='content' style={{ background: '#' + checkout_button_background_color_hex, display: 'inherit', padding: '2px' }}>
-                                        </div>
-                                        <Modal
-                                            activator={activator}
-                                            open={modal}
-                                            onClose={() => this.changeStateBoolean("modal")}
-                                            title="Select the icon of your preference"
-                                            secondaryActions={[
-                                                {
-                                                    content: 'Cancel',
-                                                    onAction: () => this.changeStateBoolean("modal"),
-                                                },
-                                            ]}
-                                        >
-                                            <Modal.Section>
-                                                <InlineGrid gap="400" columns={11}>
-                                                    {dataCheckoutButton !== null ? dataCheckoutButton.icons.map((el, i) => (
-                                                        <Button key={i} id={'button' + i} icon={el.icon} onClick={() => this.iconChange(el.icon, el.id)}></Button>
-                                                    )) : ''}
-                                                </InlineGrid>
-                                            </Modal.Section>
-                                        </Modal>
-                                    </InlineStack>
-                                </InlineStack >
-                            </div>
-                        </InlineStack>
-                    </Card>
-                <Card>
-                    <BlockStack gap={200}>
-                        <Text as="h1" variant="headingMd">
-                            Text Properties
-                        </Text>
-                        <BlockStack gap={500}>
-                            <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2 }}>
-                                <TextField
-                                    label={<Titles text='Button name ( Checkout )' />}
-                                    value={checkout_button_text}
-                                    onChange={(value) => { this.handleChange(value, "checkout_button_text") }}
-                                    maxLength={250}
-                                />
-                                <Select
-                                    label={<Titles text='Checkout Button Text Font Size:' />}
-                                    options={options_font_size}
-                                    value={checkout_button_text_font_size}
-                                    onChange={(value) => { this.handleChange(value, "checkout_button_text_font_size") }}
-                                />
-                                <Select
-                                    label={<Titles text='Checkout Button Text transform:' />}
-                                    options={options_transform}
-                                    value={checkout_button_text_transform}
-                                    onChange={(value) => { this.handleChange(value, "checkout_button_text_transform") }}
-                                />
-                                <Select
-                                    label={<Titles text='Checkout Button Text Font weight:' />}
-                                    options={options_weight}
-                                    value={checkout_button_text_weight}
-                                    onChange={(value) => { this.handleChange(value, "checkout_button_text_weight") }}
-                                />
-                                <FieldColor
-                                    labelColor={<Titles text='Checkout Button - Text Color' />}
-                                    textValue={checkout_button_text_color_hex || 'ffffff'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_text_color_hex", "checkout_button_text_color") }}
-                                    activePop={popoverCheckout}
-                                    activadorPop={activator_checkout_button_text_color}
-                                    closePop={() => { this.handlePopover("popoverCheckout", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "checkout_button_text_color", "checkout_button_text_color_hex") }}
-                                    colorPicker={checkout_button_text_color}
-                                />
-                                <FieldColor
-                                    labelColor={<Titles text='Checkout Button - Text Color Hover' />}
-                                    textValue={checkout_button_text_colorHover_hex || 'ffffff'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_text_colorHover_hex", "checkout_button_text_colorHover") }}
-                                    activePop={popoverCheckout2}
-                                    activadorPop={activator_checkout_button_text_colorHover}
-                                    closePop={() => { this.handlePopover("popoverCheckout2", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "checkout_button_text_colorHover", "checkout_button_text_colorHover_hex") }}
-                                    colorPicker={checkout_button_text_colorHover}
-                                />
-                            </InlineGrid>
-                        </BlockStack>
-                    </BlockStack>
-                </Card>
-                    <Card>
-                    <BlockStack gap={200}>
-                        <Text as="h1" variant="headingMd">
-                            Button Properties
-                        </Text>
-                        <BlockStack gap={400}>
-                            <Select
-                                label={<Titles text='Checkout Button Border Radius:' />}
-                                options={options_border_radius}
-                                value={checkout_button_border}
-                                onChange={(value) => { this.handleChange(value, "checkout_button_border") }}
-                            />
-                            <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                                <FieldColor
-                                    labelColor={<Titles text='Checkout Button Background Color' />}
-                                    textValue={checkout_button_background_color_hex || '000000'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_background_color_hex", "checkout_button_background_color") }}
-                                    activePop={popoverCheckout3}
-                                    activadorPop={activator_checkout_button_background_color}
-                                    closePop={() => { this.handlePopover("popoverCheckout3", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "checkout_button_background_color", "checkout_button_background_color_hex") }}
-                                    colorPicker={checkout_button_background_color}
-                                />
-                                <FieldColor
-                                    labelColor={<Titles text='Checkout Button Background Color Hover' />}
-                                    textValue={checkout_button_background_colorHover_hex || '000000'}
-                                    changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_background_colorHover_hex", "checkout_button_background_colorHover") }}
-                                    activePop={popoverCheckout4}
-                                    activadorPop={activator_checkout_button_background_colorHover}
-                                    closePop={() => { this.handlePopover("popoverCheckout4", 0) }}
-                                    changeColorPicker={(value) => { this.handleColors(value, "checkout_button_background_colorHover", "checkout_button_background_colorHover_hex") }}
-                                    colorPicker={checkout_button_background_colorHover}
-                                />
-                            </InlineGrid>
-                        </BlockStack>
-                    </BlockStack>
-                </Card>
-            </BlockStack>;
-
+                                    <div id='content' style={{ background: '#' + checkout_button_background_color_hex, display: 'inherit', padding: '2px' }}>
+                                    </div>
+                                    <Modal
+                                        activator={activator}
+                                        open={modal}
+                                        onClose={() => this.changeStateBoolean("modal")}
+                                        title="Select the icon of your preference"
+                                        secondaryActions={[
+                                            {
+                                                content: 'Cancel',
+                                                onAction: () => this.changeStateBoolean("modal"),
+                                            },
+                                        ]}
+                                    >
+                                        <Modal.Section>
+                                            <InlineGrid gap="400" columns={11}>
+                                                {dataCheckoutButton !== null ? dataCheckoutButton.icons.map((el, i) => (
+                                                    <Button key={i} id={'button' + i} icon={el.icon} onClick={() => this.iconChange(el.icon, el.id)}></Button>
+                                                )) : ''}
+                                            </InlineGrid>
+                                        </Modal.Section>
+                                    </Modal>
+                                </InlineStack>
+                            </InlineStack >
+                        </div>
+                    </InlineStack>
+                </Section>
+                <Section title={'Text Properties'} this_section={() => { this.setState({ checkout_button_properties_text: !checkout_button_properties_text }) }} status_source={checkout_button_properties_text}>
+                    <TextField
+                        label={<Titles text='Button name ( Checkout )' />}
+                        value={checkout_button_text}
+                        onChange={(value) => { this.handleChange(value, "checkout_button_text") }}
+                        maxLength={250}
+                    />
+                    <Select
+                        label={<Titles text='Checkout Button Text Font Size:' />}
+                        options={options_font_size}
+                        value={checkout_button_text_font_size}
+                        onChange={(value) => { this.handleChange(value, "checkout_button_text_font_size") }}
+                    />
+                    <Select
+                        label={<Titles text='Checkout Button Text transform:' />}
+                        options={options_transform}
+                        value={checkout_button_text_transform}
+                        onChange={(value) => { this.handleChange(value, "checkout_button_text_transform") }}
+                    />
+                    <Select
+                        label={<Titles text='Checkout Button Text Font weight:' />}
+                        options={options_weight}
+                        value={checkout_button_text_weight}
+                        onChange={(value) => { this.handleChange(value, "checkout_button_text_weight") }}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Checkout Button - Text Color' />}
+                        textValue={checkout_button_text_color_hex || 'ffffff'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_text_color_hex", "checkout_button_text_color") }}
+                        activePop={popoverCheckout}
+                        activadorPop={activator_checkout_button_text_color}
+                        closePop={() => { this.handlePopover("popoverCheckout", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "checkout_button_text_color", "checkout_button_text_color_hex") }}
+                        colorPicker={checkout_button_text_color}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Checkout Button - Text Color Hover' />}
+                        textValue={checkout_button_text_colorHover_hex || 'ffffff'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_text_colorHover_hex", "checkout_button_text_colorHover") }}
+                        activePop={popoverCheckout2}
+                        activadorPop={activator_checkout_button_text_colorHover}
+                        closePop={() => { this.handlePopover("popoverCheckout2", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "checkout_button_text_colorHover", "checkout_button_text_colorHover_hex") }}
+                        colorPicker={checkout_button_text_colorHover}
+                    />
+                </Section>
+                <Section title={'Button Properties'} this_section={() => { this.setState({ checkout_button_properties: !checkout_button_properties }) }} status_source={checkout_button_properties}>
+                    <Select
+                        label={<Titles text='Checkout Button Border Radius:' />}
+                        options={options_border_radius}
+                        value={checkout_button_border}
+                        onChange={(value) => { this.handleChange(value, "checkout_button_border") }}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Checkout Button Background Color' />}
+                        textValue={checkout_button_background_color_hex || '000000'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_background_color_hex", "checkout_button_background_color") }}
+                        activePop={popoverCheckout3}
+                        activadorPop={activator_checkout_button_background_color}
+                        closePop={() => { this.handlePopover("popoverCheckout3", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "checkout_button_background_color", "checkout_button_background_color_hex") }}
+                        colorPicker={checkout_button_background_color}
+                    />
+                    <FieldColor
+                        labelColor={<Titles text='Checkout Button Background Color Hover' />}
+                        textValue={checkout_button_background_colorHover_hex || '000000'}
+                        changeColorText={(value) => { this.handleOnChangeColor(value, "checkout_button_background_colorHover_hex", "checkout_button_background_colorHover") }}
+                        activePop={popoverCheckout4}
+                        activadorPop={activator_checkout_button_background_colorHover}
+                        closePop={() => { this.handlePopover("popoverCheckout4", 0) }}
+                        changeColorPicker={(value) => { this.handleColors(value, "checkout_button_background_colorHover", "checkout_button_background_colorHover_hex") }}
+                        colorPicker={checkout_button_background_colorHover}
+                    />
+                </Section>
+            </BlockStack>
+           
         const ThisToast = () => {
             return (
                 toast ?
@@ -556,13 +549,49 @@ class Checkout_Button extends React.Component {
       <div className='bannerSettings'>
       
       </div>: null; */
+
+      const items =[
+          {
+              active: enabled_checkout_button,
+              content: 'Enabled',
+              /* icon: ImportIcon,
+              suffix: <Icon source={CheckSmallIcon} />, */
+          },
+          {
+              active: !enabled_checkout_button,
+              content: 'Disabled',
+              /* icon: ImportIcon,
+              suffix: <Icon source={CheckSmallIcon} />, */
+          }
+      ];
+
       const loadingComponent = loading ? <Loading /> : null;
         return (
             <div>
                 {loadingComponent}
                 {dataCheckoutButton !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_checkout_button} title='Checkout Button' description="The checkout button is available on the slide cart to give buyers a way to enter the checkout process." stateText='The Checkout Button is' action={emptyButton} activeToogle={() => this.changeStateBoolean('enabled_checkout_button')}></Toogle>
+                        {/* <Toogle enabled={enabled_checkout_button} title='Checkout Button' description="The checkout button is available on the slide cart to give buyers a way to enter the checkout process." stateText='The Checkout Button is' action={emptyButton} activeToogle={() => this.changeStateBoolean('enabled_checkout_button')}></Toogle> */}
+                        <InlineStack
+                            gap="1200"
+                            align="space-between"
+                            blockAlign="start"
+                            wrap={false}
+                        >
+                            <InlineStack gap={50}>
+                                <Icon source={MarketsIcon} />
+                                <Text variant="headingSm" as="h6">Chekcout Button</Text>
+                            </InlineStack>
+                            <Popover
+                                active={popoverEnabled}
+                                activator={<Button variant="monochromePlain" disclosure onClick={() => {this.setState({popoverEnabled: !popoverEnabled}) }}>
+                                    View Sales
+                                </Button>}
+                                onClose={() => { }}
+                            >
+                                <ActionList items={items} />
+                            </Popover>
+                        </InlineStack>
                         {bannerMinimum}
                         {content_checkout_button}
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCheckoutButton(this.state)} discard={() => { this.discard(dataCheckoutButton) }} />
