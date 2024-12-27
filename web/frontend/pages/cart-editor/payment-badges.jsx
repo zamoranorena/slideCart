@@ -11,7 +11,7 @@ import {
     SkeletonTabs,
     BlockStack
 } from '@shopify/polaris';
-import { Toogle, SaveBar, Titles, ToogleSkeleton } from "@components/";
+import { Toogle, SaveBar, Titles, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -20,6 +20,7 @@ class Payment_Badges extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             dataPaymentBadges: null,
             loading: true,
             enabled_payment_badges: true,
@@ -170,6 +171,7 @@ class Payment_Badges extends Component {
 
     render() {
         const {
+            popoverEnabled,
             dataPaymentBadges,
             loading,
             enabled_payment_badges,
@@ -186,7 +188,7 @@ class Payment_Badges extends Component {
             <div className='bannerPayments'>
                 <Banner
                     title="Payment Badges"
-                    tone="warning"
+                    /* tone="warning" */
                 >
                     <Text>We recommend a 450px X 50px image.</Text>
                 </Banner>
@@ -211,7 +213,7 @@ class Payment_Badges extends Component {
                     </EmptyState>
                 ))
             );
-        const imagecss =  url_img_host || file_payment.length > 0 ? ' hs_payment_image' : '';
+        const imagecss = url_img_host || file_payment.length > 0 ? ' hs_payment_image' : '';
         const payment_badges =
             <Card>
                 <BlockStack gap={200}>
@@ -235,18 +237,22 @@ class Payment_Badges extends Component {
             );
         };
         const loadingComponent = loading ? <Loading /> : null;
-       
+
         return (
             <div>
                 {loadingComponent}
                 {dataPaymentBadges === null ? <ToogleSkeleton /> :
-                <BlockStack gap={500}>
-                    <Toogle enabled={enabled_payment_badges} title='Payment Badges' description="Trust badges are an important element to add to your arsenal of trust building techniques- they are an element of the certification social proof, and can help you improve your store's conversion rate." stateText='The payment badges are' activeToogle={() => this.changeStateBoolean('enabled_payment_badges')}></Toogle>
-                    {banner_payments}
-                    {payment_badges}
-                    <ThisToast />
-                    <SaveBar equals={equals} loading={loading} action={() => this.updatePayment(this.state)} discard={() => { this.discard() }} />
-                </BlockStack>}
+                    <BlockStack gap={500}>
+                        {/* <Toogle enabled={enabled_payment_badges} title='Payment Badges' description="Trust badges are an important element to add to your arsenal of trust building techniques- they are an element of the certification social proof, and can help you improve your store's conversion rate." stateText='The payment badges are' activeToogle={() => this.changeStateBoolean('enabled_payment_badges')}></Toogle> */}
+                        <StatusModule module='payment_badges' enabled={enabled_payment_badges} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_payment_badges: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_payment_badges: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_payment_badges ?
+                            <StatusModuleBanner module='payment_badges' onAction={() => { this.setState({ enabled_payment_badges: 1 }) }} />
+                            : null}
+                        {banner_payments}
+                        {payment_badges}
+                        <ThisToast />
+                        <SaveBar equals={equals} loading={loading} action={() => this.updatePayment(this.state)} discard={() => { this.discard() }} />
+                    </BlockStack>}
             </div>
         );
     }

@@ -12,7 +12,7 @@ import {
     rgbToHsb
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -29,6 +29,7 @@ class ContinueShopping extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             popoverContinue: false,
             popoverContinue2: false,
             messageError: '',
@@ -217,6 +218,7 @@ class ContinueShopping extends Component {
     render() {
 
         const {
+            popoverEnabled,
             popoverContinue,
             popoverContinue2,
             messageError,
@@ -327,7 +329,11 @@ class ContinueShopping extends Component {
                 {loadingComponent}
                 {dataContinueShopping !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_continue_shopping} title='Continue Shopping' description="Continue shopping is available in the sliding cart so that buyers can go to the link you provide, if you do not add any links, the button will only serve to close the slide cart." stateText='The Continue Shopping is' activeToogle={() => this.changeStateBoolean('enabled_continue_shopping')}></Toogle>
+                        {/* <Toogle enabled={enabled_continue_shopping} title='Continue Shopping' description="Continue shopping is available in the sliding cart so that buyers can go to the link you provide, if you do not add any links, the button will only serve to close the slide cart." stateText='The Continue Shopping is' activeToogle={() => this.changeStateBoolean('enabled_continue_shopping')}></Toogle> */}
+                        <StatusModule module='continue_shopping' enabled={enabled_continue_shopping} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_continue_shopping: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_continue_shopping: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_continue_shopping ?
+                            <StatusModuleBanner module='continue_shopping' onAction={() => { this.setState({ enabled_continue_shopping: 1 }) }} />
+                            : null}
                         {content_continue_shopping}
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateContinueShopping(this.state)} discard={() => { this.discard(dataContinueShopping) }} />

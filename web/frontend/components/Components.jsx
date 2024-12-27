@@ -299,7 +299,7 @@ export function SkeletonSimple({ children }) {
 };
 
 
-export function StatusModule({ module = '', icon = MarketsIcon, enabled = false, showPopOver = true, popoverEnabled = false, onActionEnabledItem = null, onActionDisabledItem = null, actionPopOver = null, }) {
+export function StatusModule({ module = '', icon = MarketsIcon, title = '', enabled = false, showPopOver = true, popoverEnabled = false, onActionEnabledItem = null, onActionDisabledItem = null, actionPopOver = null, }) {
   if(module === '' || typeof status_module[module] === 'undefined'){
     return '';
   };
@@ -321,15 +321,18 @@ export function StatusModule({ module = '', icon = MarketsIcon, enabled = false,
     }
   ];
 
+  if(title === ''){
+    title = status_module[module].title
+  };
   return (<InlineStack
     gap="1200"
     align="space-between"
     blockAlign="start"
     wrap={false}
   >
-    <InlineStack gap={50}>
+    <InlineStack gap="100"  wrap={false}>
       <Icon source={status_module[module].icon || icon} />
-      <Text variant="headingSm" as="h6">{status_module[module].title}</Text>
+      <Text variant="headingSm" as="h6">{title}</Text>
     </InlineStack>
     {showPopOver ? 
     <Popover

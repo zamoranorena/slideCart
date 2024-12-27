@@ -51,7 +51,7 @@ class VerifyApp
                 $shop = $session->getShop();
                 return "https://{$shop}/admin/themes/{$themeId}/editor?context=apps&template&activateAppId=e734792e-48a3-4957-8757-ca877aedfbef/star_rating";
                 //return "https://{$shop}/admin/themes/{$themeId}/editor?context=apps&appEmbed=e734792e-48a3-4957-8757-ca877aedfbef%2Fstar_rating";
-            }
+            };
 
             //Log::debug($getAsset->getDecodedBody()['asset']);
 

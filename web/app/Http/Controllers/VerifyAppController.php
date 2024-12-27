@@ -53,12 +53,12 @@ class VerifyAppController extends Controller
         $session = $request->get('shopifySession');
         $success = $code = $error = $activeApp = $activeEmbedApp = null;
         try {
-            $customer = Customer::where('shop_url', $session->getShop())->first();
-            if ($customer) {
-                $dahsboard = Dashboard::where('customer_id', $customer['id'])->first();
-            };
+            //$customer = Customer::where('shop_url', $session->getShop())->first();
+            //if ($customer) {
+                //$dahsboard = Dashboard::where('customer_id', $customer['id'])->first();
+            //};
             $activeEmbedApp = VerifyApp::call($session);
-            $activeApp = $dahsboard['dashboard_general_app'];
+            //$activeApp = $dahsboard['dashboard_general_app'];
             $success = true;
             $code = 200;
             $error = null;
@@ -77,7 +77,7 @@ class VerifyAppController extends Controller
             }
     
         } finally {
-            return response()->json(["success" => $success, "error" => $error, "activeApp" => $activeApp, "activeEmbedApp" => $activeEmbedApp], $code);
+            return response()->json(["success" => $success, "error" => $error, "activeApp" => true, "activeEmbedApp" => $activeEmbedApp], $code);
         }
     }
 }

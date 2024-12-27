@@ -7,7 +7,7 @@ import {
     InlineStack,
 } from '@shopify/polaris';
 import { additional_buttons } from "../../assets";
-import { Toogle, SaveBar, ToogleSkeleton } from "@components/";
+import { Toogle, SaveBar, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -17,6 +17,7 @@ class ExpressPayments extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             messageError: '',
             loading: true,
             toast: false,
@@ -123,6 +124,7 @@ class ExpressPayments extends Component {
 
     render() {
         const {
+            popoverEnabled,
             messageError,
             loading,
             toast,
@@ -153,10 +155,14 @@ class ExpressPayments extends Component {
                 {loadingComponent}
                 {dataAdditionalCheckout !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_additional_checkout_buttons} title='Additional Checkout Buttons' description="These buttons show the logo for a third-party accelerated checkout method. When a customer clicks a branded button, they complete their payment with that accelerated checkout method. The following third-party accelerated checkout methods are available Amazon Pay, Apple Pay, Google Pay, PayPal, Shop Pay and Venmo." stateText='The additional checkout buttons are' activeToogle={() => this.changeStateBoolean('enabled_additional_checkout_buttons')}></Toogle>
+                        {/* <Toogle enabled={enabled_additional_checkout_buttons} title='Additional Checkout Buttons' description="These buttons show the logo for a third-party accelerated checkout method. When a customer clicks a branded button, they complete their payment with that accelerated checkout method. The following third-party accelerated checkout methods are available Amazon Pay, Apple Pay, Google Pay, PayPal, Shop Pay and Venmo." stateText='The additional checkout buttons are' activeToogle={() => this.changeStateBoolean('enabled_additional_checkout_buttons')}></Toogle> */}
+                        <StatusModule module='express_payments' enabled={enabled_additional_checkout_buttons} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_additional_checkout_buttons: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_additional_checkout_buttons: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_additional_checkout_buttons ?
+                            <StatusModuleBanner module='express_payments' onAction={() => { this.setState({ enabled_additional_checkout_buttons: 1 }) }} />
+                            : null}
                         {content_additional_checkout_button}
                         <ThisToast />
-                        <SaveBar equals={equals} loading={loading} action={() => this.updateAdditionalCheckoutButton (this.state)} discard={() => { this.discard(dataAdditionalCheckout) }} />
+                        <SaveBar equals={equals} loading={loading} action={() => this.updateAdditionalCheckoutButton(this.state)} discard={() => { this.discard(dataAdditionalCheckout) }} />
                     </BlockStack> : <ToogleSkeleton />}
             </div>
         );

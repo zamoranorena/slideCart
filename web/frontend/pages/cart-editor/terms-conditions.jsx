@@ -8,7 +8,7 @@ import {
     Toast,
     BlockStack,
 } from '@shopify/polaris';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -22,6 +22,7 @@ class TermsCondition extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             messageError: '',
             loading: true,
             toast: false,
@@ -148,6 +149,7 @@ class TermsCondition extends Component {
     };
     render() {
         const {
+            popoverEnabled,
             messageError,
             loading,
             toast,
@@ -215,7 +217,11 @@ class TermsCondition extends Component {
                 {loadingComponent}
                 {dataTerms !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_terms} title='Terms and Conditions' description="A Terms and Conditions agreement is the agreement that includes the terms, the rules and the guidelines of acceptable behavior and other useful sections to which users must agree in order to use or access your website and mobile app." stateText='The terms and conditions are' activeToogle={() => this.changeStateBoolean('enabled_terms')}></Toogle>
+                        {/* <Toogle enabled={enabled_terms} title='Terms and Conditions' description="A Terms and Conditions agreement is the agreement that includes the terms, the rules and the guidelines of acceptable behavior and other useful sections to which users must agree in order to use or access your website and mobile app." stateText='The terms and conditions are' activeToogle={() => this.changeStateBoolean('enabled_terms')}></Toogle> */}
+                        <StatusModule module='terms_conditions' enabled={enabled_terms} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_terms: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_terms: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_terms ?
+                            <StatusModuleBanner module='terms_conditions' onAction={() => { this.setState({ enabled_terms: 1 }) }} />
+                            : null}
                         {content_terms}
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateTerms(this.state)} discard={() => { this.discard(dataTerms) }} />

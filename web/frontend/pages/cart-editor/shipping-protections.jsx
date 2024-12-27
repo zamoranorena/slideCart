@@ -18,7 +18,7 @@ import {
 } from '@shopify/polaris';
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -34,6 +34,7 @@ class ShippingProtections extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             resourcePicker: false,
             popOverShipping1: false,
             popOverShipping2: false,
@@ -352,6 +353,7 @@ class ShippingProtections extends Component {
 
     render() {
         const {
+            popoverEnabled,
             popOverShipping1,
             popOverShipping2,
             popOverShipping3,
@@ -691,7 +693,11 @@ class ShippingProtections extends Component {
                 {loadingComponent}
                 {dataShippingProtection !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_shipping_protection} title='Shipping Protection' description="Offer shipping protection." stateText='The shipping protection are' activeToogle={() => this.changeStateBoolean('enabled_shipping_protection')}></Toogle>
+                        {/* <Toogle enabled={enabled_shipping_protection} title='Shipping Protection' description="Offer shipping protection." stateText='The shipping protection are' activeToogle={() => this.changeStateBoolean('enabled_shipping_protection')}></Toogle> */}
+                        <StatusModule module='shipping_protections' enabled={enabled_shipping_protection} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_shipping_protection: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_shipping_protection: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_shipping_protection ?
+                            <StatusModuleBanner module='shipping_protections' onAction={() => { this.setState({ enabled_shipping_protection: 1 }) }} />
+                            : null}
                         {content_shipping_protection}
                         {content_shipping_protection1}
                         <ThisToast />

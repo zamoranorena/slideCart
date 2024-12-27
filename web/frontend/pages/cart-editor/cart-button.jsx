@@ -12,7 +12,7 @@ import {
     rgbToHsb
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -29,6 +29,7 @@ class Cart_Button extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             messageError: '',
             loading: true,
             popoverCart: false,
@@ -267,6 +268,7 @@ class Cart_Button extends Component {
     };
     render() {
         const {
+            popoverEnabled,
             messageError,
             loading,
             toast,
@@ -417,7 +419,11 @@ class Cart_Button extends Component {
                 {loadingComponent}
                 {dataCartButton !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_cart_button} title='Cart Button' description="The cart button is available on the sliding cart so that buyers can go to the cart page." stateText='The Cart Button is' activeToogle={() => this.changeStateBoolean('enabled_cart_button')}></Toogle>
+                        {/* <Toogle enabled={enabled_cart_button} title='Cart Button' description="The cart button is available on the sliding cart so that buyers can go to the cart page." stateText='The Cart Button is' activeToogle={() => this.changeStateBoolean('enabled_cart_button')}></Toogle> */}
+                        <StatusModule module='cart_button' enabled={enabled_cart_button} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_cart_button: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_cart_button: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_cart_button ?
+                            <StatusModuleBanner module='cart_button' onAction={() => { this.setState({ enabled_cart_button: 1 }) }} />
+                            : null}
                         {content_cart_button}
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCartButton(this.state)} discard={() => { this.discard(dataCartButton) }} />

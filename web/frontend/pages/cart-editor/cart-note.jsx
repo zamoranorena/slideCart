@@ -14,7 +14,7 @@ import {
     InlineStack
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -32,6 +32,7 @@ class CartNote extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             popoverCNFont: false,
             popoverCANFont: false,
             messageError: '',
@@ -256,6 +257,7 @@ class CartNote extends Component {
     };
     render() {
         const {
+            popoverEnabled,
             popoverCNFont,
             popoverCANFont,
             messageError,
@@ -407,7 +409,10 @@ class CartNote extends Component {
                 {dataCartNote !== null ?
                     <Box paddingBlockEnd="400">
                         <BlockStack gap={500}>
-                            <Toogle enabled={enabled_cart_note} title='Cart Note' description="Add the option to have a note field to your slide cart. The use of this function is very flexible." stateText='The cart note is' activeToogle={() => this.changeStateBoolean('enabled_cart_note')}></Toogle>
+                            {/* <Toogle enabled={enabled_cart_note} title='Cart Note' description="Add the option to have a note field to your slide cart. The use of this function is very flexible." stateText='The cart note is' activeToogle={() => this.changeStateBoolean('enabled_cart_note')}></Toogle> */}
+                            <StatusModule module='cart_note' enabled={enabled_cart_note} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_cart_note: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_cart_note: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                            {!enabled_cart_note ?
+                                <StatusModuleBanner module='cart_note' onAction={() => { this.setState({ enabled_cart_note: 1 }) }} /> : null}
                             {content_cart_note}
                         </BlockStack>
                         <ThisToast />

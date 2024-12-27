@@ -12,7 +12,7 @@ import {
     rgbToHsb
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -28,6 +28,7 @@ class CartCoupon extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             popoverCCBackground: false,
             popoverCCFont: false,
             messageError: '',
@@ -218,6 +219,7 @@ class CartCoupon extends Component {
     };
     render() {
         const {
+            popoverEnabled,
             popoverCCBackground,
             popoverCCFont,
             messageError,
@@ -336,7 +338,11 @@ class CartCoupon extends Component {
                 {loadingComponent}
                 {dataCartCoupon !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_cart_coupon_button} title='Cart Coupon Button' description="Coupons are a great way to offer discounts and rewards to your customers, and can help promote sales across your shop." stateText='The cart coupon button are' activeToogle={() => this.changeStateBoolean('enabled_cart_coupon_button')}></Toogle>
+                        {/* <Toogle enabled={enabled_cart_coupon_button} title='Cart Coupon Button' description="Coupons are a great way to offer discounts and rewards to your customers, and can help promote sales across your shop." stateText='The cart coupon button are' activeToogle={() => this.changeStateBoolean('enabled_cart_coupon_button')}></Toogle> */}
+                        <StatusModule module='cart_coupon' enabled={enabled_cart_coupon_button} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_cart_coupon_button: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_cart_coupon_button: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_cart_coupon_button ?
+                            <StatusModuleBanner module='cart_coupon' onAction={() => { this.setState({ enabled_cart_coupon_button: 1 }) }} />
+                            : null}
                         {content_cart_coupon}
                         <ThisToast />
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCartCoupon(this.state)} discard={() => { this.discard(dataCartCoupon) }} />

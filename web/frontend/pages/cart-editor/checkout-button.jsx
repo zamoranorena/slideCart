@@ -30,7 +30,6 @@ import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 import { currencyShop } from '@utils/functionUtils';
 import {
-    status_module,
     arr_options_font_size,
     arr_options_weight,
     arr_options_transform,
@@ -572,7 +571,8 @@ class Checkout_Button extends React.Component {
                         {/* <Toogle enabled={enabled_checkout_button} title='Checkout Button' description="The checkout button is available on the slide cart to give buyers a way to enter the checkout process." stateText='The Checkout Button is' action={emptyButton} activeToogle={() => this.changeStateBoolean('enabled_checkout_button')}></Toogle> */}
                         {module_status}
                         {!enabled_checkout_button ?
-                            <StatusModuleBanner module = 'checkout_button' onAction = {() => { this.setState({ enabled_checkout_button : 1})}} /> : null}
+                            <StatusModuleBanner module='checkout_button' onAction={() => { this.setState({ enabled_checkout_button: 1 }) }} />
+                            : null}
                         {bannerMinimum}
                         {content_checkout_button}
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCheckoutButton(this.state)} discard={() => { this.discard(dataCheckoutButton) }} />

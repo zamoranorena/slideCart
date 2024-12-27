@@ -25,7 +25,7 @@ import { currencyShop } from '@utils/functionUtils';
 import { PlayIcon } from '@shopify/polaris-icons';
 import { giftWrap } from "../../assets";
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -43,6 +43,7 @@ class GiftWrap extends React.Component {
         super(props);
         this.yourRef = React.createRef();
         this.state = {
+            popoverEnabled: 0,
             money_format: null,
             resourcePicker: false,
             popoverGWIcon: false,
@@ -429,6 +430,7 @@ class GiftWrap extends React.Component {
         this.iconPreview();
 
         const {
+            popoverEnabled,
             money_format,
             resourcePicker,
             popoverGWIcon,
@@ -752,7 +754,7 @@ class GiftWrap extends React.Component {
             </div> : null;
 
 
-        const title_toogle = <InlineStack gap="200" align="start" blockAlign="baseline">
+        const title_toogle = <InlineStack gap="100" align="center" blockAlign="center">
             Gift Wrap
             <InlineStack gap="200" align="center" blockAlign="center">
                 <Button icon={<Icon source={PlayIcon} />} onClick={() => {
@@ -776,7 +778,11 @@ class GiftWrap extends React.Component {
                 {loadingComponent}
                 {dataGiftWrap !== null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_gift_wrap} title={title_toogle} description="You can offer a gift wrapping service to your clients. You can charge a flat fee or charge per product." stateText='The gift wrap is' activeToogle={() => this.changeStateBoolean('enabled_gift_wrap')}></Toogle>
+                        {/* <Toogle enabled={enabled_gift_wrap} title={title_toogle} description="You can offer a gift wrapping service to your clients. You can charge a flat fee or charge per product." stateText='The gift wrap is' activeToogle={() => this.changeStateBoolean('enabled_gift_wrap')}></Toogle> */}
+                        <StatusModule module='gift_wrap' title={title_toogle} enabled={enabled_gift_wrap} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_gift_wrap: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_gift_wrap: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_gift_wrap ?
+                            <StatusModuleBanner module='gift_wrap' onAction={() => { this.setState({ enabled_gift_wrap: 1 }) }} />
+                            : null}
                         {content_gift_wrap}
                         {properties_gift_wrap}
                         <ThisToast />
