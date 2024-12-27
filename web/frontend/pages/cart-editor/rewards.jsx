@@ -21,7 +21,7 @@ import {
 import { DeleteIcon } from '@shopify/polaris-icons';
 import colorconvert from 'color-convert';
 import { currencyShop } from '@utils/functionUtils';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -46,6 +46,7 @@ class Rewards extends Component {
       toas: null,
       messageError: '',
       loading: true,
+      popoverEnabled: 0,
       popoverRewardsBackgroundContent: null,
       popoverRewardsBackgroundPrimary: null,
       popoverRewardsBackgroundSecondary: null,
@@ -435,6 +436,7 @@ class Rewards extends Component {
       toast,
       messageError,
       loading,
+      popoverEnabled,
       popoverRewardsBackgroundContent,
       popoverRewardsBackgroundPrimary,
       popoverRewardsBackgroundSecondary,
@@ -761,7 +763,10 @@ class Rewards extends Component {
         {dataRewards !== null ?
           <Box paddingBlockEnd="400">
             <BlockStack gap={500}>
-              <Toogle enabled={enabled_rewards} title='Rewards' description="Reward your customers with discounts once they spend a minimum amount." stateText='The Rewards is' activeToogle={() => this.changeStateBoolean('enabled_rewards')}></Toogle>
+              {/* <Toogle enabled={enabled_rewards} title='Rewards' description="Reward your customers with discounts once they spend a minimum amount." stateText='The Rewards is' activeToogle={() => this.changeStateBoolean('enabled_rewards')}></Toogle> */}
+              <StatusModule module='rewards' enabled={enabled_rewards} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_rewards: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_rewards: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+              {!enabled_rewards ?
+                <StatusModuleBanner module='rewards' onAction={() => { this.setState({ enabled_rewards: 1 }) }} /> : null}
               {rewards}
             </BlockStack>
             <ThisToast />

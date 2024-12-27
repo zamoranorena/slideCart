@@ -17,7 +17,7 @@ import {
 } from '@shopify/polaris';
 
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -33,6 +33,7 @@ class Minimum_Order extends Component {
             messageError: '',
             loading: true,
             toast: false,
+            popoverEnabled: 0,
             popoverActive: false,
             money_format: null,
             dataMinimum: null,
@@ -193,6 +194,7 @@ class Minimum_Order extends Component {
             messageError,
             loading,
             toast,
+            popoverEnabled,
             popoverActive,
             money_format,
             dataMinimum,
@@ -308,7 +310,10 @@ class Minimum_Order extends Component {
                 {loadingComponent}
                 {dataMinimum != null ?
                     <BlockStack gap={500}>
-                        <Toogle enabled={enabled_minimum_order} title='Minimum Order' description="Show a minimum order message according to the amount entered, until reaching the amount of the basket." stateText='The Minimum Order is' activeToogle={() => this.changeStateBoolean('enabled_minimum_order')}></Toogle>
+                        {/* <Toogle enabled={enabled_minimum_order} title='Minimum Order' description="Show a minimum order message according to the amount entered, until reaching the amount of the basket." stateText='The Minimum Order is' activeToogle={() => this.changeStateBoolean('enabled_minimum_order')}></Toogle> */}
+                        <StatusModule module='minimum_order' enabled={enabled_minimum_order} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_minimum_order: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_minimum_order: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                        {!enabled_minimum_order ?
+                            <StatusModuleBanner module='minimum_order' onAction={() => { this.setState({ enabled_minimum_order: 1 }) }} /> : null}
                         {content_minimum_order}
                         <SaveBar equals={equals} loading={loading} action={() => this.updateMinimum(this.state)} discard={() => { this.discard(dataMinimum) }} />
                         <ThisToast />

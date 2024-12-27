@@ -19,7 +19,7 @@ import {
 } from '@shopify/polaris';
 import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -41,6 +41,7 @@ class Countdown extends Component {
             loading: true,
             toast: false,
             messageError: null,
+            popoverEnabled:0,
             popoverCountdownBackground: null,
             popoverCountdownBorder: null,
             popoverCountdownFont: null,
@@ -280,6 +281,7 @@ class Countdown extends Component {
             loading,
             toast,
             messageError,
+            popoverEnabled,
             popoverCountdownBackground,
             popoverCountdownBorder,
             popoverCountdownFont,
@@ -441,7 +443,10 @@ class Countdown extends Component {
                 {dataCountdown !== null ?
                     <Box paddingBlockEnd="400">
                         <BlockStack gap={500}>
-                            <Toogle enabled={enabled_countdown} title='Countdown' description="Reduce cart abandonments by adding urgency to your store and watch your sales increase." stateText='The Countdown is' activeToogle={() => this.changeStateBoolean('enabled_countdown')}></Toogle>
+                            {/* <Toogle enabled={enabled_countdown} title='Countdown' description="Reduce cart abandonments by adding urgency to your store and watch your sales increase." stateText='The Countdown is' activeToogle={() => this.changeStateBoolean('enabled_countdown')}></Toogle> */}
+                            <StatusModule module='countdown' enabled={enabled_countdown}  popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_countdown: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_countdown: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                            {!enabled_countdown ?
+                                <StatusModuleBanner module='countdown' onAction={() => { this.setState({ enabled_countdown: 1 }) }} /> : null}
                             {countdown}
                         </BlockStack>
                         <ThisToast />

@@ -65,7 +65,18 @@ class MinimumController extends Controller
                 };
 
                 if ($minimum) {
-                    $update_minimum = $minimum->update($request->all());
+                    //$update_minimum = $minimum->update($request->all());
+                    $update_minimum = $minimum->update([
+                    'enabled_minimum_order' => $request->enabled_minimum_order,
+                    'minimum_order' => $request->minimum_order,
+                    'minimum_order_option' => $request->minimum_order_option,
+                    'minimum_order_text' => $request->minimum_order_text,
+                    'minimum_font_size' => $request->minimum_font_size,
+                    'minimum_color_h' => $request->minimum_color_h,
+                    'minimum_color_s' => $request->minimum_color_s,
+                    'minimum_color_b' => $request->minimum_color_b,
+                    'minimum_color_hex' => $request->minimum_color_hex,
+                    ]);
                     if ($update_minimum) {
                         EnsureClientFile::chargeEnvironment($shop);
                     };

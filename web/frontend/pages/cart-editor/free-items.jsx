@@ -23,7 +23,7 @@ import {
 import { ResourcePicker } from '@shopify/app-bridge-react';
 import { ProductIcon, DeleteIcon } from '@shopify/polaris-icons';
 import colorconvert from 'color-convert';
-import { CustomizeUpsells, ButtonColor, Toogle, SaveBar, Titles, ToolInfo, FieldColor, ToogleSkeleton, Section } from "@components/";
+import { CustomizeUpsells, ButtonColor, Toogle, SaveBar, Titles, ToolInfo, FieldColor, ToogleSkeleton, Section, StatusModule, StatusModuleBanner  } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -44,6 +44,7 @@ class FreeItems extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            popoverEnabled: 0,
             popoverTiered: false,
             popoverTiered2: false,
             popoverTiered3: false,
@@ -489,6 +490,7 @@ class FreeItems extends Component {
 
     render() {
         const {
+            popoverEnabled,
             popoverTiered,
             popoverTiered2,
             popoverTiered3,
@@ -906,8 +908,11 @@ class FreeItems extends Component {
                 {dataFreeItems !== null ?
                     <Box paddingBlockEnd="400">
                         <BlockStack gap={500}>
-                            <Toogle enabled={enabled_tiered_free_items} title='Tiered Free Items ( BETA )' description="Offer free items. This function will only show the items for which they are selectable in the cart drawer. Important: For the item to show for free, you need to set the offer to Shopify Automatic Discounts." stateText='The Tiered Free Items are' activeToogle={() => this.changeStateBoolean('enabled_tiered_free_items')}>
-                            </Toogle>
+                            {/* <Toogle enabled={enabled_tiered_free_items} title='Tiered Free Items ( BETA )' description="Offer free items. This function will only show the items for which they are selectable in the cart drawer. Important: For the item to show for free, you need to set the offer to Shopify Automatic Discounts." stateText='The Tiered Free Items are' activeToogle={() => this.changeStateBoolean('enabled_tiered_free_items')}>
+                            </Toogle> */}
+                            <StatusModule module='tiered_free_items' enabled={enabled_tiered_free_items} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_tiered_free_items: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_tiered_free_items: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                            {!enabled_tiered_free_items ?
+                                <StatusModuleBanner module='tiered_free_items' onAction={() => { this.setState({ enabled_tiered_free_items: 1 }) }} /> : null}
                             {content_tiered_free_items_tiers}
                             {content_tiered_free_items}
                         </BlockStack>

@@ -26,7 +26,7 @@ import {
 
 import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
-import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
+import { ButtonColor, Toogle, SaveBar, Titles, FieldColor, ToogleSkeleton, Section, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
@@ -46,6 +46,7 @@ class Announcement extends Component {
         this.state = {
             dataAnnouncement: null,
             loading: true,
+            popoverEnabled:0,
             announcement_tabs_selected: 0,
             announcement_collapsible_tiers: 1,
             announcement_collapsible_settings: 1,
@@ -300,6 +301,7 @@ class Announcement extends Component {
             loading,
             toast,
             messageError,
+            popoverEnabled,
             popoverAnnouncementBackground,
             popoverAnnouncementBorder,
             popoverAnnouncementFont,
@@ -495,7 +497,10 @@ class Announcement extends Component {
                 {dataAnnouncement !== null ?
                     <Box paddingBlockEnd="400">
                         <BlockStack gap={500}>
-                            <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle>
+                            {/* <Toogle enabled={enabled_announcement} title='Announcement' description="Make store announcements right inside of your cart." stateText='The Announcement is' activeToogle={() => this.changeStateBoolean('enabled_announcement')}></Toogle> */}
+                            <StatusModule module='announcement' enabled={enabled_announcement} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_announcement: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_announcement: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+                            {!enabled_announcement ?
+                                <StatusModuleBanner module='announcement' onAction={() => { this.setState({ enabled_announcement: 1 }) }} /> : null}
                             {announcement_tiers_content}
                             {announcement_settings_content}
                         </BlockStack>

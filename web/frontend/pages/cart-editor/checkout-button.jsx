@@ -2,6 +2,7 @@ import React from "react";
 import {
     ActionList,
     Card,
+    List,
     Box,
     Checkbox,
     Icon,
@@ -22,18 +23,17 @@ import {
     hsbToHex,
     rgbToHsb
 } from '@shopify/polaris';
-import { MarketsIcon } from '@shopify/polaris-icons';
 import colorconvert from 'color-convert';
-import { ButtonColor, Toogle, ToolInfo, SaveBar, Titles, FieldColor, ToogleSkeleton, Section } from "@components/";
+import { ButtonColor, Toogle, ToolInfo, SaveBar, Titles, FieldColor, ToogleSkeleton, Section, StatusModule, StatusModuleBanner } from "@components/";
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 import { currencyShop } from '@utils/functionUtils';
 import {
+    status_module,
     arr_options_font_size,
     arr_options_weight,
     arr_options_transform,
-    arr_options_alignment,
     arr_options_radius,
 } from '@utils/global'
 
@@ -528,7 +528,6 @@ class Checkout_Button extends React.Component {
         };
         var emptyButton = '';
         var bannerMinimum = null;
-        
         if(dataCheckoutButton !== null){
             if(typeof dataCheckoutButton.minimum_order !== 'undefined'){
                 if(dataCheckoutButton.minimum_order.enabled_minimum_order){
@@ -549,49 +548,31 @@ class Checkout_Button extends React.Component {
       <div className='bannerSettings'>
       
       </div>: null; */
+        
+        var show_popover = true;
+        if (dataCheckoutButton !== null) {
+            if (typeof dataCheckoutButton.minimum_order !== 'undefined') {
+                if (dataCheckoutButton.minimum_order.enabled_minimum_order) {
+                    show_popover = false;
+                };
+            };
+        };
 
-      const items =[
-          {
-              active: enabled_checkout_button,
-              content: 'Enabled',
-              /* icon: ImportIcon,
-              suffix: <Icon source={CheckSmallIcon} />, */
-          },
-          {
-              active: !enabled_checkout_button,
-              content: 'Disabled',
-              /* icon: ImportIcon,
-              suffix: <Icon source={CheckSmallIcon} />, */
-          }
-      ];
+        
+        var module_status = <StatusModule module = 'checkout_button' enabled = {enabled_checkout_button} showPopOver = {show_popover} popoverEnabled = {popoverEnabled} onActionEnabledItem = {() => { this.setState({ enabled_checkout_button: 1 , popoverEnabled : !popoverEnabled }) }} onActionDisabledItem = { () => { this.setState({ enabled_checkout_button: 0 , popoverEnabled : !popoverEnabled }) } }  actionPopOver = {() => this.setState({ popoverEnabled: !popoverEnabled }) }/>;
 
-      const loadingComponent = loading ? <Loading /> : null;
+       
+
+        const loadingComponent = loading ? <Loading /> : null;
         return (
             <div>
                 {loadingComponent}
                 {dataCheckoutButton !== null ?
                     <BlockStack gap={500}>
                         {/* <Toogle enabled={enabled_checkout_button} title='Checkout Button' description="The checkout button is available on the slide cart to give buyers a way to enter the checkout process." stateText='The Checkout Button is' action={emptyButton} activeToogle={() => this.changeStateBoolean('enabled_checkout_button')}></Toogle> */}
-                        <InlineStack
-                            gap="1200"
-                            align="space-between"
-                            blockAlign="start"
-                            wrap={false}
-                        >
-                            <InlineStack gap={50}>
-                                <Icon source={MarketsIcon} />
-                                <Text variant="headingSm" as="h6">Chekcout Button</Text>
-                            </InlineStack>
-                            <Popover
-                                active={popoverEnabled}
-                                activator={<Button variant="monochromePlain" disclosure onClick={() => {this.setState({popoverEnabled: !popoverEnabled}) }}>
-                                    View Sales
-                                </Button>}
-                                onClose={() => { }}
-                            >
-                                <ActionList items={items} />
-                            </Popover>
-                        </InlineStack>
+                        {module_status}
+                        {!enabled_checkout_button ?
+                            <StatusModuleBanner module = 'checkout_button' onAction = {() => { this.setState({ enabled_checkout_button : 1})}} /> : null}
                         {bannerMinimum}
                         {content_checkout_button}
                         <SaveBar equals={equals} loading={loading} action={() => this.updateCheckoutButton(this.state)} discard={() => { this.discard(dataCheckoutButton) }} />

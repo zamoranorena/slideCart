@@ -2,6 +2,8 @@ import {
   Card,
   Button,
   Text,
+  Banner,
+  ActionList,
   BlockStack,
   InlineGrid,
   Box,
@@ -18,9 +20,11 @@ import {
   SkeletonBodyText,
   Loading as Load
 } from "@shopify/polaris";
-import { InfoIcon, ChevronUpIcon ,ChevronDownIcon } from '@shopify/polaris-icons';
+import { InfoIcon, ChevronUpIcon ,ChevronDownIcon, MarketsIcon, CheckSmallIcon } from '@shopify/polaris-icons';
 import Editor from '@monaco-editor/react';
 import { ContextualSaveBar, Loading as LoadParent } from '@shopify/app-bridge-react';
+import { status_module } from '@utils/global'
+
 export const ButtonColor = ({ height = '100%', width = '100%', background = '#000000', border = "1px solid #898f94", borderRadius = "0.3rem", id='', click=null}) => {
   return (
     <Button onClick={click} id={id}>
@@ -85,12 +89,7 @@ export function SaveBar({ equals = true, loading = false, action = null, discard
 };
 
 export function Toogle({ children, title = null, description = null, enabled = false, stateText = null, activeToogle = null, action = false }) {
-  /* console.log('enabled')
-  console.log(enabled)
-  console.log('children')
-  console.log(children)
-  console.log('activeToogle')
-  console.log(activeToogle) */
+
   const cartBarStatusMarkup = (
     <Badge
       tone={enabled ? 'success' : 'critical'}
@@ -297,4 +296,68 @@ export function SkeletonSimple({ children }) {
         {children}
       </BlockStack>
     </Box>)
+};
+
+
+export function StatusModule({ module = '', icon = MarketsIcon, enabled = false, showPopOver = true, popoverEnabled = false, onActionEnabledItem = null, onActionDisabledItem = null, actionPopOver = null, }) {
+  if(module === '' || typeof status_module[module] === 'undefined'){
+    return '';
+  };
+
+  const items = [
+    {
+      active: enabled,
+      content: 'Enable',
+      /* icon: ImportIcon, */
+      suffix: enabled ? <Icon source={CheckSmallIcon} /> : null,
+      onAction: onActionEnabledItem
+    },
+    {
+      active: !enabled,
+      content: 'Disable',
+      /* icon: ImportIcon, */
+      suffix: !enabled ? <Icon source={CheckSmallIcon} /> : null,
+      onAction: onActionDisabledItem
+    }
+  ];
+
+  return (<InlineStack
+    gap="1200"
+    align="space-between"
+    blockAlign="start"
+    wrap={false}
+  >
+    <InlineStack gap={50}>
+      <Icon source={status_module[module].icon || icon} />
+      <Text variant="headingSm" as="h6">{status_module[module].title}</Text>
+    </InlineStack>
+    {showPopOver ? 
+    <Popover
+      preventCloseOnChildOverlayClick
+      active={popoverEnabled}
+      activator={<Button variant="monochromePlain" disclosure onClick={actionPopOver}>
+        {enabled ? 'Enable' : 'Disable'}
+      </Button>}
+      onClose={actionPopOver}
+    >
+      <ActionList items={items} />
+    </Popover> : null }
+  </InlineStack>)
+};
+
+export function StatusModuleBanner({ module = '', onAction = null }) {
+  if (module === '' || typeof status_module[module] === 'undefined') {
+    return ''
+  };
+  return (
+    <Banner
+      title="Disabled"
+      action={{
+        content: 'Enabled', onAction: onAction
+      }}
+      tone="warning"
+    >
+      {status_module[module].banner_text}
+    </Banner>
+  );
 };

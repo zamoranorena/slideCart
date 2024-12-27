@@ -1,3 +1,49 @@
+import { CartAbandonedIcon, ClockIcon, ConfettiIcon, CashDollarIcon, MarketsIcon,  } from '@shopify/polaris-icons';
+
+const status_module = {
+    cart_empty: {
+        icon: CartAbandonedIcon,
+        title: 'Cart Empty',
+        banner_text: 'Cart Empty not shown because they is disabled. Enable to show in your cart.',
+    },
+    countdown: {
+        icon: ClockIcon,
+        title: 'Countdown',
+        banner_text: 'Countdown not shown because they is disabled. Enable to show in your cart.',
+    },
+    announcement: {
+        icon: MarketsIcon,
+        title: 'Announcement',
+        banner_text: 'Announcement not shown because they is disabled. Enable to show in your cart.',
+    },
+    rewards: {
+        icon: ConfettiIcon,
+        title: 'Rewards',
+        banner_text: 'Rewards not shown because they is disabled. Enable to show in your cart.',
+    },
+    tiered_free_items: {
+        icon: CashDollarIcon,
+        title: 'Tiered Free Items ( BETA )',
+        banner_text: 'Tiered Free Items not shown because they is disabled. Enable to show in your cart.',
+    },
+    tiered_free_items: {
+        icon: CashDollarIcon,
+        title: 'Tiered Free Items ( BETA )',
+        banner_text: 'Tiered Free Items not shown because they is disabled. Enable to show in your cart.',
+    },
+    minimum_order: {
+        icon: MarketsIcon,
+        title: 'Minimum Order',
+        banner_text: 'Minimum Order not shown because they is disabled. Enable to show in your cart.',
+    },
+    checkout_button: {
+        icon: MarketsIcon,
+        title: 'Checkout Button',
+        banner_text: 'Checkout Button not shown because they is disabled. Enable to show in your cart.',
+    },
+    
+};
+
 const arr_options_mode_upsell = [
     { label: 'Slide', value: '0' },
     { label: 'Stacked', value: '1' },
@@ -342,6 +388,7 @@ for (let i = 1; i <= 360; i++) {
 };
 
 export {
+    status_module,
     arr_options_mode_upsell,
     arr_options_mode_add_to_cart_upsell,
     arr_options_mode,

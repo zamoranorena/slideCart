@@ -38,7 +38,7 @@ import colorconvert from 'color-convert';
 import { hsbToHexOutPrefix } from '@utils/functionUtils';
 import { Redirect } from '@shopify/app-bridge/actions';
 import { Context, Loading } from '@shopify/app-bridge-react';
-import { CustomizeUpsells, Toogle, SaveBar, Titles, FieldColor, ToolInfo, ToogleSkeleton } from "@components/";
+import { CustomizeUpsells, Toogle, SaveBar, Titles, FieldColor, ToolInfo, ToogleSkeleton, StatusModule, StatusModuleBanner } from "@components/";
 import { makeGetRequest, makePutPostRequest } from '@utils/Services';
 
 
@@ -49,7 +49,7 @@ class CartEmpty extends Component {
     this.state = {
       dataCartEmpty: null,
       dataCustomize: null,
-
+      popoverEnabled: 0,
       popoverCEUpselHeadingBK: 0,
       popoverCEUpselHeadingFont: 0,
       popoverCETitleColor: 0,
@@ -437,7 +437,7 @@ class CartEmpty extends Component {
       cart_empty_upsell_heading_bold_font, cart_empty_upsell_product_url,
       cart_empty_upsell_max_item, options_mode_upsell, options_mode_add_to_cart_upsell,
       options_upsell_qty, options_upsell_autoplay_time, options_font_size, options_transform,
-      options_weight, options_radius, popoverCEUpselHeadingBK,
+      options_weight, options_radius, popoverEnabled, popoverCEUpselHeadingBK,
       popoverCEUpselHeadingFont, popoverCETitleColor, popoverCESubTitleColor,
       popoverCEButtonFontColor, popoverCEButtonBKColor, resourcePickerUpsellEmpty,
       activeModalCustomize
@@ -877,8 +877,12 @@ class CartEmpty extends Component {
         {dataCartEmpty !== null ?
           <Box paddingBlockEnd="400">
             <BlockStack gap={500}>
-              <Toogle enabled={enabled_cart_empty} title='Cart Empty' description='Configuration when cart is empty.' stateText='The Cart Empty is' activeToogle={() => this.changeStateBoolean('enabled_cart_empty')}>{section_cart_empty}
-              </Toogle>
+              {/*  <Toogle enabled={enabled_cart_empty} title='Cart Empty' description='Configuration when cart is empty.' stateText='The Cart Empty is' activeToogle={() => this.changeStateBoolean('enabled_cart_empty')}>{section_cart_empty}
+              </Toogle> */}
+              <StatusModule module='cart_empty' enabled={enabled_cart_empty} popoverEnabled={popoverEnabled} onActionEnabledItem={() => { this.setState({ enabled_cart_empty: 1, popoverEnabled: !popoverEnabled }) }} onActionDisabledItem={() => { this.setState({ enabled_cart_empty: 0, popoverEnabled: !popoverEnabled }) }} actionPopOver={() => this.setState({ popoverEnabled: !popoverEnabled })} />
+              {!enabled_cart_empty ?
+                <StatusModuleBanner module='cart_empty' onAction={() => { this.setState({ enabled_cart_empty: 1 }) }} /> : null}
+              {section_cart_empty}
             </BlockStack>
             <ThisToast />
             <SaveBar equals={equals} loading={loading} action={() => { this.updateSettings(this.state) }} discard={() => { this.discard() }} />
