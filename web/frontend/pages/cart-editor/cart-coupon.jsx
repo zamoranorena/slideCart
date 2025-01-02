@@ -36,6 +36,7 @@ class CartCoupon extends Component {
             toast: false,
             dataCartCoupon: null,
             enabled_cart_coupon_button: null,
+            position_cart_coupon_button:0,
             name_cart_coupon_button: null,
             placeholder_cart_coupon_button: null,
             button_background_color: {
@@ -97,6 +98,7 @@ class CartCoupon extends Component {
             loading: false,
             toast: false,
             enabled_cart_coupon_button: settings_cart_coupon.enabled_cart_coupon_button,
+            position_cart_coupon_button:parseInt(settings_cart_coupon.position_cart_coupon_button,10),
             name_cart_coupon_button: settings_cart_coupon.name_cart_coupon_button,
             placeholder_cart_coupon_button: settings_cart_coupon.placeholder_cart_coupon_button,
             button_background_color: {
@@ -135,6 +137,7 @@ class CartCoupon extends Component {
         var thisEquals = true;
         const stateData = {
             enabled_cart_coupon_button: +props.enabled_cart_coupon_button,
+            position_cart_coupon_button:props.position_cart_coupon_button.toString(),
             name_cart_coupon_button: props.name_cart_coupon_button,
             placeholder_cart_coupon_button: props.placeholder_cart_coupon_button,
             button_background_color_h: props.button_background_color.hue,
@@ -153,6 +156,7 @@ class CartCoupon extends Component {
             const pc = dataCartCoupon.cart_coupon;
             const data_cart_coupon = {
                 enabled_cart_coupon_button: +pc.enabled_cart_coupon_button,
+                position_cart_coupon_button:pc.position_cart_coupon_button.toString(),
                 name_cart_coupon_button: pc.name_cart_coupon_button,
                 placeholder_cart_coupon_button: pc.placeholder_cart_coupon_button,
                 button_background_color_h: pc.button_background_color_h,
@@ -192,6 +196,7 @@ class CartCoupon extends Component {
             const app = this.context;
             const requestBody = {
                 enabled_cart_coupon_button: props.enabled_cart_coupon_button,
+                position_cart_coupon_button:parseInt(this.state.position_cart_coupon_button,10),
                 name_cart_coupon_button: props.name_cart_coupon_button,
                 placeholder_cart_coupon_button: props.placeholder_cart_coupon_button,
                 button_background_color_h: props.button_background_color.hue,
@@ -227,6 +232,7 @@ class CartCoupon extends Component {
             toast,
             dataCartCoupon,
             enabled_cart_coupon_button,
+            position_cart_coupon_button,
             name_cart_coupon_button,
             placeholder_cart_coupon_button,
             button_background_color,
@@ -260,11 +266,22 @@ class CartCoupon extends Component {
                         Cart Coupon Button Properties
                     </Text>
                     <BlockStack gap={400}>
-                        <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}>
-                            <TextField
-                                label={<Titles text='Button name ( Apply )' />}
-                                value={name_cart_coupon_button}
-                                onChange={(value) => { this.handleChange(value, "name_cart_coupon_button") }}
+                        {/* <InlineGrid gap={400} columns={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2 }}> */}
+                        <Select
+                            label={<Titles text='Position' />}
+                            options={
+                                [
+                                    { label: 'Default', value: '0' },
+                                    { label: 'Above the checkout button', value: '1' }
+                                ]
+                            }
+                            value={position_cart_coupon_button}
+                            onChange={(value) => { this.handleChange(value, "position_cart_coupon_button") }}
+                        />
+                        <TextField
+                            label={<Titles text='Button name ( Apply )' />}
+                            value={name_cart_coupon_button}
+                            onChange={(value) => { this.handleChange(value, "name_cart_coupon_button") }}
                                 maxLength={250}
                             />
                             <TextField
@@ -317,7 +334,7 @@ class CartCoupon extends Component {
                                 changeColorPicker={(value) => { this.handleColors(value, "button_font_color", "button_font_color_hex") }}
                                 colorPicker={button_font_color}
                             />
-                        </InlineGrid>
+                        {/* </InlineGrid> */}
                     </BlockStack>
                 </BlockStack>
             </Card>

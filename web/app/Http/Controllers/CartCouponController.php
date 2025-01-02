@@ -53,13 +53,32 @@ class CartCouponController extends Controller
             $shop = $session->getShop();
             $customer = Customer::where('shop_url', $shop)->first();
             if ($customer) {
-                $cart_coupon = CartCoupon::where('customer_id', $customer['id'])->first();
+                /* $cart_coupon = CartCoupon::where('customer_id', $customer['id'])->first();
                 if ($cart_coupon) {
                     $update_cart_coupon = $cart_coupon->update($request->all());
                     if ($update_cart_coupon) {
                         EnsureClientFile::chargeEnvironment($shop);
                     };
-                };
+                }; */
+                CartCoupon::where('customer_id', $customer['id'])->update([
+                    'enabled_cart_coupon_button' => $request->enabled_cart_coupon_button,
+                    'position_cart_coupon_button' => $request->position_cart_coupon_button,
+                    'name_cart_coupon_button' => $request->name_cart_coupon_button,
+                    'placeholder_cart_coupon_button' => $request->placeholder_cart_coupon_button,
+                    'button_background_color_h' => $request->button_background_color_h,
+                    'button_background_color_s' => $request->button_background_color_s,
+                    'button_background_color_b' => $request->button_background_color_b,
+                    'button_background_color_hex' => $request->button_background_color_hex,
+                    'button_font_color_h' => $request->button_font_color_h,
+                    'button_font_color_s' => $request->button_font_color_s,
+                    'button_font_color_b' => $request->button_font_color_b,
+                    'button_font_color_hex' => $request->button_font_color_hex,
+                    'button_font_size' => $request->button_font_size,
+                    'button_text_transform' => $request->button_text_transform,
+                    'button_font_weight' => $request->button_font_weight,
+                    'button_border_radius' => $request->button_border_radius,
+                ]);
+                EnsureClientFile::chargeEnvironment($shop);
             };
             return response()->json([
                 'error' => false,

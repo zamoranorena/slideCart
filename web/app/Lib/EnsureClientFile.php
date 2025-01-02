@@ -13,6 +13,38 @@ use App\Models\Settings;
 use App\Models\AdditionalSettings;
 use App\Models\CartEmpty;
 use App\Models\CountDown;
+use App\Models\Announcement;
+use App\Models\AnnouncementTiers;
+use App\Models\Rewards;
+use App\Models\RewardsAllTiers;
+use App\Models\RewardsSpecificTiers;
+
+use App\Models\FreeItems;
+use App\Models\FreeItemsTiers;
+use App\Models\SpecialOffer;
+use App\Models\SpecialOfferTiers;
+use App\Models\MinimumOrder;
+use App\Models\CartCoupon;
+use App\Models\CartNote;
+use App\Models\AdditionalCheckout;
+use App\Models\Language;
+use App\Models\GiftWrap;
+use App\Models\Shipping;
+use App\Models\TermsConditions;
+use App\Models\Checkout;
+use App\Models\GoToCart;
+use App\Models\ContinueShop;
+use App\Models\PaymentBadges;
+
+use App\Models\Customize;
+use App\Models\Integrations;
+use App\Models\CartBar;
+use App\Models\StickyCart;
+use App\Models\QuickBuy;
+use App\Models\CartAnimator;
+use App\Models\CouponBar;
+
+
 /* use App\Models\Settings; */
 
 class EnsureClientFile
@@ -41,7 +73,38 @@ class EnsureClientFile
                         $settings = Settings::where('customer_id', $customer['id'])->first();
                         $additional_settings = AdditionalSettings::where('customer_id', $customer['id'])->first();
                         $cart_empty = CartEmpty::where('customer_id', $customer['id'])->first();
-                        $countdown = CountDown::where('customer_id', $customer['id'])->first(); */
+                        $countdown = CountDown::where('customer_id', $customer['id'])->first();
+                        $announcement = Announcement::where('customer_id', $customer['id'])->first();
+                        $announcement_tiers = AnnouncementTiers::where('customer_id', $customer['id'])->first();
+                        $rewards = Rewards::where('customer_id', $customer['id'])->first();
+                        $rewards_all_countries_tiers = RewardsAllTiers::where('customer_id', $customer['id'])->first();
+                        $rewards_specific_countries_tiers = RewardsSpecificTiers::where('customer_id', $customer['id'])->first();
+
+                        $tiered_free_items = FreeItems::where('customer_id', $customer['id'])->first();
+                        $tiered_free_items_tiers = FreeItemsTiers::where('customer_id', $customer['id'])->first();
+                        $special_offer_notification = SpecialOffer::where('customer_id', $customer['id'])->first();
+                        $special_offer_notification_tier = SpecialOfferTiers::where('customer_id', $customer['id'])->first();
+                        $minimum_order = MinimumOrder::where('customer_id', $customer['id'])->first();
+                        $cart_coupon = CartCoupon::where('customer_id', $customer['id'])->first();
+                        $cart_note = CartNote::where('customer_id', $customer['id'])->first();
+                        $additional_check = AdditionalCheckout::where('customer_id', $customer['id'])->first();
+                        $language_settings = Language::where('customer_id', $customer['id'])->first();
+                        $gift_wrap = GiftWrap::where('customer_id', $customer['id'])->first();
+                        $shipping_protection = Shipping::where('customer_id', $customer['id'])->first();
+                        $terms_conditions = TermsConditions::where('customer_id', $customer['id'])->first();
+                        $checkout_button = Checkout::where('customer_id', $customer['id'])->first();
+                        $cart_button = GoToCart::where('customer_id', $customer['id'])->first();
+                        $continue_shopping = ContinueShop::where('customer_id', $customer['id'])->first();
+                        $payment_badges = PaymentBadges::where('customer_id', $customer['id'])->first();
+
+                        $customize = Customize::where('customer_id', $customer['id'])->first();
+
+                        $integrations = Integrations::where('customer_id', $customer['id'])->first();
+                        $cart_bar = CartBar::where('customer_id', $customer['id'])->first();
+                        $sticky_cart = StickyCart::where('customer_id', $customer['id'])->first();
+                        $quick_buy = QuickBuy::where('customer_id', $customer['id'])->first();
+                        $cart_animator = CartAnimator::where('customer_id', $customer['id'])->first();
+                        $coupon_bar = CouponBar::where('customer_id', $customer['id'])->first(); */
 
                         $dashboard = 'Dashboard:customer_id,dashboard_general_app';
                         $settings = 'Settings';
