@@ -78,7 +78,9 @@ class CartCouponController extends Controller
                     'button_font_weight' => $request->button_font_weight,
                     'button_border_radius' => $request->button_border_radius,
                 ]);
-                EnsureClientFile::chargeEnvironment($shop);
+                $demo = EnsureClientFile::chargeEnvironment($shop);
+                Log::error('CARCOUPON');
+                Log::error($demo);
             };
             return response()->json([
                 'error' => false,

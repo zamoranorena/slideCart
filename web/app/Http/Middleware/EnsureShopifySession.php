@@ -57,18 +57,19 @@ class EnsureShopifySession
 
             $shop = Utils::sanitizeShopDomain($request->query('shop', ''));
             $session = Utils::loadCurrentSession($request->header(), $request->cookie(), $isOnline);
-            //Log::info(print_r($session, true));
             if ($session && $shop && $session->getShop() !== $shop) {
                 // This request is for a different shop. Go straight to login
                 return AuthRedirection::redirect($request);
             };
-
+            
+            //Log::info($demo);
             if ($session && $session->isValid()) {
                 $customer = Customer::with('payment')->where("shop_url", $session->getShop())->where('install', 1)->first();
                 if ($customer) {
                     $plan_id = EnsurePlans::getPlan($customer->plan_name);
                     $plan = Plans::find($plan_id);
-                    $payment = collect($customer->payment)->where('status', "ACTIVE")->first();
+                    $payment = Payment::where('customer_id', $customer->id)->where('status', "ACTIVE")->orWhere('status', "active")->first();
+                    //$payment = collect($customer->payment)->where('status', "ACTIVE")->first();
 
                     $clientObj = new \stdClass();
                     $clientObj->error = false;

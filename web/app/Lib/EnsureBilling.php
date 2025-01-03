@@ -42,7 +42,7 @@ class EnsureBilling
     {
         $confirmationUrl = null;
         $customer = Customer::where("shop_url", $session->getShop())->where('install', 1)->first();
-        $payment = Payment::where("customer_id", $customer->id)->where("status", "ACTIVE")->first();
+        $payment = Payment::where("customer_id", $customer->id)->where("status", "ACTIVE")->orWhere('status','active')->first();
 
         if ($payment) {
             $hasPayment = true;

@@ -25,6 +25,7 @@ class Settings extends Model
         'money_format',
         'cart_type',
         'personalize',
+        'template_item_cart',
         'customCss',
         'customJs',
         'customer_id'

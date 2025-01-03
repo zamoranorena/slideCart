@@ -18,6 +18,7 @@ class CartEmpty extends Model
         'id',
         'customer_id'
     ];
+        
     protected $fillable = [
         'enabled_cart_empty',
         'cart_empty_title',

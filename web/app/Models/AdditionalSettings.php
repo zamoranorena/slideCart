@@ -23,6 +23,7 @@ class AdditionalSettings extends Model
         'hide_cart',
         'hide_decimal',
         'hide_discount_money_cart',
+        'hide_discount_list_footer',
         'add_url_item_cart',
         'reverse_currency_symbol',
         'prices_reverse_order',
